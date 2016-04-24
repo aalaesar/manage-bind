@@ -1,0 +1,33 @@
+---
+- name: Verify if openresolv is installed on the host
+  shell: dpkg -l |grep openresolv
+  register: check_openresolv
+  ignore_errors: yes
+
+- name: Remove openresolv
+  apt:
+    name: openresolv
+    state: absent
+  when: check_openresolv.stdout.find( 'ii ' ) !=-1
+
+- name: configure resolv.conf
+  lineinfile:
+    dest: /etc/resolv.conf
+    state: present
+    create: no
+    line: nameserver 127.0.0.1
+    insertbefore: ^nameserver .*
+
+- name: Verify if dhcpcd5 is installed on the host
+  shell: dpkg -l |grep dhcpcd5
+  register: check_dhcpcd5
+  ignore_errors: yes
+
+- name: configure dhcpcd.conf
+  lineinfile:
+    dest: /etc/dhcpcd.conf
+    state: present
+    create: no
+    line: static domain_name_servers=127.0.0.1
+    insertafter: static ip_address=.*
+  when: check_dhcpcd5.stdout.find( 'ii ' ) !=-1

@@ -1,0 +1,17 @@
+---
+- name: Loading zone content for {{ item.name }} from {{ item.file }}
+  include_vars: "{{ item.file }}"
+  when: item.file is defined
+  
+- name: Loading zone content for {{ item.name }} from default location
+  include_vars: "./vars/{{ item.name }}.yml"
+  when: item.file is not defined
+
+- name: Setup master zones files for {{ item.name }}
+  template:
+    src: db.zones.template.j2
+    dest: "{{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/db.{{ item.name }}"
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
+    mode: 0600
+  notify: reload bind

@@ -1,0 +1,44 @@
+---
+zones_file:
+ - name: example3.tld
+   allow_transfert: []
+   allow_update: []
+   ttl: "{{ zones_config_ttl }}"
+   SOA:
+     #start of authority
+     # dict:
+     ns: ns1.example3.tld.
+     serial: 2016041201
+     email: admin.example3.tld.
+     refresh: "{{ zones_config_refresh }}"
+     retry: "{{ zones_config_retry }}"
+     expire: "{{ zones_config_expire }}"
+     minimum: "{{ zones_config_minimum }}"
+   NS:
+     #list of hosts
+     - ns1
+     - ns2
+     - host.from.another.domain.tld.
+   A:
+     #IP: host
+     26: host1
+     11.22.33.44: ns1
+     55.66.77.88: ns2
+   AAAA: []
+     #IP:host
+   CNAME: []
+     #name:host
+   DNAME: []
+     # security and Misc
+   TXT: []
+   SPF: []
+   SRV: []
+   URI: []
+     #reverse mapping :
+   PTR: []
+     # DNSSEC entries :
+   KEY: []
+   MX: []
+   DNSKEY: []
+   DS: []
+   RRSIG: []

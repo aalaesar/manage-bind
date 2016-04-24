@@ -1,0 +1,65 @@
+// "{{ ansible_managed}}"
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+// include "/etc/bind/zones.rfc1918";
+
+// Master zones
+{% for master_zone in bind_config_master_zones %}
+zone "{{ master_zone.name }}" {
+	type master;
+	file "{{ bind_zones_dir }}/{{ bind_zones_masters_dir}}/db.{{ master_zone.name }}";
+{% if master_zone.allow_transfer is defined %}
+	allow-transfer {
+{% for allow_transfer in master_zone.allow_transfer %}
+		{{ allow_transfer }};
+{% endfor %}
+		};
+{% endif %}
+{% if master_zone.allow_update is defined %}
+	allow-update {
+{% for allow_update in master_zone.allow_update %}
+		{{ allow_update }};
+{% endfor %}
+		};
+{% endif %}
+	};
+
+{% endfor %}
+
+// Slave zones
+
+{% for slave_zone in bind_config_slave_zones %}
+// {{ slave_zone.name }} ({{ slave_zone|count }} zones)
+zone "{{ slave_zone.name }}" {
+	type slave;
+	file "{{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/db.{{ slave_zone.name }}";
+	masters {
+{% for master in slave_zone.masters %}
+		{{ master }};
+{% endfor %}
+		};
+	};
+{% endfor %}
+
+// Forward zones
+
+{% for fwd_zone in bind_config_forward_zones %}
+// {{ fwd_zone.name }} ({{ fwd_zone|count }} zones)
+zone "{{ fwd_zone.name }}" {
+	type forward;
+{% if fwd_zone.forward is defined %}
+	forward {{ fwd_zone.forward }}; 
+{% else %}
+	forward only;
+{% endif %}
+	forwarders {
+{% for fwder in fwd_zone.forwarders %}
+		{{ fwder }};
+{% endfor %}
+		};
+	};
+{% endfor %}

@@ -1,0 +1,71 @@
+; {{ ansible_managed }}
+
+{% for zone in zones_file %}
+$ttl {{ zone.ttl|default( zones_config_ttl ) }}
+$ORIGIN {{ zone.name }}.
+@           IN  SOA     {{ zone.SOA.ns }}.    {{ zone.SOA.email }}. (
+                {{ zone.SOA.serial }}    ; serial
+                {{ zone.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
+                {{ zone.SOA.retry|default( zones_config_retry ) }}      ; retry
+                {{ zone.SOA.expire|default( zones_config_expire ) }}      ; expire
+                {{ zone.SOA.minimum|default( zones_config_minimum ) }}      ; minimum
+                )
+{% for nameserver in zone.NS %}
+@			IN	NS	{{ nameserver }}
+{% endfor %}
+
+{% if zone.A is defined %}
+{% for recordv4 in zone.A %}
+{% if zone.A[recordv4] is string %}
+{{ zone.A[recordv4] }}		IN	A	{{ recordv4 }}
+{% else %}
+{% for host in zone.A[recordv4] %}
+{{ host }}		IN	A	{{ recordv4 }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% if zone.AAAA is defined %}
+{% for recordv6 in zone.AAAA %}
+{{ zone.AAAA[recordv6] }}			IN	AAAA	{{ recordv6 }}
+{% endfor %}
+
+{% endif %}
+{% if zone.PTR is defined %}
+{% for ptr in zone.PTR %}
+{{ zone.PTR[ptr] }}			IN	PTR	{{ ptr }}
+{% endfor %}
+
+{% endif %}
+{% if zone.MX is defined %}
+{% for mx in zone.MX %}
+			IN	MX {{ zone.MX[mx] }}	{{ mx }}
+{% endfor %}
+
+{% endif %}
+{% if zone.CNAME is defined %}
+{% for cname in zone.CNAME %}
+{% if zone.CNAME[cname] is string %}
+{{ cname }} 			IN	CNAME	{{ zone.CNAME[cname] }}
+{% else %}
+{% for alias in zone.CNAME[cname] %}
+{{ alias }}			IN	CNAME	{{ cname }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% if zone.DNAME is defined %}
+{% for dname in zone.DNAME %}
+{{ dname }}			IN	DNAME	{{ zone.DNAME[dname] }}
+{% endfor %}
+
+{% endif %}
+{% if zone.TXT is defined %}
+{% for txt in zone.TXT %}
+{{ txt.label|default('@') }}			IN	TXT	{{ txt.text }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}

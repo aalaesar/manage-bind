@@ -1,0 +1,12 @@
+---
+# vars file for bind9
+bind_config_master_zones:
+  - name: example.tld
+    #allow_transfert: []
+    #allow_update: []
+  #- name: example2.tld
+    #allow_transfert: []
+    #allow_update: []
+  #- name: example3.tld
+    #allow_transfert: []
+    #allow_update: []
