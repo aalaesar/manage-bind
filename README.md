@@ -155,7 +155,7 @@ dnserver2's playbook :
         masters:
          - 11.22.33.44
 ```
-YAML file for example.com.yml on dnserver1
+YAML file for example.com.yml on dnserver2
 ```YAML
 ---
 zones_file:
