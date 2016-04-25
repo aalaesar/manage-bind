@@ -58,13 +58,16 @@ options {
 {% else %}
         allow-query { any; };
 {% endif %}
-	recursion {{ bind_option_recursion }};
-{% if bind_option_recursion=="yes" and bind_option_allow_recursion %}
-        allow-recursion {
+
+{% if bind_option_allow_recursion %}
+ 	recursion yes;
+	allow-recursion {
 {% for recursion in bind_option_allow_recursion %}
 		{{ recursion }};
 {% endfor %}
 		};
+{% else %}
+	recursion no;
 {% endif %}
 };
 
