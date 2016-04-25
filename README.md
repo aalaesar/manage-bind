@@ -1,15 +1,15 @@
-###### manage-bind
+# manage-bind
 
 
 Install and manage bind9 configuration and zones on debian/ubuntu with zones content structured as an YAML files
 
-## Requirements
+### Requirements
 
 
 Ansible 2.0 or later.
 
-## Role Variables
-# Overview
+### Role Variables
+##### Overview
 ```YAML
 # defaults file for bind9
 # host configuration 
@@ -53,7 +53,7 @@ zones_config_retry: 3600
 zones_config_expire: 604800
 zones_config_minimum: 38400
 ```
-# Details :
+##### Details :
 | Variable name | Type | Default | Description |
 | :------------ | :---: | :-----: | :---------- |
 |`bind_user`| String | bind | User name for system's daemon. |
@@ -64,21 +64,21 @@ zones_config_minimum: 38400
 |`bind_pkgs`| list | { bind9, dnsutils } | List of packages name related to this role. |
 |`bind_configs_dir`| String | /etc/bind | Bind config directory in the system. |
 |`bind_config_master_zones`| list | _empty_ | List of zones type master you want to implement. |
-|	`- name`| String | _null_ | The zone name - **mandatory** |
-|	`  file`| String | ./files/{{zone's name}}.yml | Full path to the yaml file containing the zone configuration. |
-|	`  allow_transfer`| list of IP | _null_ | Bind will allow transfer of the zone content to thoses hosts. Typically slaves servers. |
-|	`  allow_recursion`| list of IP | _null_ | Bind will allow recursion query concerning this zone from thoses host (not implemented yet) |
-|	`  allow_update`| list of IP| _null_ | Bind will allow updates to this zone from thoses hosts. |
+|	`=>- name`| String | _null_ | The zone name - **mandatory** |
+|	`=>  file`| String | ./files/{{zone's name}}.yml | Full path to the yaml file containing the zone configuration. |
+|	`=>  allow_transfer`| list of IP | _null_ | Bind will allow transfer of the zone content to thoses hosts. Typically slaves servers. |
+|	`=>  allow_recursion`| list of IP | _null_ | Bind will allow recursion query concerning this zone from thoses host (not implemented yet) |
+|	`=>  allow_update`| list of IP| _null_ | Bind will allow updates to this zone from thoses hosts. |
 |`bind_config_default_zones`| String | 'Yes' | Include default zone from RFC 1912 in bind. |
 |`bind_config_master_allow_transfer`| list of IP | _empty_ | Bind will allow transfer of any zone file to thoses hosts. Typically slaves servers. |
 |`bind_config_master_forwarders`| list of IP | _empty_ | Bind will forward queries to thoses hosts for resolving other zones (caching & non-authoritative) |
 |`bind_config_slave_zones`| list | _empty_ | list of zones type slave you want to implement. |
-|	`- name`| String | _null_ | The zone name - **mandatory** |
-|	`  masters`| list of IP | _null_ | The zone's master(s) - **mandatory** |
+|	`=>- name`| String | _null_ | The zone name - **mandatory** |
+|	`=>  masters`| list of IP | _null_ | The zone's master(s) - **mandatory** |
 |`bind_config_forward_zones`| list | _empty_ | list of zones type forward you want to implement. |
-|	`- name`| String | _null_ | The zone name - **mandatory** |
-|	`- forward`| String | _null_ | **todo** |
-|	`- forwarders`| list of IP | _null_ | Bind will forward queries to thoses hosts - **mandatory** |
+|	`=>- name`| String | _null_ | The zone name - **mandatory** |
+|	`=>  forward`| String | _null_ | **todo** |
+|	`=>  forwarders`| list of IP | _null_ | Bind will forward queries to thoses hosts - **mandatory** |
 |`bind_option_allow_recursion`| list of IP | _empty_ | Only allow this list of hosts to make recursives queries. |
 |`bind_option_listen_on`| String | Any | The IP address on which BIND will listen for incoming queries using default port (56) |
 |`bind_option_listen_on_v6`| String | Any | The IPv6 address on which BIND will listen for incoming queries using default port (56) |
@@ -92,21 +92,19 @@ zones_config_minimum: 38400
 |`zones_config_expire`| Integer | 604800 | Define the default zone expiration delay for slave/caching servers. in seconds. |
 |`zones_config_minimum`| Integer | 38400 | Define the default minimum delay for slave/caching servers between 2 requests. in seconds. |
 
-## Dependencies
-------------
+### Dependencies
 
 None.
 
-## Example Playbook
-----------------
+### Example Playbook
 
-# Exemple configuration :
-You own the zones example.tld, example.com and example.org
-You have 2 name servers : dnserver1 (11.22.33.44) & dnserver2 (55.66.77.88)
-dnserver1 is master of example.tld and slave of example.com & example.org.
-dnserver2 is master of example.com & example.org and slave of example.tld
+###### Exemple configuration :
+- You own the zones example.tld, example.com and example.org
+- You have 2 name servers : dnserver1 (11.22.33.44) & dnserver2 (55.66.77.88)
+- dnserver1 is master of example.tld and slave of example.com & example.org.
+- dnserver2 is master of example.com & example.org and slave of example.tld
 
-dnserver1's playbook :
+- dnserver1's playbook :
 ```YAML
 ---
 - hosts:  dnservers1
