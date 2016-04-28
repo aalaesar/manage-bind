@@ -162,7 +162,7 @@ None.
 ###### YAML file for example.com.yml on dnserver2
 ```YAML
 ---
-zones_file:
+zone:
  - name: example.com
    SOA:
      serial: 2016041903
