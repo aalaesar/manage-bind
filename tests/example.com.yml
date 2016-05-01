@@ -1,0 +1,40 @@
+---
+zone:
+ - name: example.com
+   ttl: 3d
+   SOA:
+     serial: 2016041903
+     ns: dnserver1.fqdn.
+     email: admin.example.com.
+     refresh: 12h
+     retry: 30m
+     expire: 3w
+     negative: 2h30m
+   NS:
+     - dnserver1.fqdn.
+     - dnserver2.fqdn.
+   A:
+     11.22.33.44:
+       - '@'
+       - dnserver1.fqdn.
+     55.66.77.88: dnserver2.fqdn.
+     12.34.56.78: host1
+     98.76.54.32: mailsrv
+   AAAA:
+     fe80:cafe:fa:1::1de:
+       - '@'
+       - dnserver1.fqdn.
+     fe80:face::babe: dnsserver2.fqdn.
+     fe80:cafe::bafe: mailsrv
+   MX:
+     mailsrv: 10
+     backup.fqdn: 20
+   CNAME:
+     host1: ftp
+     '@':
+       - www
+       - webmail
+   TXT:
+     - text: '"v=spf1 mx -all"'
+     - text: '( "v=DKIM1; k=rsa; t=s; n=core; p=someverylongstringbecausethisisakeyformailsecurity" )  ; ----- DKIM key mail for example.com'
+       label: mail._domainkey
