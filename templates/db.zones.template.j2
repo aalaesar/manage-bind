@@ -8,7 +8,7 @@ $ORIGIN {{ zone.name }}.
                 {{ zone.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
                 {{ zone.SOA.retry|default( zones_config_retry ) }}      ; retry
                 {{ zone.SOA.expire|default( zones_config_expire ) }}      ; expire
-                {{ zone.SOA.minimum|default( zones_config_minimum ) }}      ; minimum
+                {{ zone.SOA.negative|default( zones_config_negative ) }}      ; negative
                 )
 {% for nameserver in zone.NS %}
 @			IN	NS	{{ nameserver }}
