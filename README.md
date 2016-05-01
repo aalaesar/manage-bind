@@ -3,7 +3,7 @@
 
 Install and manage bind9 configuration and zones ( master, slave and forward types) with zones content structured as an YAML files
 Bind is a very rich and powerfull tool, the configuration managed by this role does not cover
-all it's specifications but provide enough options for main use cases.
+all it's specifications but provide enough options for a large number of uses cases.
 ### Requirements
 
 
@@ -20,12 +20,12 @@ Ansible 2.0 or later.
 |`bind_pkg_state`| String | installed | Used for installing or uninstalling the role. Can be states defined in the apt module. |
 |`bind_pkgs`| list | { bind9, dnsutils } | List of packages name related to this role. |
 |`bind_configs_dir`| String | /etc/bind | Bind config directory in the system. |
-|`**bind_config_master_zones**`| list | _empty_ | List of zones type master you want to implement. |
+|`bind_config_master_zones`| list | _empty_ | List of zones type master you want to implement. |
 |`bind_config_default_zones`| String | 'Yes' | Include default zone from RFC 1912 in bind. |
 |`bind_config_master_allow_transfer`| list of IP | _empty_ | Bind will allow transfer of any zone to thoses hosts. Typically slaves servers. |
 |`bind_config_master_forwarders`| list of IP | _empty_ | Bind will forward queries to thoses hosts for resolving other zones (caching & non-authoritative) |
-|`**bind_config_slave_zones**`| list | _empty_ | list of zones type slave you want to implement. |
-|`**bind_config_forward_zones**`| list | _empty_ | list of zones type forward you want to implement. |
+|`bind_config_slave_zones`| list | _empty_ | list of zones type slave you want to implement. |
+|`bind_config_forward_zones`| list | _empty_ | list of zones type forward you want to implement. |
 |`bind_option_allow_recursion`| list of IP | _empty_ | Only allow this list of hosts to make recursives queries. |
 |`bind_option_listen_on`| String | Any | The IP address on which BIND will listen for incoming queries using default port (56) |
 |`bind_option_listen_on_v6`| String | Any | The IPv6 address on which BIND will listen for incoming queries using default port (56) |
@@ -33,17 +33,18 @@ Ansible 2.0 or later.
 |`bind_zones_dir`| String | /var/lib/bind | Defines the storage folder for the zone files. |
 |`bind_zones_masters_dir`| String | masters | Sub-folder for master zones files. |
 |`bind_zones_slaves_dir`| String | slaves | Sub-folder for Slaves zones files. |
-|`zones_config_ttl`| Integer | 38400 | Define the default global _time to live_ of ressource records. in seconds. |
-|`zones_config_refresh`| Integer | 10800 | Define the default refresh delay for slave/caching servers. in seconds. |
-|`zones_config_retry`| Integer | 3600 | Define the default retry delay for slave/caching servers. in seconds. |
-|`zones_config_expire`| Integer | 604800 | Define the default zone expiration delay for slave/caching servers. in seconds. |
-|`zones_config_minimum`| Integer | 38400 | Define the default minimum delay for slave/caching servers between 2 requests. in seconds. |
+|`zones_config_ttl`| String | 38400 | Define the default global _time to live_ of ressource records. in seconds. |
+|`zones_config_refresh`| String | 10800 | Define the default refresh delay for slave/caching servers. in seconds. |
+|`zones_config_retry`| String | 3600 | Retry delay between zone file transferts for slave servers |
+|`zones_config_expire`| String | 604800 | Time before the slave server do not anymore responds as authoritative for the zone, **if it has not been updated**. |
+|`zones_config_negative`| String | 38400 | Define the negative response cache time. Maximum 3h |
 
 ###### Details on `bind_config_master_zones`
 | Variable name | Type | Default | Description |
 | :------------ | :---: | :-----: | :---------- |
 |	`name`| String | _null_ | The zone name - **mandatory** |
 |	`file`| String | ./files/{{zone's name}}.yml | Full path to the yaml file containing the zone configuration. |
+|   `notify` | list of IP | _null_ | Bind will notify thoses hosts when the zone is updated. |
 |	`allow_transfer`| list of IP | _null_ | Bind will allow transfer of the zone content to thoses hosts. Typically slaves servers. |
 |	`allow_recursion`| list of IP | _null_ | Bind will allow recursion query concerning this zone from thoses host (not implemented yet) |
 |	`allow_update`| list of IP| _null_ | Bind will allow updates to this zone from thoses hosts. |
@@ -63,7 +64,7 @@ Ansible 2.0 or later.
 
 ### YAML zone File
 
-**manage-bind** will not verify the coherence of your zone records : you must know what you're doing.
+**manage-bind** will not check the coherence of your zone records : you must know what you're doing.
 
 A **zone** is defined as a mapping of Ressource Records (RR) and a name.
 RR are grouped by type.
@@ -90,17 +91,31 @@ RR are grouped by type.
 | **RRSIG** | _null_ | [ ] | Signed RRset. Part of the **DNSSEC** standard.**not implemented yet** |
 | **NSEC** | _null_ | [ ] | Next Secure record. Part of the **DNSSEC** standard. Seed for providing proof of non-existence of a name. **not implemented yet** |
 
-###### Mapping under **SOA** : TODO
-###### Mapping under TXT: TODO
-###### Mapping under SRV: TODO
+###### Mapping under **SOA** :
+| Name | Type | Mandatory | Description |
+| serial | Integer | [x] | Serial number for the zone file. **Must always increment** |
+| ns | string | [x] | Name server for this zone. must be fully Qualified name with the root '.'
+| email | string | [x] | email of the zon administrator. '@' is susbtitued to '.'. Can be fully qualified or not. |
+| refresh | string | [ ] | Same function as zones_config_ttl. Default to zones_config_ttl. |
+| retry | string | [ ] | Same role as zones_config_retry. Default to zones_config_retry. |
+| expire | string | [ ] | Same role as zones_config_expire. Default to zones_config_expire. |
+| negative | string | [ ] | Same role as zones_config_negative. Default to zones_config_negative. |
 
-An example zone file can be found in the test folder.
+
+###### Mapping under **TXT**:
+| Name | Type | Mandatory | Description |
+| text | String | [x] | The actual record content. Anything between single quotes |
+| label | String | [ ] ] the Record label. Anything between single quotes |
+
+###### Mapping under **SRV**: not yet implemented
+
+An example zone file can be found in the _test_ folder.
 
 ### Dependencies
 
 None.
 
-### Example Playbook
+### Example Playbooks
 
 ###### Exemple configuration :
 - You own the zones example.tld, example.com and example.org
@@ -183,9 +198,10 @@ zone:
    MX:
      mailsrv: 10
    CNAME:
-     ftp: 'host1'
-     www: '@'
-     webmail: '@'
+     host1: ftp
+     '@':
+       - www
+       - webmail
    TXT:
      - text: '"v=spf1 mx -all"'
      - text: '( "v=DKIM1; k=rsa; t=s; n=core; p=someverylongstringbecausethisisakeyformailsecurity" )  ; ----- DKIM key mail for example.com'
