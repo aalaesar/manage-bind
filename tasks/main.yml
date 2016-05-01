@@ -1,69 +1,10 @@
 ---
-
-- name: Installed Bind9 package
-  apt:
-    name: "{{ item }}"
-    state: "{{ bind_pkg_state}}"
-  with_items: "{{ bind_pkgs }}"
+- include: setup_bind_conf.yml
+  when: bind_pkg_state in {installed, latest}
   tags: setup_bind_config
 
-- name: Created the log directory for bind
-  file:
-    path: "{{ bind_log_dir }}"
-    state: directory
-    owner: "{{ bind_user }}"
-    group: "{{ bind_group }}"
-  tags: setup_bind_config
-
-- name: Created the directory for bind's zones
-  file:
-    path: "{{ bind_zones_dir }}/{{ item }}"
-    state: directory
-    owner: root
-    group: "{{ bind_group }}"
-  with_items:
-    - "{{ bind_zones_masters_dir }}"
-    - "{{ bind_zones_slaves_dir }}"
-  tags: setup_bind_config
-
-- name: Setup Bind options
-  template: 
-    src: named.conf.options.j2 
-    dest: "{{ bind_configs_dir }}/named.conf.options" 
-    owner: "{{ bind_user }}"
-    group: "{{ bind_group }}"
-    mode: 0640
-  notify: reload bind
-  tags: setup_bind_config
-
-- name: Setup bind's default zones
-  copy:
-    src: "./files/{{ item }}"
-    dest: "{{ bind_configs_dir }}/{{ item }}"
-    owner: "{{ bind_user }}"
-    group: "{{ bind_group }}"
-    mode: 0640
-    force: no
-  with_items:
-    - db.0
-    - db.127
-    - db.255
-    - db.empty
-    - db.local
-    - db.root
-  when: bind_config_default_zones == 'yes'
-  notify: reload bind
-  tags: setup_bind_config
-
-- name: Setup zones in Bind configuration
-  template: 
-    src: named.conf.local.j2 
-    dest: "{{ bind_configs_dir }}/named.conf.local" 
-    owner: "{{ bind_user }}"
-    group: "{{ bind_group }}"
-    mode: 0640
-  notify: reload bind
-  tags: setup_bind_config
+- include: remove_bind_role.yml
+  when: bind_pkg_state == absent
 
 - include: create_master_zones.yml
   with_items: "{{ bind_config_master_zones }}"
