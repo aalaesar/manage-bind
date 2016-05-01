@@ -70,6 +70,7 @@ A **zone** is defined as a mapping of Ressource Records (RR) and a name.
 RR are grouped by type.
 
 ###### Main mapping under **zone** :
+
 | RR/name | Type | Mandatory | Description |
 | :------------ | :---: | :-----: | :---------- |
 | **name** | string | [x] | the zone name, without the root |
@@ -92,9 +93,11 @@ RR are grouped by type.
 | **NSEC** | _null_ | [ ] | Next Secure record. Part of the **DNSSEC** standard. Seed for providing proof of non-existence of a name. **not implemented yet** |
 
 ###### Mapping under **SOA** :
+
 | Name | Type | Mandatory | Description |
+| :------------ | :---: | :-----: | :---------- |
 | serial | Integer | [x] | Serial number for the zone file. **Must always increment** |
-| ns | string | [x] | Name server for this zone. must be fully Qualified name with the root '.'
+| ns | string | [x] | Name server for this zone. must be fully Qualified name with the root '.' |
 | email | string | [x] | email of the zon administrator. '@' is susbtitued to '.'. Can be fully qualified or not. |
 | refresh | string | [ ] | Same function as zones_config_ttl. Default to zones_config_ttl. |
 | retry | string | [ ] | Same role as zones_config_retry. Default to zones_config_retry. |
@@ -103,7 +106,9 @@ RR are grouped by type.
 
 
 ###### Mapping under **TXT**:
+
 | Name | Type | Mandatory | Description |
+| :------------ | :---: | :-----: | :---------- |
 | text | String | [x] | The actual record content. Anything between single quotes |
 | label | String | [ ] ] the Record label. Anything between single quotes |
 
