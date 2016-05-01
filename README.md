@@ -110,7 +110,7 @@ RR are grouped by type.
 | Name | Type | Mandatory | Description |
 | :------------ | :---: | :-----: | :---------- |
 | text | String | [x] | The actual record content. Anything between single quotes |
-| label | String | [ ] ] the Record label. Anything between single quotes |
+| label | String | [ ] | the Record label. Anything between single quotes |
 
 ###### Mapping under **SRV**: not yet implemented
 
