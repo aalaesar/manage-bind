@@ -3,7 +3,7 @@
 {% for zone in zone %}
 $ttl {{ zone.ttl|default( zones_config_ttl ) }}
 $ORIGIN {{ zone.name }}.
-@           IN  SOA     {{ zone.SOA.ns }}.    {{ zone.SOA.email }}. (
+@           IN  SOA     {{ zone.SOA.ns }}     {{ zone.SOA.email }}  (
                 {{ zone.SOA.serial }}    ; serial
                 {{ zone.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
                 {{ zone.SOA.retry|default( zones_config_retry ) }}      ; retry
