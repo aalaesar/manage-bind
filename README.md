@@ -186,8 +186,8 @@ zone:
  - name: example.com
    SOA:
      serial: 2016041903
-     ns: dnserver1.fqdn
-     email: admin.example.com
+     ns: dnserver1.fqdn.
+     email: admin.example.com.
    NS:
      - dnserver1.fqdn.
      - dnserver2.fqdn.
