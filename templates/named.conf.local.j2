@@ -28,7 +28,7 @@ zone "{{ master_zone.name }}" {
 {% endif %}
 {% if master_zone.notify is defined %}
 	also-notify {
-{% for notify in masterzone.notify %}
+{% for notify in master_zone.notify %}
 		{{ notify }};
 {% endfor %}
 	};
