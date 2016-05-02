@@ -28,7 +28,13 @@ $ORIGIN {{ zone.name }}.
 {% endif %}
 {% if zone.AAAA is defined %}
 {% for recordv6 in zone.AAAA %}
-{{ zone.AAAA[recordv6] }}			IN	AAAA	{{ recordv6 }}
+{% if zone.AAAA[recordv6] is string %}
+{{ zone.AAAA[recordv6] }}		IN	AAAA	{{ recordv6 }}
+{% else %}
+{% for host in zone.AAAA[recordv6] %}
+{{ host }}		IN	AAAA	{{ recordv6 }}
+{% endfor %}
+{% endif %}
 {% endfor %}
 
 {% endif %}
