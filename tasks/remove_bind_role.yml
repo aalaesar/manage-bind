@@ -1,0 +1,15 @@
+---
+- name: purge Master zones files
+
+- name: Purge Slave zone files
+
+- name: Remove zones folder
+
+- name: Remove bind packages.
+  apt:
+    name: "{{ item }}"
+    state: "{{ bind_pkg_state}}"
+  with_items: "{{ bind_pkgs }}"
+  tags: setup_bind_config
+
+- name: purge bind configuration.
