@@ -1,6 +1,6 @@
 ---
 - name: Verify if openresolv is installed on the host
-  shell: dpkg -l |grep openresolv
+  shell: dpkg -l |grep openresolv | true
   register: check_openresolv
   ignore_errors: yes
 
@@ -19,7 +19,7 @@
     insertbefore: ^nameserver .*
 
 - name: Verify if dhcpcd5 is installed on the host
-  shell: dpkg -l |grep dhcpcd5
+  shell: dpkg -l |grep dhcpcd5 | true
   register: check_dhcpcd5
   ignore_errors: yes
 
