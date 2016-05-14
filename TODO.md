@@ -1,6 +1,6 @@
 #TODO
 ## Functionnalities
-- [ ] Rework tasks structures
+- [X] Rework tasks structures
 - [ ] master zone files management
 - [ ] remove slave files by default unless specified in a field like 'file:'
 - [ ] security with keys in bind options
