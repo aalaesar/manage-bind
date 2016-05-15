@@ -42,3 +42,6 @@ zones_config_retry: 3600
 zones_config_expire: 604800
 zones_config_negative: 38400
 
+# list for managing zone files :
+master_zone_files: []
+slave_zone_files: []

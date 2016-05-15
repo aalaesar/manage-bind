@@ -14,6 +14,20 @@
   with_items: "{{ bind_config_slave_zones }}"
   tags: setup_bind_slave_zones
   notify: reload bind
+  
+- set_fact: "slave_zone_files={{slave_zone_files + db.item.name}}"
+  with_items: "{{ bind_config_slave_zones }}"
+
+- shell: "ls -1 {{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/"
+  register: master_content
+  when: master_zone_files
+  
+- name: Clean Master folder
+  file:
+    path: "{{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/{{ item }}"
+    state: absent
+  with_items: "{{ master_content.stdout_lines }}"
+  when: item not in master_zone_files
 
 - include: setup_host_dns.yml
   when: host_dns_srv == 'self' 
