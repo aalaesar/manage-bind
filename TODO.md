@@ -1,8 +1,9 @@
 #TODO
 ## Functionnalities
 - [X] Rework tasks structures
-- [ ] master zone files management
-- [ ] remove slave files by default unless specified in a field like 'file:'
+- [X] master zone files management
+- [ ] slave zone files management
+- [ ] rework bind global options
 - [ ] security with keys in bind options
 - [ ] advanced bind functionnalities ? (views, lists, ports, other options...)
 - [ ] uninstallation ?
