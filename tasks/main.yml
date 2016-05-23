@@ -8,20 +8,22 @@
   tags: setup_bind_master_zones
 
 - name: Create slave zones files
-  command: touch "{{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/db.{{ item.name }}"
-  args:
-    creates: "{{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/db.{{ item.name }}"
+  file: 
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
+    mode: 0600
+    path: "{{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/db.{{ item.name }}"
+    state: touch
   with_items: "{{ bind_config_slave_zones }}"
   tags: setup_bind_slave_zones
   notify: reload bind
-  
-- set_fact: "slave_zone_files={{slave_zone_files + db.item.name}}"
-  with_items: "{{ bind_config_slave_zones }}"
 
+  #list files present in the masters folder
 - shell: "ls -1 {{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/"
   register: master_content
   when: master_zone_files
   
+  #remove unmanaged files.
 - name: Clean Master folder
   file:
     path: "{{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/{{ item }}"

@@ -40,7 +40,6 @@ zone "{{ master_zone.name }}" {
 // Slave zones
 
 {% for slave_zone in bind_config_slave_zones %}
-// {{ slave_zone.name }} ({{ slave_zone|count }} zones)
 zone "{{ slave_zone.name }}" {
 	type slave;
 	file "{{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/db.{{ slave_zone.name }}";
@@ -50,6 +49,7 @@ zone "{{ slave_zone.name }}" {
 {% endfor %}
 		};
 	};
+
 {% endfor %}
 
 // Forward zones
