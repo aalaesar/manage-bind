@@ -46,7 +46,7 @@ $ORIGIN {{ zone.name }}.
 {% endif %}
 {% if zone.MX is defined %}
 {% for mx in zone.MX %}
-			IN	MX {{ zone.MX[mx] }}	{{ mx }}
+@			IN	MX {{ zone.MX[mx] }}	{{ mx }}
 {% endfor %}
 
 {% endif %}
