@@ -1,6 +1,6 @@
 ---
-- hosts: localhost
-  remote_user: root
+- hosts: raspib
+  #remote_user: root
   roles:
    - role: bind9
      bind_option_recursion: "yes"
