@@ -4,11 +4,12 @@
 - [X] master zone files management
 - [ ] slave zone files management
 - [ ] rework bind global options
-- [ ] security with keys in bind options
-- [ ] advanced bind functionnalities ? (views, lists, ports, other options...)
+ - [ ] advanced bind functionnalities ? (views, lists, ports, other options...)
+ - [ ] security with keys in bind options
 - [ ] uninstallation ?
 
 ## Ressource records implementation
+- [ ] Rework MX
 - [ ] SRV
 - [ ] KEY
 - [ ] all DNSSEC RR :
