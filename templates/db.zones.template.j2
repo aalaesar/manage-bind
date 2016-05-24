@@ -1,4 +1,4 @@
-; {{ ansible_managed }}
+;{ {{ ansible_managed }}
 
 {% for zone in zone %}
 $ttl {{ zone.ttl|default( zones_config_ttl ) }}
@@ -47,6 +47,12 @@ $ORIGIN {{ zone.name }}.
 {% if zone.MX is defined %}
 {% for mx in zone.MX %}
 @			IN	MX {{ zone.MX[mx] }}	{{ mx }}
+{% endfor %}
+
+{% endif %}
+{% if zone.SRV is defined %}
+{% for record in zone.SRV %}
+{{ record.srvce }}.{{ record.prot }}{% if record.zone_name is defined %}.{{ record.zone_name }}{% endif %}	IN	SRV	{{ record.priority }} {{ record.weight }} {{ record.port }}	{{ record.target }}
 {% endfor %}
 
 {% endif %}
