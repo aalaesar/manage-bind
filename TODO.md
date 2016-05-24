@@ -9,8 +9,8 @@
 - [ ] uninstallation ?
 
 ## Ressource records implementation
-- [ ] Rework MX
-- [ ] SRV
+- [x] Rework MX
+- [X] SRV
 - [ ] KEY
 - [ ] all DNSSEC RR :
  - [ ] DNSKEY

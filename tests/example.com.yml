@@ -3,7 +3,7 @@ zone:
  - name: example.com
    ttl: 3d
    SOA:
-     serial: 2016052408
+     serial: 2016052410
      ns: srvdns01.example.com.
      email: admin.example.com.
      refresh: 12h
@@ -25,8 +25,12 @@ zone:
        - srvdns01.example.com.
      fe80:cafe::bafe: mailsrv
    MX:
-     mailsrv: 10
-     backup.fqdn.: 20
+     '@': 
+       - target: mailsrv
+         ttl: 3w
+         priority: 10
+       - target: backup.fqdn.
+         priority: 20
    SRV:
      - srvce: _http
        prot: _tcp

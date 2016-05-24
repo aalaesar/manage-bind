@@ -45,8 +45,10 @@ $ORIGIN {{ zone.name }}.
 
 {% endif %}
 {% if zone.MX is defined %}
-{% for mx in zone.MX %}
-@			IN	MX {{ zone.MX[mx] }}	{{ mx }}
+{% for record in zone.MX %}
+{% for entry in zone.MX[record] %}
+{{ record }}		{{ entry.ttl|default('') }} IN	MX {{ entry.priority }}	{{ entry.target }}
+{% endfor %}
 {% endfor %}
 
 {% endif %}
