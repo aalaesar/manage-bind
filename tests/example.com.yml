@@ -3,34 +3,46 @@ zone:
  - name: example.com
    ttl: 3d
    SOA:
-     serial: 2016041903
-     ns: dnserver1.fqdn.
+     serial: 2016052408
+     ns: srvdns01.example.com.
      email: admin.example.com.
      refresh: 12h
      retry: 30m
      expire: 3w
      negative: 2h30m
    NS:
-     - dnserver1.fqdn.
-     - dnserver2.fqdn.
+     - srvdns01.example.com.
    A:
-     11.22.33.44:
+     127.0.0.1:
        - '@'
-       - dnserver1.fqdn.
-     55.66.77.88: dnserver2.fqdn.
+       - srvdns01.example.com.
      12.34.56.78: host1
      98.76.54.32: mailsrv
+     95.38.94.196: ftp.domain.tld.
    AAAA:
      fe80:cafe:fa:1::1de:
        - '@'
-       - dnserver1.fqdn.
-     fe80:face::babe: dnsserver2.fqdn.
+       - srvdns01.example.com.
      fe80:cafe::bafe: mailsrv
    MX:
      mailsrv: 10
-     backup.fqdn: 20
+     backup.fqdn.: 20
+   SRV:
+     - srvce: _http
+       prot: _tcp
+       zone_name: example.com.
+       priority: 1
+       weight: 1
+       port: 80
+       target: host1
+     - srvce: _ftp
+       prot: _tcp
+       priority: 1
+       weight: 1
+       port: 21
+       target: ftp
    CNAME:
-     host1: ftp
+     ftp: host1
      '@':
        - www
        - webmail
