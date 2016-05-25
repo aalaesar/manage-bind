@@ -1,0 +1,13 @@
+---
+- set_fact: "slavezone_filename=db.{{ item.name }}"
+
+- name: Create slave zones files
+  file: 
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
+    mode: 0600
+    path: "{{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/{{ slavezone_filename }}"
+    state: touch
+  notify: reload bind
+
+- set_fact: "slave_zone_files={{ slave_zone_files + [slavezone_filename] }}"

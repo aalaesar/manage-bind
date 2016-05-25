@@ -11,9 +11,7 @@ bind_log_dir: /var/log/bind
 
 # Installation configuration
 bind_pkg_state: installed
-bind_pkgs:
-        - bind9
-        - dnsutils
+bind_pkgs: ['bind9', 'dnsutils']
 bind_service_state: started
 bind_service_enabled: yes
 
@@ -42,6 +40,8 @@ zones_config_retry: 3600
 zones_config_expire: 604800
 zones_config_negative: 38400
 
+# remove unmanaged files to keep the server clean
+remove_unmanaged_files: ['master', 'slave']
 # list for managing zone files :
 master_zone_files: []
 slave_zone_files: []

@@ -1,0 +1,22 @@
+---
+#list files present in the masters folder
+- shell: "ls -1 {{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/"
+  register: master_content
+#remove unmanaged files.
+- name: Clean Master folder
+  file:
+    path: "{{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/{{ item }}"
+    state: absent
+  with_items: "{{ master_content.stdout_lines }}"
+  when: "'master' in remove_unmanaged_files and item not in master_zone_files"
+
+#list files present in the slaves folder
+- shell: "ls -1 {{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/"
+  register: slave_content
+#remove unmanaged files.
+- name: Clean Slaves folder
+  file:
+    path: "{{ bind_zones_dir }}/{{ bind_zones_slaves_dir }}/{{ item }}"
+    state: absent
+  with_items: "{{ slave_content.stdout_lines }}"
+  when: "'slave' in remove_unmanaged_files and item not in slave_zone_files"
