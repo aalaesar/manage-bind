@@ -9,7 +9,7 @@
   with_items: "{{ bind_config_master_zones }}"
   tags: setup_bind_master_zones
 
-  # create slaves zones files
+  # create slave zones files
 - include: create_slaves_zones.yml
   with_items: "{{ bind_config_slave_zones }}"
   tags: setup_bind_slave_zones

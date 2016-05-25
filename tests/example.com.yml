@@ -3,7 +3,7 @@ zone:
  - name: example.com
    ttl: 3d
    SOA:
-     serial: 2016052410
+     serial: 2016052601
      ns: srvdns01.example.com.
      email: admin.example.com.
      refresh: 12h

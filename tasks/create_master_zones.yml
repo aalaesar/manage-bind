@@ -9,13 +9,14 @@
   include_vars: "./vars/{{ item.name }}.yml"
   when: item.file is not defined
 
-- name: Setup master zones files for {{ item.name }}
+- name: Setup master zones files for {{ item.name }} and verify 
   template:
     src: db.zones.template.j2
     dest: "{{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/{{ masterzone_filename }}"
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"
     mode: 0600
+    validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
   when: item.file is defined
   notify: reload bind
 
