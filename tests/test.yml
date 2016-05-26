@@ -9,4 +9,5 @@
       - 127.0.0.1
      bind_config_master_zones:
       - name: example.com
-        file: tests/example.com.yml
+        ymlfile: tests/example.com.yml
+        #rawfile: tests/raw.example.com

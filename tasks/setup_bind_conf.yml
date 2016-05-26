@@ -38,6 +38,7 @@
     group: "{{ bind_group }}"
     mode: 0640
     force: no
+    validate: "/usr/sbin/named-checkzone {{ item }} %s"
   with_items:
     - db.0
     - db.127
