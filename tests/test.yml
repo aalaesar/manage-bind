@@ -1,5 +1,6 @@
 ---
 - hosts: raspib
+  gather_facts: no
   #remote_user: root
   roles:
    - role: bind9

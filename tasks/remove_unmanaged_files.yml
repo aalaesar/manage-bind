@@ -1,11 +1,14 @@
 ---
 #list files present in the zone files folder
-- shell: "ls -1 {{ bind_zones_dir }}/"
+- name: "Discover files in {{ bind_zones_dir }}"
+  find:
+    paths: "{{ bind_zones_dir }}"
   register: folder_content
+
 #remove unmanaged files.
 - name: Clean the zone files folder
   file:
-    path: "{{ bind_zones_dir }}/{{ item }}"
+    path: "{{ item.path }}"
     state: absent
-  with_items: "{{ folder_content.stdout_lines }}"
-  when: item not in list_zone_files
+  with_items: "{{ folder_content.files }}"
+  when: item.path.split('/')[-1] not in list_zone_files
