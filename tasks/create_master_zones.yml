@@ -1,23 +1,37 @@
 ---
-- set_fact: "masterzone_filename=db.{{ item.name }}"
+- block:
+  - set_fact: "masterzone_filename=db.{{ item.name }}"
 
-- name: Loading zone content for {{ item.name }} from {{ item.file }}
-  include_vars: "{{ item.file }}"
-  when: item.file is defined
+  - name: Loading zone content for {{ item.name }} from {{ item.ymlfile }}
+    include_vars: "{{ item.ymlfile }}"
+    
+  - name: Setup master zones files for {{ item.name }} and verify 
+    template:
+      src: db.zones.template.j2
+      dest: "{{ bind_zones_dir }}/{{ masterzone_filename }}"
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
+      mode: 0644
+      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
+    notify: reload bind
+  when: item.ymlfile is defined
+
+- block:
+  - set_fact: "masterzone_filename={{ item.rawfile.split('/')[-1] }}"
   
+  - name: "Copy and validate {{ item.name }} raw zone file."
+    copy:
+      src: "{{ item.rawfile }}"
+      dest: "{{ bind_zones_dir }}/{{ masterzone_filename }}"
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
+      mode: 0644
+      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
+    notify: reload bind
+  when: item.ymlfile is not defined and item.rawfile is defined
+
 - name: Loading zone content for {{ item.name }} from default location
   include_vars: "./vars/{{ item.name }}.yml"
-  when: item.file is not defined
-
-- name: Setup master zones files for {{ item.name }} and verify 
-  template:
-    src: db.zones.template.j2
-    dest: "{{ bind_zones_dir }}/{{ masterzone_filename }}"
-    owner: "{{ bind_user }}"
-    group: "{{ bind_group }}"
-    mode: 0600
-    validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
-  when: item.file is defined
-  notify: reload bind
+  when: item.ymlfile is not defined and item.rawfile is not defined
 
 - set_fact: "list_zone_files={{ list_zone_files + [masterzone_filename] }}"
