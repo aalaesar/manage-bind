@@ -12,15 +12,13 @@
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"
 
-- name: Created the directory for the zones db
+- name: Check ACL for the zones folder
   file:
-    path: "{{ bind_zones_dir }}/{{ item }}"
+    path: "{{ bind_zones_dir }}"
     state: directory
     owner: root
     group: "{{ bind_group }}"
-  with_items:
-    - "{{ bind_zones_masters_dir }}"
-    - "{{ bind_zones_slaves_dir }}"
+
 
 - name: Setup Bind options
   template: 

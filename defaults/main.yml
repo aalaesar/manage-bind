@@ -30,8 +30,6 @@ bind_option_allow_query: []
 
 # Zones files
 bind_zones_dir: /var/lib/bind
-bind_zones_masters_dir: "masters"
-bind_zones_slaves_dir: "slaves"
 
 # Zones default configuration
 zones_config_ttl: 38400
@@ -41,7 +39,6 @@ zones_config_expire: 604800
 zones_config_negative: 38400
 
 # remove unmanaged files to keep the server clean
-remove_unmanaged_files: ['master', 'slave']
-# list for managing zone files :
-master_zone_files: []
-slave_zone_files: []
+remove_unmanaged_files: true
+# initialise list of managed zone files :
+list_zone_files: []

@@ -10,12 +10,14 @@
   tags: setup_bind_master_zones
 
   # create slave zones files
-- include: create_slaves_zones.yml
+- name: works on slave zones files
+  include: create_slaves_zones.yml
   with_items: "{{ bind_config_slave_zones }}"
   tags: setup_bind_slave_zones
 
   #remove unmanaged zone files
-- include: remove_unmanaged_files.yml
+- name: Clean the zone files folder
+  include: remove_unmanaged_files.yml
   when: remove_unmanaged_files
 
 - include: setup_host_dns.yml

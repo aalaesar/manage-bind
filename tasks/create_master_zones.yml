@@ -12,7 +12,7 @@
 - name: Setup master zones files for {{ item.name }} and verify 
   template:
     src: db.zones.template.j2
-    dest: "{{ bind_zones_dir }}/{{ bind_zones_masters_dir }}/{{ masterzone_filename }}"
+    dest: "{{ bind_zones_dir }}/{{ masterzone_filename }}"
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"
     mode: 0600
@@ -20,4 +20,4 @@
   when: item.file is defined
   notify: reload bind
 
-- set_fact: "master_zone_files={{ master_zone_files + [masterzone_filename] }}"
+- set_fact: "list_zone_files={{ list_zone_files + [masterzone_filename] }}"
