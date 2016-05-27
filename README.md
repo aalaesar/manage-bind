@@ -1,14 +1,11 @@
+This file is obsolete
+do not rely on it
 # manage-bind
-
-
 Install and manage bind9 configuration and zones ( master, slave and forward types) with zones content structured as an YAML files
 Bind is a very rich and powerfull tool, the configuration managed by this role does not cover
 all it's specifications but provide enough options for a large number of uses cases.
 ### Requirements
-
-
 Ansible 2.0 or later.
-
 ### Role Variables
 ###### All 
 | Variable name | Type | Default | Description |
