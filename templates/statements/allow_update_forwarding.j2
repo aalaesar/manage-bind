@@ -1,0 +1,23 @@
+{% if clause.allow_update_forwarding is defined %}
+	allow-update-forwarding {
+{% if clause.allow_update_forwarding is string %}
+    {{ clause.allow_update_forwarding }};
+{% else %}
+{% for element in clause.allow_update_forwarding %}
+		{{ element }};
+{% endfor %}
+{% endif %}
+    };
+
+{% endif %}
+{#
+---
+clause:
+  allow_update_forwarding: "acl_name"
+--- or
+clause:
+  allow_update_forwarding:
+    - "acl_name"
+    - key key-name
+    - 8.8.4.4
+#}
