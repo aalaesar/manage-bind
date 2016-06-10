@@ -1,0 +1,22 @@
+{% if clause.allow_recursion_on is defined %}
+  allow-recursion-on {
+{% if clause.allow-recursion_on is string %}
+    {{ clause.allow_recursion_on }}
+{% else %}
+{% for element in clause.allow_recursion_on %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+
+{% endif %}
+{#
+---
+clause:
+  allow_recursion_on: 192.168.0.5
+--- or
+clause:
+  allow_recursion_on:
+    - 192.168.0.5
+    - 10.0.0.254    
+#}

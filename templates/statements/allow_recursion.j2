@@ -1,0 +1,23 @@
+{% if clause.allow_recursion is defined %}
+  allow-recursion {
+{% if clause.allow-recursion is string %}
+    {{ clause.allow_recursion }}
+{% else %}
+{% for element in clause.allow_recursion %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+
+{% endif %}
+{#
+---
+clause:
+  allow_recursion: "acl_list"
+--- or
+clause:
+  allow_recursion:
+    - 10.0.0.0/8
+    - "key key_recursion"
+    - 192.168.0.2    
+#}
