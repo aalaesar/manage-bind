@@ -1,0 +1,9 @@
+{% if clause.auth_nxdomain is defined %}
+  auth-nxdomain {{ clause.auth_nxdomain }};
+
+{% endif %}
+{#
+---
+clause:
+  auth_nxdomain: no
+#}
