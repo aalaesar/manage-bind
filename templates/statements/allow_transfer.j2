@@ -1,0 +1,26 @@
+{% if clause.allow_transfer is defined %}
+	allow-transfer {
+{% if clause.allow_transfer is string %}
+    {{ clause.allow_transfer }};
+{% else %}
+{% for allow_transfer in clause.allow_transfer %}
+		{{ allow_transfer }};
+{% endfor %}
+{% endif %}
+  };
+
+{% else %}
+  allow-transfer {{{ bind_default_allow_transfert|default('"any"') }};};
+
+{% endif %}
+{#
+---
+clause: 
+  allow_transfer: "any"
+--- or
+clause:
+  allow_transfer:
+    - "acl_name"
+    - "key key-name"
+    - 8.8.4.4
+#}
