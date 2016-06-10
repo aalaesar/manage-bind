@@ -1,0 +1,9 @@
+{% if clause.heartbeat_interval is defined %}
+  heartbeat-interval {{ clause.heartbeat_interval }};
+
+{% endif %}
+{#
+---
+clause:
+  heartbeat_interval: 60
+#}
