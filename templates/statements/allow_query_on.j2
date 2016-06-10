@@ -1,0 +1,23 @@
+{% if clause.allow_query_on is defined %}
+  allow-query-on {
+{ if clause.allow_query_on is string }
+    {{ clause.allow_query_on }};
+{% else %}
+{% for element in clause.allow_query_on %}
+   {{ element }};
+{% endfor %}
+{% endif %}
+  };
+
+{% endif %}
+{#
+---
+clause:
+  allow_query_on: 192.168.0.2
+--- or 
+clause:
+  allow_query_on:
+    - 192.168.0.2
+    - 172.16.0.254
+    - 10.0.0.255
+#}
