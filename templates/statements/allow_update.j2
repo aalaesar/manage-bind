@@ -1,0 +1,23 @@
+{% if clause.allow_update is defined and clause.update_policy is not defined and clause.type == 'master' %}
+	allow-update {
+{% if clause.allow_update is string %}
+     {{ clause.allow_update }};
+{% else %}
+{% for element in clause.allow_update %}
+		{{ element }};
+{% endfor %}
+{% endif %}
+    };
+
+{% endif %}
+{#
+---
+clause:
+  allow_update: "acl_name"
+--- or
+clause:
+  allow_update:
+    - "acl_name"
+    - key key-name
+    - 8.8.4.4
+#}
