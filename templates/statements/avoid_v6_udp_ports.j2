@@ -1,0 +1,17 @@
+{% if clause.avoid_v6_udp_ports is defined %}
+  avoid-v6-udp-ports {
+{% for port in clause.avoid_v6_udp_ports %}
+    {{ port }};
+{% endfor %}
+  };
+
+{% endif %}
+{#
+---
+clause:
+  avoid_v6_udp_ports:
+    - 23
+    - 56
+    - 42
+    - ...
+#}
