@@ -1,0 +1,9 @@
+{% if clause.empty_server is defined %}
+  empty-server "{{ clause.empty_server }}";
+
+{% endif %}
+{#
+---
+clause:
+  empty_server: "ns.example.com"
+#}

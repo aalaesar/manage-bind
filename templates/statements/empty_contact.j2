@@ -1,0 +1,9 @@
+{% if clause.empty_contact is defined %}
+  empty-contact "{{ clause.empty_contact }}";
+
+{% endif %}
+{#
+---
+clause:
+  empty_contact: "hostmaster.example.com"
+#}
