@@ -1,0 +1,9 @@
+{% if clause.dnssec_enable is defined %}
+  dnssec-enable {{ clause.dnssec_enable }};
+
+{% endif %}
+{#
+---
+clause:
+  dnssec_enable: no
+#}

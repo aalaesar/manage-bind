@@ -1,0 +1,9 @@
+{% if clause.dnssec_validation is defined %}
+  dnssec-validation {{ clause.dnssec_validation }};
+
+{% endif %}
+{%
+---
+clause:
+  dnssec_validation: yes
+%}
