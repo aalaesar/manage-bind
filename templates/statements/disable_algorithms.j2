@@ -1,0 +1,31 @@
+{% if clause.disable_algorithms is defined %}
+{% for domain in clause.disable_algorithms %}
+  disable-algorithms "{{ clause.disable_algorithms.domain}}" {
+{% for algo in clause.disable_algorithms.algorithms %}
+    "{{ algo }}";
+{% endfor %}
+  };
+{% endfor %}
+{% endif %}
+{#
+  ---
+  clause:
+    disable_algorithms:
+      - domain: test.tld
+        algorithms:
+          - NSEC3RSASHA1
+          - RSASHA256
+          - RSASHA512
+          - ECCGOST
+          - ECDSAP256SHA256
+          - ECDSAP384SHA384
+      - domain: example.com
+        algorithms:
+          - RSAMD5
+          - RSA
+          - DH
+          - DSA
+          - NSEC3DSA
+          - ECC
+          - RSASHA1
+#}

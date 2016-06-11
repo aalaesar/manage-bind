@@ -1,0 +1,22 @@
+{% if clause.disable_ds_digests is defined %}
+{% for domain in clause.disable_ds_digests %}
+  disable-ds-digests "{{ clause.disable_ds_digests.domain}}" {
+{% for digest in clause.disable_ds_digests.digests %}
+    "{{ digest }}";
+{% endfor %}
+  };
+{% endfor %}
+{% endif %}
+{#
+  ---
+  clause:
+    disable_ds_digests:
+      - domain: test.tld
+        digests:
+          - SHA-1
+          - GOST
+      - domain: example.com
+        digests:
+          - SHA-256
+          - SHA-384
+#}
