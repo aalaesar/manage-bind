@@ -1,0 +1,22 @@
+{% if clause.dual-stack-servers is defined %}
+	dual-stack-servers {% if clause.dual-stack-servers_port is defined %}port {{ clause.dual-stack-servers_port }} {% endif %}{
+{% for servers in clause.dual-stack-servers %}
+{% if server is string %}
+    {{ server }};
+{% else %}
+    {{ server.host }}{% if server.port is defined %} port {{ server.port }}{% endif %};
+{% endif %}
+{% endfor %}
+};
+
+{% endif %}
+{#
+---
+clause:
+  dual-stack-servers:
+    - host: example.com
+      port: 2253
+    - 8.8.8.8
+    - fe80::cafe
+  dual-stack-servers_port: 53
+#}
