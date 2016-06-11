@@ -1,0 +1,9 @@
+{% if clause.directory is defined %}
+  directory "{{ clause.directory }}";
+
+{% endif %}
+{#
+---
+clause:
+  directory: /path/name/
+#}
