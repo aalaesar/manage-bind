@@ -1,0 +1,20 @@
+{% if clause.forwarders is defined %}
+	forwarders {
+{% for fwder in clause.forwarders %}
+{% if fwder is string %}
+		{{ fwder }};
+{% else %}
+		{{ fwder.host }} port {{ fwder.port }};
+{% endif %}
+{% endfor %}
+		};
+
+{% endif %}
+{#
+---
+clause:
+  forwarders:
+    - 10.2.3.4
+    - host: 192.168.0.2
+      port: 53
+#}
