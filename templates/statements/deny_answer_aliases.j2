@@ -1,0 +1,16 @@
+{# not fully implemented #}
+{% is clause.deny_answer_aliases is defined %}
+  deny-answer-aliases {
+{% for element in clause.deny_answer_aliases %}
+   "{{ element }}";
+{% endfor %}
+  };
+
+{% endif %}
+{#
+--
+clause:
+  deny_answer_aliases:
+  - list of acl/ip/etc
+TODO: add options
+#}

@@ -1,0 +1,17 @@
+{# not fully implemented #}
+{% if clause.deny_answer_addresses is defined %}
+  deny-answer-addresses {
+{% for element in clause.deny_answer_addresses %}
+   {{ element }};
+{% endfor %}
+  };
+
+{% endif %}
+{#
+---
+clause:
+  deny_answer_addresses:
+    - host1
+    - 8.8.8
+TODO : add options
+#}
