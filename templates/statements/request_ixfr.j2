@@ -1,0 +1,9 @@
+{% if clause. request_ixfr is defined %}
+  request-ixfr {{ clause.request_ixfr }};
+
+{% endif %}
+{# view, option
+---
+clause:
+  request_ixfr: yes # yes | no
+#}
