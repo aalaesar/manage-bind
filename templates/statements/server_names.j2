@@ -1,0 +1,22 @@
+{% if clause.server_names is defined %}
+  server-names { 
+{% if clause.server_names is string %}
+    {{ clause.server_names }};
+{% else %}
+{% for srvname in clause.server_names %}
+    { srvname };
+{% endfor %}
+{% endif %}
+  };
+
+{% endif %}
+{# static-stub zones
+---
+clause:
+  server_names: host.example.com
+--- or
+clause:
+  server_names:
+    - host.example.com
+    - another_host.example.net
+#}

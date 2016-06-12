@@ -1,0 +1,21 @@
+{% if clause.server_addresses is defined %}
+  server-addresses { 
+{% if clause.server_addresses is string %}
+    {{ clause.server_addresses }};
+{% else %}
+{% for address in clause.server_addresses %}
+    { address };
+{% endfor %}
+{% endif %}
+  };
+
+{# static-stub zones
+---
+clause:
+  server_addresses: 10.0.0.1
+--- or
+clause:
+  server_addresses:
+    - 192.168.1.1
+    - 10.0.0.1
+#}
