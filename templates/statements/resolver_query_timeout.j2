@@ -1,0 +1,9 @@
+{% if clause.resolver_query_timeout is defined %}
+  resolver-query-timeout {{ clause.resolver_query_timeout }};
+
+{% endif %}
+{# options
+---
+clause:
+  resolver_query_timeout 10 # 10 to 30. special : 0 = 10
+#}
