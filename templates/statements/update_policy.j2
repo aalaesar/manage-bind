@@ -1,0 +1,27 @@
+{% if clause.update_policy is defined %}
+{% if clause.update_policy == 'local' %}
+  update-policy local;
+
+{% else %}
+  update-policy {
+    {{ clause.update_policy.permission }}
+    {{ clause.update_policy.identity }}
+    {{ clause.update_policy.matchtype }}
+    {{ clause.update_policy.tname|default('') }}
+    {{ clause.update_policy.rr|default('') }};
+    };
+
+{% endif %}
+{# zone
+---
+clause:
+  update_policy: local
+--- or
+clause:
+  update_policy:
+    permission: grant
+    identity: *
+    matchtype: zonesub
+    tname: *
+    rr: "A MX PTR"
+#}
