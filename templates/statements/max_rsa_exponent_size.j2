@@ -1,0 +1,9 @@
+{% if clause.max_rsa_exponent_size is defined %}
+  max-rsa-exponent-size {{ clause.max_rsa_exponent_size }};
+
+{% endif %}
+{# options
+---
+clause:
+  max_rsa_exponent_size: 2048
+#}
