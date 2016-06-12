@@ -1,0 +1,11 @@
+{% if clause.masterfile_format is defined %}
+  masterfile-format {{ clause.masterfile_format }};
+
+{% endif %}
+{#
+---
+clause:
+  masterfile_format: text # text | raw | map
+  # master zone default = text
+  # slave zones default = raw
+#}
