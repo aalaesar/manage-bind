@@ -10,4 +10,12 @@
      bind_config_master_zones:
       - name: example.com
         ymlfile: tests/example.com.yml
+        forwarders: [ "10.10.10.1", "192.168.0.2", "59.56.48.3"]
         #rawfile: tests/raw.example.com
+     bind_config_slave_zones:
+      - name: another.zone.tld
+        masters:
+         - 15.15.15.2
+         - host: 10.10.10.6
+           port: 1053
+        masters_port: 53
