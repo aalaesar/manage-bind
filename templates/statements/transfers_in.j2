@@ -1,0 +1,9 @@
+{% if clause.transfers_in is defined %}
+  transfer-in {{ clause.transfers_in }};
+
+{% endif %}
+{# options
+---
+clause:
+  transfers_in: 10
+#}
