@@ -27,6 +27,8 @@ bind_option_allow_recursion: []
 bind_option_listen_on: any
 bind_option_listen_on_v6: any
 bind_option_allow_query: []
+bind_default_recursion: "no"
+bind_default_allow_transfert: "none"
 
 # Zones files
 bind_zones_dir: /var/lib/bind
