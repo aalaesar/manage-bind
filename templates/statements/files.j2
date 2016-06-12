@@ -1,0 +1,9 @@
+{% if clause.max_files is defined %}
+  files {{ clause.max_files }};
+
+{% endif %}
+{#
+---
+clause:
+  max_files: 512
+#}
