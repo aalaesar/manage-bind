@@ -1,0 +1,25 @@
+{% if clause.listen_on_v6 is defined %}
+  listen-on {% if clause.listen_on_v6_port is defined %}port {{ clause.listen_on_v6_port }} {% endif %}{
+{% if clause.listen_on_v6 is string %}
+    {{ clause.listen_on_v6 }};
+{% else %}
+{% for element in clause.listen_on_v6 %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+};
+
+{% endif %}
+{#
+---
+clause:
+  listen_on_v6_port: 53
+  listen_on_v6: any
+--- or
+clause:
+  listen_on_v6_port: 53
+  listen_on_v6:
+    - "acl_good_guys"
+    - 8.8.8.8
+    - ...
+#}
