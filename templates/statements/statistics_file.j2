@@ -1,0 +1,9 @@
+{% if clause.statistics_file is defined %}
+  statistics-file "{{ clause.statistics_file }}";
+
+{% endif %}
+{#
+---
+clause:
+  statistics_file: /some/path/to/afile # absolute or relative to directory statement
+#}

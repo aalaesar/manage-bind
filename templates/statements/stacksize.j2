@@ -1,0 +1,9 @@
+{% if clause.stacksize is defined %}
+  stacksize {{ clause.stacksize }};
+
+{% endif %}
+{#
+---
+clause:
+  stacksize: 10k # default = none
+#}
