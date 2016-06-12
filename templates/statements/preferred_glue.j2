@@ -1,0 +1,9 @@
+{% if clause.preferred_glue is defined %}
+  preferred-glue {{ clause.preferred_glue }};
+
+{% endif %}
+{#
+---
+clause:
+  preferred_glue: A # A or AAAA
+#}

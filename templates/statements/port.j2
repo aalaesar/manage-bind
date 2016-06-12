@@ -1,0 +1,9 @@
+{if clause.bind_port is defined %}
+  port {{ clause.bind_port }};
+
+{% endif %}
+{#
+---
+clause:
+  bind_port: 53
+#}
