@@ -1,0 +1,9 @@
+{% if clause.server_id is defined %}
+  server-id "{{ clause.server_id }}";
+
+{% endif %}
+{#
+---
+clause:
+  server_id: "name server" # default set to none
+#}
