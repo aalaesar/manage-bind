@@ -1,0 +1,9 @@
+{% if clause.recursive_clients is defined %}
+  recursive-clients {{ clause.recursive_clients }};
+
+{% endif %}
+{# options
+---
+clause:
+  recursive_clients: 1000
+#}
