@@ -1,0 +1,9 @@
+{% if clause.max_transfer_time_out %}
+  max-transfer-time-out {{ clause.max_transfer_time_out }};
+
+{% endif %}
+{# master zone, view, options
+---
+clause:
+  max_transfer_time_out: 120
+#}
