@@ -1,0 +1,9 @@
+{% if clause.serial_query_rate is defined %}
+  serial-query-rate {{ clause.serial_query_rate }};
+
+{% endif %}
+{# options
+---
+clause:
+  serial_query_rate: 20
+#}
