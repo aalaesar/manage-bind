@@ -1,0 +1,11 @@
+{% if clause.query_source is defined %}
+  query-source address {{ clause.query_source[address][default('*') }}{% if  clause.query_source[port] is defined %} port {{ clause.query_source[port] }}{% endif %};
+
+{% endif %}
+{# view, options
+---
+clause:
+  query_source:
+    address: 192.168.0.5 # ip | *
+    port: 1024 # ip_port | *
+#}
