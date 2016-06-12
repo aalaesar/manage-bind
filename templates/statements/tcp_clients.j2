@@ -1,0 +1,9 @@
+{% if clause.tcp_clients is defined %}
+  tcp-clients {{ clause.tcp_clients }};
+
+{% endif %}
+{#
+---
+clause:
+  tcp_clients: 100
+#}
