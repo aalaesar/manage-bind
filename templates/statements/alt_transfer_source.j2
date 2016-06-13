@@ -2,9 +2,9 @@
 alt-transfer-source {{ clause.alt_transfer_source }};
 {% else %}
 alt-transfer-source {{ clause.alt_transfer_source.ip }}{% if clause.alt_transfer_source.port is defined %} port clause.alt_transfer_source.port{% endif %};
-{% endif %}
 
-{#
+{% endif %}
+{# slave zone, view, options
 ---
 clause:
   alt_transfer_source: 8.8.8.8
