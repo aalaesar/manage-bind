@@ -1,6 +1,5 @@
 {% if clause.query_source is defined %}
   query-source address {{ clause.query_source[address]|default('*') }}{% if clause.query_source[port] is defined %} port {{ clause.query_source[port] }}{% endif %};
-
 {% endif %}
 {# view, options
 ---

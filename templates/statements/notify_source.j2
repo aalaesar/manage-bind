@@ -4,7 +4,6 @@
 {% else %}
   notify-source {{ clause.notify_source.ip }}{% if clause.notify_source.port is defined %} port clause.notify_source.port{% endif %};
 {% endif %}
-
 {% endif %}
 {# master zone, view, options
 ---

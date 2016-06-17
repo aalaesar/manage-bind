@@ -1,6 +1,5 @@
 {% if clause.query_source_v6 is defined %}
   query-source-v6 address {{ clause.query_source_v6[address]|default('*') }}{% if  clause.query_source_v6[port] is defined %} port {{ clause.query_source_v6[port] }}{% endif %};
-
 {% endif %}
 {# view, options
 ---

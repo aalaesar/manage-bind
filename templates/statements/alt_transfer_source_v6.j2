@@ -4,7 +4,6 @@ alt-transfer-source-v6 {{ clause.alt_transfer_source_v6 }};
 {% else %}
 alt-transfer-source-v6 {{ clause.alt_transfer_source_v6.ipv6 }}{% if clause.alt_transfer_source_v6.port is defined %} port clause.alt_transfer_source_v6.port{% endif %};
 {% endif %}
-
 {% endif %}
 {# slave zone, view, options
 ---

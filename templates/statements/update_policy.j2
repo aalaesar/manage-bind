@@ -1,7 +1,6 @@
 {% if clause.update_policy is defined %}
 {% if clause.update_policy == 'local' %}
   update-policy local;
-
 {% else %}
   update-policy {
     {{ clause.update_policy.permission }}
@@ -10,7 +9,6 @@
     {{ clause.update_policy.tname|default('') }}
     {{ clause.update_policy.rr|default('') }};
     };
-
 {% endif %}
 {# zone
 ---
