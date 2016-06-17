@@ -1,0 +1,115 @@
+{% set clause = options %}
+options {
+// Operations statements
+{% include "./templates/statements/port.j2" %}
+{% include "./templates/statements/avoid_v4_udp_ports.j2" %}
+{% include "./templates/statements/avoid_v6_udp_ports.j2" %}
+{% include "./templates/statements/coresize.j2" %}
+{% include "./templates/statements/datasize.j2" %}
+{% include "./templates/statements/dialup.j2" %}
+{% include "./templates/statements/directory.j2" %}
+{% include "./templates/statements/dual_stack_servers.j2" %}
+{% include "./templates/statements/dump_file.j2" %}
+{% include "./templates/statements/edns_udp_size.j2" %}
+{% include "./templates/statements/files.j2" %}
+{% include "./templates/statements/hostname.j2" %}
+{% include "./templates/statements/key_directory.j2" %}
+{% include "./templates/statements/lame_ttl.j2" %}
+{% include "./templates/statements/listen_on.j2" %}
+{% include "./templates/statements/listen_on_v6.j2" %}
+{% include "./templates/statements/match_mapped_addresses.j2" %}
+{% include "./templates/statements/max_cache_size.j2" %}
+{% include "./templates/statements/max_cache_ttl.j2" %}
+{% include "./templates/statements/max_ncache_ttl.j2" %}
+{% include "./templates/statements/memstatistics_file.j2" %}
+{% include "./templates/statements/pid_file.j2" %}
+{% include "./templates/statements/preferred_glue.j2" %}
+{% include "./templates/statements/querylog.j2" %}
+{% include "./templates/statements/recursing_file.j2" %}
+{% include "./templates/statements/server_id.j2" %}
+{% include "./templates/statements/stacksize.j2" %}
+{% include "./templates/statements/statistics_file.j2" %}
+{% include "./templates/statements/tcp_clients.j2" %}
+{% include "./templates/statements/tcp_listen_queue.j2" %}
+{% include "./templates/statements/version.j2" %}
+{% include "./templates/statements/zone_statistics.j2" %}
+
+// transfer statements
+{% include "./templates/statements/allow_notify.j2" %}
+{% include "./templates/statements/allow_transfer.j2" %}
+{% include "./templates/statements/allow_update.j2" %}
+{% include "./templates/statements/allow_update_forwarding.j2" %}
+{% include "./templates/statements/also_notify.j2" %}
+{% include "./templates/statements/alt_transfer_source.j2" %}
+{% include "./templates/statements/alt_transfer_source_v6.j2" %}
+{% include "./templates/statements/ixfr_from_differences.j2" %}
+{% include "./templates/statements/max_journal_size.j2" %}
+{% include "./templates/statements/max_refresh_time.j2" %}
+{% include "./templates/statements/min_refresh_time.j2" %}
+{% include "./templates/statements/max_retry_time.j2" %}
+{% include "./templates/statements/min_retry_time.j2" %}
+{% include "./templates/statements/max_transfer_idle_in.j2" %}
+{% include "./templates/statements/max_transfer_idle_out.j2" %}
+{% include "./templates/statements/max_transfer_time_in.j2" %}
+{% include "./templates/statements/max_transfer_time_out.j2" %}
+{% include "./templates/statements/notify.j2" %}
+{% include "./templates/statements/notify_source.j2" %}
+{% include "./templates/statements/notify_source_v6.j2" %}
+{% include "./templates/statements/provide_ixfr.j2" %}
+{% include "./templates/statements/request_ixfr.j2" %}
+{% include "./templates/statements/serial_query_rate.j2" %}
+{% include "./templates/statements/transfer_format.j2" %}
+{% include "./templates/statements/transfer_source.j2" %}
+{% include "./templates/statements/transfer_source_v6.j2" %}
+{% include "./templates/statements/transfers_in.j2" %}
+{% include "./templates/statements/transfers_out.j2" %}
+{% include "./templates/statements/transfer_per_ns.j2" %}
+{% include "./templates/statements/use_alt_transfer_source.j2" %}
+{% include "./templates/statements/multi_master.j2" %}
+
+// Zone statements
+{% include "./templates/statements/masterfile_format.j2" %}
+
+// query statements
+{% include "./templates/statements/additional_from_auth.j2" %}
+{% include "./templates/statements/additional_from_cache.j2" %}
+{% include "./templates/statements/allow_query_cache.j2" %}
+{% include "./templates/statements/allow_query_cache_on.j2" %}
+{% include "./templates/statements/allow_query.j2" %}
+{% include "./templates/statements/allow_query_on.j2" %}
+{% include "./templates/statements/allow_recursion.j2" %}
+{% include "./templates/statements/allow_recursion_on.j2" %}
+{% include "./templates/statements/auth_nxdomain.j2" %}
+{% include "./templates/statements/blackhole.j2" %}
+{% include "./templates/statements/deny_answer_addresses.j2" %}
+{% include "./templates/statements/deny_answer_aliases.j2" %}
+{% include "./templates/statements/disable_empty_zone.j2" %}
+{% include "./templates/statements/empty_contact.j2" %}
+{% include "./templates/statements/empty_server.j2" %}
+{% include "./templates/statements/empty_zones_enable.j2" %}
+{% include "./templates/statements/forward.j2" %}
+{% include "./templates/statements/forwarders.j2" %}
+{% include "./templates/statements/minimal_responses.j2" %}
+{% include "./templates/statements/query_source.j2" %}
+{% include "./templates/statements/query_source_v6.j2" %}
+{% include "./templates/statements/recursion.j2" %}
+{% include "./templates/statements/recursive_clients.j2" %}
+{% include "./templates/statements/resolver_query_timeout.j2" %}
+{% include "./templates/statements/root_delegation_only.j2" %}
+{% include "./templates/statements/rrset_order.j2" %}
+
+// Security statements
+{% include "./templates/statements/disable_algorithms.j2" %}
+{% include "./templates/statements/disable_ds_digests.j2" %}
+{% include "./templates/statements/dnssec_enable.j2" %}
+{% include "./templates/statements/dnssec_validation.j2" %}
+{% include "./templates/statements/max_rsa_exponent_size.j2" %}
+{% include "./templates/statements/random_device.j2" %}
+{% include "./templates/statements/sig_validity_interval.j2" %}
+
+// Periodic statements
+{% include "./templates/statements/cleaning_interval.j2" %}
+{% include "./templates/statements/heartbeat_interval.j2" %}
+{% include "./templates/statements/interface_interval.j2" %}
+
+};
