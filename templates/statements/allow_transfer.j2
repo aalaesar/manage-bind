@@ -10,7 +10,7 @@
   };
 
 {% else %}
-  allow-transfer {{{ bind_default_allow_transfert|default('"any"') }};};
+  allow-transfer { {{ bind_default_allow_transfert|default('"any"') }}; };
 
 {% endif %}
 {# zone, view, options

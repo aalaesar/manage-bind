@@ -1,6 +1,6 @@
-{% if clause.dual-stack-servers is defined %}
-	dual-stack-servers {% if clause.dual-stack-servers_port is defined %}port {{ clause.dual-stack-servers_port }} {% endif %}{
-{% for servers in clause.dual-stack-servers %}
+{% if clause.dual_stack_servers is defined %}
+	dual-stack-servers {% if clause.dual_stack_servers_port is defined %}port {{ clause.dual_stack_servers_port }} {% endif %}{
+{% for servers in clause.dual_stack_servers %}
 {% if server is string %}
     {{ server }};
 {% else %}

@@ -1,4 +1,4 @@
-{% if clause.additional_from_auth is defined and clause.recursion is defined and clause.recursion == 'no'}
+{% if clause.additional_from_auth is defined and (clause.recursion is defined and clause.recursion == 'no') %}
   additional-from-auth {{ clause.additional_from_auth }};
 
 {% endif %}

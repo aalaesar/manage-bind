@@ -7,6 +7,7 @@
     notify.host
     {% if notify.port is defined %}port {{notify.port}}{% endif %}
     {% if notify.key is defined %}key {{notify.key}}{% endif %};
+{% endif %}
 {% endfor %}
 	};
 

@@ -1,4 +1,4 @@
-{% if clause.allow_update is defined and clause.update_policy is not defined and clause.type == 'master' %}
+{% if clause.allow_update is defined and clause.update_policy is not defined %}
 	allow-update {
 {% if clause.allow_update is string %}
      {{ clause.allow_update }};

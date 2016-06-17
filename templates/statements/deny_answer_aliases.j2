@@ -1,5 +1,5 @@
 {# not fully implemented #}
-{% is clause.deny_answer_aliases is defined %}
+{% if clause.deny_answer_aliases is defined %}
   deny-answer-aliases {
 {% for element in clause.deny_answer_aliases %}
    "{{ element }}";

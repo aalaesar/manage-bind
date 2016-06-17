@@ -1,6 +1,6 @@
 {% if clause.allow_query_on is defined %}
   allow-query-on {
-{ if clause.allow_query_on is string }
+{% if clause.allow_query_on is string %}
     {{ clause.allow_query_on }};
 {% else %}
 {% for element in clause.allow_query_on %}

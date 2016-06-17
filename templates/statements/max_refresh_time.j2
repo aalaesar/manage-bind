@@ -1,0 +1,9 @@
+{% if clause.max_refresh_time is defined %}
+  max-refresh-time {{ clause.max_refresh_time }};
+
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  max_refresh_time: 3600
+#}

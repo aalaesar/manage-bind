@@ -1,4 +1,4 @@
-{% if clause.allow_notify is defined and clause.type == 'slave' %}
+{% if clause.allow_notify is defined %}
   allow-notify {
 {% if clause.allow_notify is string %}
    {{ clause.allow_notify }};

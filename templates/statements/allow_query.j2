@@ -1,4 +1,4 @@
-{% if query.allow_query is defined %}
+{% if clause.allow_query is defined %}
   allow-query {
 {% if clause.allow_query is string %}
    {{ clause.allow_query }};
