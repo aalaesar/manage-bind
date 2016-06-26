@@ -1,5 +1,5 @@
 {% if clause.listen_on_v6 is defined %}
-  listen-on {% if clause.listen_on_v6_port is defined %}port {{ clause.listen_on_v6_port }} {% endif %}{
+  listen-on-v6 {% if clause.listen_on_v6_port is defined %}port {{ clause.listen_on_v6_port }} {% endif %}{
 {% if clause.listen_on_v6 is string %}
     {{ clause.listen_on_v6 }};
 {% else %}
