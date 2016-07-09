@@ -1,6 +1,8 @@
-  recursion {{ clause.recursion|default(bind_default_recursion) }};
+{% if clause.recursion is defined %}
+  recursion {{ clause.recursion }};
+{% endif %}
 {# view, options
 ---
 clause:
-  recursion: yes # yes | no
+  recursion: "yes" # yes | no
 #}
