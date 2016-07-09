@@ -1,11 +1,13 @@
 {% if options is defined %}
-  {% set clause = options %}
+{% set clause = options %}
 {% for def_key, def_value in default_options.iteritems() if clause[def_key] is not defined %}
 {% set _dummy = clause.update({def_key:def_value}) %}
 {% endfor %}
 {% else %}
-  {% set clause = default_options %}
+{% set clause = default_options %}
 {% endif %}
+// {{ ansible_managed }}
+
 options {
 // Operations statements
 {% include "./templates/statements/port.j2" %}
