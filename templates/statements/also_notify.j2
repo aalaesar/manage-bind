@@ -1,5 +1,8 @@
 {% if clause.also_notify is defined %}
-	also-notify {% if clause.also_notify_port is defined %}port {{clause.also_notify_port}} {% endif %}{
+  also-notify {% if clause.also_notify_port is defined %}port {{clause.also_notify_port}} {% endif %}{
+{% if clause.also_notify is string %}
+    {{ clause.also_notify }};
+{% else %}
 {% for notify in clause.also_notify %}
 {% if notify is string %}
     {{ notify }};
@@ -9,7 +12,8 @@
     {% if notify.key is defined %}key {{notify.key}}{% endif %};
 {% endif %}
 {% endfor %}
-	};
+{% endif %}
+  };
 {% endif %}
 {# master zone, view, options
 ---
