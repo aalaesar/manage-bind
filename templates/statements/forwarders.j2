@@ -1,13 +1,13 @@
 {% if clause.forwarders is defined %}
-	forwarders {
+  forwarders {
 {% for fwder in clause.forwarders %}
 {% if fwder is string %}
-		{{ fwder }};
+    {{ fwder }};
 {% else %}
-		{{ fwder.host }} port {{ fwder.port }};
+    {{ fwder.host }} port {{ fwder.port }};
 {% endif %}
 {% endfor %}
-		};
+    };
 {% endif %}
 {# zone, view, options
 ---

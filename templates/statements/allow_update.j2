@@ -1,5 +1,5 @@
 {% if clause.allow_update is defined and clause.update_policy is not defined %}
-	allow-update {
+  allow-update {
 {% if clause.allow_update is string %}
      {{ clause.allow_update }};
 {% else %}
@@ -7,7 +7,7 @@
 		{{ element }};
 {% endfor %}
 {% endif %}
-    };
+  };
 {% endif %}
 {# master zone, view, options
 ---

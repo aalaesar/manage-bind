@@ -1,8 +1,8 @@
 {% if clause.alt_transfer_source is defined %}
 {% if clause.alt_transfer_source is string %}
-alt-transfer-source {{ clause.alt_transfer_source }};
+  alt-transfer-source {{ clause.alt_transfer_source }};
 {% else %}
-alt-transfer-source {{ clause.alt_transfer_source.ip }}{% if clause.alt_transfer_source.port is defined %} port clause.alt_transfer_source.port{% endif %};
+  alt-transfer-source {{ clause.alt_transfer_source.ip }}{% if clause.alt_transfer_source.port is defined %} port {{ clause.alt_transfer_source.port }} {% endif %};
 {% endif %}
 {% endif %}
 {# slave zone, view, options

@@ -1,8 +1,8 @@
 {% if clause.transfer_source_v6 is defined %}
 {% if clause.transfer_source_v6 is string %}
-transfer-source-v6 {{ clause.transfer_source_v6 }};
+  transfer-source-v6 {{ clause.transfer_source_v6 }};
 {% else %}
-transfer-source-v6 {{ clause.transfer_source_v6.ipv6 }}{% if clause.transfer_source_v6.port is defined %} port clause.transfer_source_v6.port{% endif %};
+  transfer-source-v6 {{ clause.transfer_source_v6.ipv6 }}{% if clause.transfer_source_v6.port is defined %} port clause.transfer_source_v6.port{% endif %};
 {% endif %}
 {% endif %}
 {# slave zone, view, options
