@@ -1,9 +1,13 @@
 {% if clause.disable_algorithms is defined %}
-{% for domain in clause.disable_algorithms %}
-  disable-algorithms "{{ clause.disable_algorithms.domain}}" {
-{% for algo in clause.disable_algorithms.algorithms %}
+{% for elem in clause.disable_algorithms %}
+  disable-algorithms "{{ elem.domain }}" {
+{% if elem.algorithms is string %}
+    "{{ elem.algorithms }}";
+{% else %}
+{% for algo in elem.algorithms %}
     "{{ algo }}";
 {% endfor %}
+{% endif %}
   };
 {% endfor %}
 {% endif %}

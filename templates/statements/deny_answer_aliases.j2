@@ -1,9 +1,13 @@
 {# not fully implemented #}
 {% if clause.deny_answer_aliases is defined %}
   deny-answer-aliases {
+{% if clause.deny_answer_aliases is string %}
+    "{{ clause.deny_answer_aliases }}";
+{% else %}
 {% for element in clause.deny_answer_aliases %}
-   "{{ element }}";
+    "{{ element }}";
 {% endfor %}
+{% endif %}
   };
 {% endif %}
 {# options

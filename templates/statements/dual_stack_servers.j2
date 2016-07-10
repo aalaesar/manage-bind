@@ -1,13 +1,17 @@
 {% if clause.dual_stack_servers is defined %}
-	dual-stack-servers {% if clause.dual_stack_servers_port is defined %}port {{ clause.dual_stack_servers_port }} {% endif %}{
+  dual-stack-servers {% if clause.dual_stack_servers_port is defined %}port {{ clause.dual_stack_servers_port }} {% endif %}{
+{% if clause.dual_stack_servers is string %}
+    {{ clause.dual_stack_servers }};
+{% else %}
 {% for servers in clause.dual_stack_servers %}
 {% if server is string %}
     {{ server }};
 {% else %}
-    {{ server.host }}{% if server.port is defined %} port {{ server.port }}{% endif %};
+    "{{ server.host }}"{% if server.port is defined %} port {{ server.port }}{% endif %};
 {% endif %}
 {% endfor %}
-};
+{% endif %}
+  };
 {% endif %}
 {# view, options
 ---

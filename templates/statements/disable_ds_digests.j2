@@ -1,9 +1,13 @@
 {% if clause.disable_ds_digests is defined %}
-{% for domain in clause.disable_ds_digests %}
-  disable-ds-digests "{{ clause.disable_ds_digests.domain}}" {
-{% for digest in clause.disable_ds_digests.digests %}
+{% for elem in clause.disable_ds_digests %}
+  disable-ds-digests "{{ elem.domain}}" {
+{% if elem.digests is string %}
+    "{{ elem.digests }}";
+{% else %}
+{% for digest in elem.digests %}
     "{{ digest }}";
 {% endfor %}
+{% endif %}
   };
 {% endfor %}
 {% endif %}
