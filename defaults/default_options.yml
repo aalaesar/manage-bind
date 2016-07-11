@@ -54,8 +54,8 @@ default_options:
   #max_cache_ttl:
   #max_journal_size:
   #max_ncache_ttl:
-  #max_refresh_time,:
-  #max_retry_time,:
+  #max_refresh_time:
+  #max_retry_time:
   #max_rsa_exponent_size:
   #max_transfer_idle_in:
   #max_transfer_idle_out:
@@ -94,7 +94,7 @@ default_options:
   #tcp_clients:
   #tcp_listen_queue:
   #transfer_format:
-  #transfer_per_ns:
+  #transfers_per_ns:
   #transfers_in:
   transfer_source: '*'
   #transfer_source_v6:
