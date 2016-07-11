@@ -1,5 +1,8 @@
 {% if clause.forwarders is defined %}
   forwarders {
+{% if clause.forwarders is string %}
+    {{ clause.forwarders }};
+{% else %}
 {% for fwder in clause.forwarders %}
 {% if fwder is string %}
     {{ fwder }};
@@ -7,6 +10,7 @@
     {{ fwder.host }} port {{ fwder.port }};
 {% endif %}
 {% endfor %}
+{% endif %}
     };
 {% endif %}
 {# zone, view, options
