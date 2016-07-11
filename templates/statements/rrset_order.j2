@@ -4,7 +4,7 @@
     {% if order_spec.class is defined%}class {{ order_spec.class }}{% endif %}
     {% if order_spec.type is defined%}type {{ order_spec.type }}{% endif %}
     {% if order_spec.name is defined%}name "{{ order_spec.name }}"{% endif %}
-    order order_spec.order;
+    order {{ order_spec.order }};
 {% endfor %}
   };
 
