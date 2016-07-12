@@ -23,8 +23,8 @@
   include_vars: defaults/default_options.yml
 
 - name: Load options file
-  include_vars: "{{ bind_options_file }}"
-  when: bind_options_file is defined
+  include_vars: "{{ options_file }}"
+  when: options_file is defined
 
 - name: Generate Bind options
   template: 

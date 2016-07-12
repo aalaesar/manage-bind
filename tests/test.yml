@@ -4,7 +4,7 @@
   #remote_user: root
   roles:
    - role: bind9
-     bind_options_file: ./tests/options.yml
+     options_file: ./tests/options.yml
      bind_config_master_zones:
       - name: example.com
         ymlfile: tests/example.com.yml
