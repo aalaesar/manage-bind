@@ -1,8 +1,19 @@
 ---
   # install requirements
-- include: setup_bind_conf.yml
+- name: Make sure bind is installed and running
+  include: install_bind.yml
   when: bind_pkg_state in ['present', 'installed', 'latest']
-  tags: setup_bind_config
+  tags: install_bind
+
+  # configure named.conf.option
+- named: configure named.conf.options
+  include: configure_options.yml
+  tags:  configure_options
+  
+  # configure named.conf.local
+- named: configure named.conf.local
+  include: configure_local.yml
+  tags:  configure_local
 
   # generate and create masters zones files
 - include: create_master_zones.yml
