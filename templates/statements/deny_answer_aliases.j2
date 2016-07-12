@@ -1,0 +1,19 @@
+{# not fully implemented #}
+{% if clause.deny_answer_aliases is defined %}
+  deny-answer-aliases {
+{% if clause.deny_answer_aliases is string %}
+    "{{ clause.deny_answer_aliases }}";
+{% else %}
+{% for element in clause.deny_answer_aliases %}
+    "{{ element }}";
+{% endfor %}
+{% endif %}
+  };
+{% endif %}
+{# options
+--
+clause:
+  deny_answer_aliases:
+  - list of acl/ip/etc
+TODO: add options
+#}

@@ -1,0 +1,8 @@
+{% if clause.max_cache_size is defined %}
+  max-cache-size {{ clause.max_cache_size }};
+{% endif %}
+{# view, options
+---
+clause:
+  max_cache_size: 36000
+#}

@@ -1,0 +1,156 @@
+---
+#http://www.zytrax.com/books/dns/ch7/statements.html
+additional-from-auth: (yes | no)
+additional-from-cache: (yes | no)
+allow-notify: [ address_match_list ]
+allow-query: [ address_match_list ]
+allow-query-on: [ address_match_list ]
+allow-query-cache: [ address_match_list ]
+allow-query-cache-on: [ address_match_list ]
+allow-recursion: [ address_match_list ]
+allow-recursion-on: [ address_match_list ]
+allow-transfer: [ address_match_list ]
+allow-update: [ address_match_list ]
+allow-update-forwarding: [ address_match_list ]
+also-notify:
+  port: gp-num
+  dscp: gd-num]
+  - ipaddress:
+    port: p-num
+    dscp: d-num]
+    key: key-name
+alt-transfer-source:
+  ipv4:
+  port:
+alt-transfer-source-v6:
+  ipv4:
+  port:
+auth-nxdomain: (yes | no)
+avoid-v4-udp-ports:
+  - port1
+  - port2
+  - ...
+avoid-v6-udp-ports:
+  - port1
+  - port2
+  - ...
+blackhole: [ address_match_list ]
+check-names: ( master | slave | response ) ( fail | warn | ignore )
+cleaning-interval: number
+coresize: size_in_bytes
+datasize: size_spec
+deny-answer-addresses: { address_match_list } [ except-from { name_list } ]
+deny-answer-aliases: { name_list } [ except-from { name_list } ]
+dialup: dialup_options
+directory: path_name
+disable-algorithms: domain { algorithm ; ... }
+disable-ds-digests: domain { digest ; ... }
+disable-empty-zone: zone_name
+dnssec-enable: ( yes | no )
+dnssec-lookaside: domain trust-anchor domain
+dnssec-must-be-secure: domain ( yes | no)
+dnssec-validation: ( yes | no )
+dual-stack-servers: [ port p_num ] { ( "id" [port p_num] | ipv4 [port p_num] | ipv6 [port p_num] ); ... }
+dump-file: path_name
+edns-udp-size: size_in_bytes
+empty-contact: name
+empty-server: name
+empty-zones-enable: yes | no
+files: number_of_files
+forward: ( only | first )
+forwarders: { ipv4_addr | ipv6_addr [port ip_port] ; ... ] }
+heartbeat-interval: minutes
+hostname: hostname_string
+interface-interval: number
+ixfr-from-differences: ( yes | no)
+key-directory: path_name
+lame-ttl: number
+listen-on: [ port ip_port ] { address_match_list }
+listen-on-v6: [ port ip_port ] { address_match_list }
+masterfile-format: (text|raw|map)
+match-mapped-addresses: ( yes | no )
+max-cache-size: size_in_bytes
+max-cache-ttl: seconds
+max-journal-size: size_in_bytes
+max-ncache-ttl: seconds
+max-refresh-time: seconds
+max-retry-time: seconds
+max-rsa-exponent-size: bits
+max-transfer-idle-in: minutes
+max-transfer-idle-out: minutes
+max-transfer-time-in: minutes
+max-transfer-time-out: minutes
+memstatistics-file: "path_name"
+min-refresh-time: seconds
+min-retry-time: seconds
+minimal-responses: ( yes | no )
+multi-master: ( yes | no )
+notify: ( yes | no | explicit )
+notify-source: (ip4_addr | *) [port ip_port]
+notify-source-v6: (ip6_addr | *) [port ip_port]
+pid-file: "path_to_file"
+port: ip_port
+preferred-glue: ( A | AAAA)
+prefetch: expiry-ttl-seconds [threshold-ttl-secs]
+provide-ixfr: ( yes | no)
+query-source: [ address ( ip_addr | * ) ] [ port ( ip_port | * ) ]
+query-source-v6: [ address ( ip_addr | * ) ] [ port ( ip_port | * ) ]
+querylog: ( yes | no )
+random-device: "device_name"
+rate-limit:
+  domain: domain
+  responses-per-second: [size number] [ratio fixedpoint] number
+  referrals-per-second: number
+  nodata-per-second: number
+  nxdomains-per-second: number
+  errors-per-second: number
+  all-per-second: number
+  window: number
+  log-only: yes_or_no
+  qps-scale: number
+  ipv4-prefix-length: number
+  ipv6-prefix-length: number
+  slip: number
+  exempt-clients: { address_match_list }
+  max-table-size: number
+  min-table-size: number
+ 
+recursing-file: "path_to_file"
+recursion: ( yes | no )
+recursive-clients: number
+request-ixfr: ( yes | no )
+resolver-query-timeout: seconds
+response-policy:
+  - zone: zone-name 
+    policy: (given|disabled|passthru|drop|nxdomain|nodata|tcp-only|cname domain-name)
+    recursive-only: yes_or_no
+    max-policy-ttl: number
+  recursive-only: yes_or_no
+  max-policy-ttl: number
+  break-dnssec: yes_or_no
+  min-ns-dots: number
+  qname-wait-recurse :yes_or_no
+root-delegation-only: [ exclude { namelist } ]
+rrset-order: { order_spec ; [ order_spec ; ... ] )
+search: { domain_name ; [ domain_name ; ... ] }
+serial-query-rate: number
+sig-validity-interval: number
+server-id: "server_id"
+sortlist: { address_match_list }
+stacksize: size_in_bytes
+statistics-file: path_name
+sig-validity-interval: days
+tcp-clients: number
+tcp-listen-queue: number
+tkey-dhkey: key_name key_tag
+tkey-domain: domainname
+tkey-gssapi-credential: domainname
+transfer-format: ( one-answer | many-answers )
+transfer-source: (ip4_addr | *) [port ip_port]
+transfer-source-v6: (ip6_addr | *) [port ip_port]
+transfers-in:  number
+transfers-out: number
+transfers-per-ns: number
+use-alt-transfer-source: ( yes | no )
+version: version_string
+zone-statistics: ( yes | no )

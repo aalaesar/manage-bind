@@ -1,0 +1,8 @@
+{% if clause.forward is defined %}
+	forward {{ clause.forward }}; 
+{% endif %}
+{# zone, view, options 
+---
+clause:
+  forward: first # only | first
+#}

@@ -1,0 +1,8 @@
+{% if clause.max_journal_size is defined %}
+  max-journal-size {{ clause.max_journal_size }};
+{% endif %}
+{# zone, view, options
+---
+clause:
+  max-journal-size: 50k
+#}

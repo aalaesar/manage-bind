@@ -1,0 +1,18 @@
+{% if clause.notify_source is defined %}
+{% if clause.notify_source is string %}
+  notify-source {{ clause.notify_source }};
+{% else %}
+  notify-source {{ clause.notify_source.ip }}{% if clause.notify_source.port is defined %} port clause.notify_source.port{% endif %};
+{% endif %}
+{% endif %}
+{# master zone, view, options
+---
+clause:
+  notify_source: * # ip | *
+--- or
+clause:
+  notify_source:
+    ip: 192.168.0.5
+    port: 53
+---
+#}

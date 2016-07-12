@@ -1,0 +1,8 @@
+{% if clause.pid_file is defined %}
+  pid-file "{{ clause.pid_file }}";
+{% endif %}
+{# options
+---
+clause:
+  pid_file: /some/path/toa/file # absolute or relative to directory statement
+#}

@@ -1,0 +1,28 @@
+{% if clause.also_notify is defined %}
+  also-notify {% if clause.also_notify_port is defined %}port {{clause.also_notify_port}} {% endif %}{
+{% if clause.also_notify is string %}
+    {{ clause.also_notify }};
+{% else %}
+{% for notify in clause.also_notify %}
+{% if notify is string %}
+    {{ notify }};
+{% else %}
+    notify.host
+    {% if notify.port is defined %}port {{notify.port}}{% endif %}
+    {% if notify.key is defined %}key {{notify.key}}{% endif %};
+{% endif %}
+{% endfor %}
+{% endif %}
+  };
+{% endif %}
+{# master zone, view, options
+---
+clause:
+  also_notify:
+    - "acl_name"
+    - host: 10.10.10.62
+      port: 53
+      key: "key_notify"
+    - 8.8.4.4
+  also_notify_port: 53
+#}

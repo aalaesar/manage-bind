@@ -1,0 +1,18 @@
+{% if clause.transfer_source_v6 is defined %}
+{% if clause.transfer_source_v6 is string %}
+  transfer-source-v6 {{ clause.transfer_source_v6 }};
+{% else %}
+  transfer-source-v6 {{ clause.transfer_source_v6.ipv6 }}{% if clause.transfer_source_v6.port is defined %} port clause.transfer_source_v6.port{% endif %};
+{% endif %}
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  transfer_source_v6: fe80::1
+--- or
+clause:
+  transfer_source_v6:
+    ipv6: fe80::1
+    port: 53
+---
+#}

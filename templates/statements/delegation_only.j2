@@ -1,0 +1,8 @@
+{% if clause.delegation_only is defined %}
+  delegation-only {{ clause.delegation_only }};
+{% endif %}
+{# zone
+---
+clause:
+  delegation_only: yes
+#}

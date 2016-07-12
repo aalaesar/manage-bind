@@ -1,0 +1,8 @@
+{% if clause.provide_ixfr is defined %}
+  provide-ixfr {{ clause.provide_ixfr }};
+{% endif %}
+{# view, options
+---
+clause:
+  provide_ixfr: yes # yes | no
+#}

@@ -1,0 +1,8 @@
+{% if clause.min_retry_time is defined %}
+  min-retry-time {{ clause.min_retry_time }};
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  min_retry_time: 500
+#}

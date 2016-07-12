@@ -1,0 +1,8 @@
+{% if clause.multi_master is defined %}
+  multi-master {{ clause.multi_master }};
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  multi_master: no # yes | no
+#}

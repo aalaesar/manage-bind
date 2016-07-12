@@ -1,0 +1,23 @@
+{% if clause.allow_query is defined %}
+  allow-query {
+{% if clause.allow_query is string %}
+   {{ clause.allow_query }};
+{% else %}
+{% for element in clause.allow_query %}
+   {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{% endif %}
+{# zone, view, options
+---
+clause:
+  allow_query:
+    - 1.1.1.1
+    - 2.2.2.2
+    - 3.3.3.3
+    - ...
+--- or
+clause:
+  allow_query: 1.1.1.1
+#}

@@ -1,0 +1,23 @@
+{% if clause.allow_notify is defined %}
+  allow-notify {
+{% if clause.allow_notify is string %}
+   {{ clause.allow_notify }};
+{% else %}
+{% for element in clause.allow_notify %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{% endif %}
+{#  slave zone, view, options
+---
+clause:
+  allow_notify: "acl_name"
+--- or
+clause:
+  type: slave
+  allow_notify:
+    - "acl_name"
+    - key key-name
+    - 8.8.4.4
+#}

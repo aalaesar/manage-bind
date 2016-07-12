@@ -1,0 +1,18 @@
+{% if clause.alt_transfer_source is defined %}
+{% if clause.alt_transfer_source is string %}
+  alt-transfer-source {{ clause.alt_transfer_source }};
+{% else %}
+  alt-transfer-source {{ clause.alt_transfer_source.ip }}{% if clause.alt_transfer_source.port is defined %} port {{ clause.alt_transfer_source.port }} {% endif %};
+{% endif %}
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  alt_transfer_source: 8.8.8.8
+--- or
+clause:
+  alt_transfer_source:
+    ip: 8.8.8.8
+    port: 53
+---
+#}

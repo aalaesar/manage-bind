@@ -1,0 +1,23 @@
+{% if clause.allow_query_cache is defined %}
+  allow-query-cache {
+{% if clause.allow_query_cache is string  %}
+    {{ clause.allow_query_cache }};
+{% else %}
+{% for element in clause.allow_query_cache %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{% endif %}
+{# view, options
+---
+clause:
+  allow_query_cache: "acl_name"
+--- or
+clause:
+  allow_query_cache:
+    - 1.1.1.1
+    - 2.2.2.0/24
+    - "key dnssec_key"
+    - "acl_name"
+#}

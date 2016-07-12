@@ -1,0 +1,29 @@
+{% if clause.root_delegation_only is defined %}
+{% if clause.root_delegation_only.exclude is defined %}
+  root-delegation-only exclude {
+{% for tld in clause.root_delegation_only.exclude %}
+    "{{ tld }}";
+{% endfor %}
+  };
+{% endif %}
+{% if clause.root_delegation_only.domains is defined %}
+  root-delegation-only {
+{%for element in clause.root_delegation_only.domains %}
+    "{{ tld }}";
+{% endfor %}
+{% endif %}
+  };
+
+{% endif %}
+{# view, options
+---
+clause:
+  root_delegation_only:
+    exclude: # list of domains to exclude
+      - com
+      - fr
+    domains: # list of domains to delegate
+      - tld
+      - net
+      - example.org
+#}

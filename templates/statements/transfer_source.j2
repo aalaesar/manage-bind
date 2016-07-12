@@ -1,0 +1,18 @@
+{% if clause.transfer_source is defined %}
+{% if clause.transfer_source is string %}
+  transfer-source {{ clause.transfer_source }};
+{% else %}
+  transfer-source {{ clause.transfer_source.ip }}{% if clause.transfer_source.port is defined %} port clause.transfer_source.port{% endif %};
+{% endif %}
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  transfer_source: 8.8.8.8
+--- or
+clause:
+  transfer_source:
+    ip: 8.8.8.8
+    port: 53
+---
+#}

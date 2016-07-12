@@ -1,0 +1,9 @@
+{% if clause.additional_from_cache is defined and (clause.recursion is defined and clause.recursion == 'no') %}
+  additional-from-cache {{ clause.additional_from_cache }};
+{% endif %}
+{# view, options
+---
+clause:
+  recursion: no
+  additional_from_cache: yes
+#}

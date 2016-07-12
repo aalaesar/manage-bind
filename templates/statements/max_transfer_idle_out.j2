@@ -1,0 +1,8 @@
+{% if clause.max_transfer_idle_out is defined %}
+  max-transfer-idle-out {{ clause.max_transfer_idle_out }};
+{% endif %}
+{# master zone, view, options
+---
+clause:
+  max_transfer_idle_out: 120
+#}

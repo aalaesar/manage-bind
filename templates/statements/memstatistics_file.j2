@@ -1,0 +1,8 @@
+{% if clause.memstatistics_file is defined %}
+  memstatistics-file "{{ clause.memstatistics_file }}";
+{% endif %}
+{# options
+---
+clause:
+  memstatistics_file: /some/path/to/afile # absolute or relative to directory statement
+#}

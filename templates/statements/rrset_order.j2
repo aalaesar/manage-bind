@@ -1,0 +1,21 @@
+{% if clause.rrset_order is defined %}
+  rrset-order {
+{% for order_spec in clause.rrset_order %}
+    {% if order_spec.class is defined%}class {{ order_spec.class }}{% endif %}
+    {% if order_spec.type is defined%}type {{ order_spec.type }}{% endif %}
+    {% if order_spec.name is defined%}name "{{ order_spec.name }}"{% endif %}
+    order {{ order_spec.order }};
+{% endfor %}
+  };
+
+{% endif %}
+{# view, options
+---
+clause:
+  rrset_order:
+    - order: random # mandatory. fixed | random | cyclic
+      class: IN # default: IN
+      type: MX
+      name: example.com
+    - order: cyclic
+#}

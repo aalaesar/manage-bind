@@ -1,0 +1,104 @@
+---
+default_options:
+  #additional_from_auth:
+  #additional_from_cache:
+  #allow_notify:
+  #allow_query_cache:
+  #allow_query_cache_on:
+  allow_query: any
+  #allow_query_on:
+  #allow_recursion:
+  #allow_recursion_on:
+  allow_transfer: "none"
+  #allow_update_forwarding:
+  #allow_update:
+  also_notify: []
+  #alt_transfer_source:
+  #alt_transfer_source_v6:
+  auth_nxdomain: 'no'
+  #avoid_v4_udp_ports:
+  #avoid_v6_udp_ports:
+  #blackhole:
+  #cleaning_interval:
+  #coresize:
+  #datasize:
+  #deny_answer_addresses:
+  #deny_answer_aliases:
+  #dialup:
+  directory: "/var/cache/bind"
+  #disable_algorithms:
+  #disable_ds_digests:
+  #disable_empty_zone:
+  #dnssec_enable:
+  #dnssec_validation:
+  #dual_stack_servers:
+  #dump_file:
+  #edns_udp_size:
+  #empty_contact:
+  #empty_server:
+  #empty_zones_enable:
+  #files:
+  forwarders: []
+  #forward:
+  #heartbeat_interval:
+  #hostname:
+  #interface_interval:
+  #ixfr_from_differences:
+  #key_directory:
+  #lame_ttl:
+  listen_on: any
+  listen_on_v6: any
+  #masterfile_format:
+  #match_mapped_addresses:
+  #max_cache_size:
+  #max_cache_ttl:
+  #max_journal_size:
+  #max_ncache_ttl:
+  #max_refresh_time:
+  #max_retry_time:
+  #max_rsa_exponent_size:
+  #max_transfer_idle_in:
+  #max_transfer_idle_out:
+  #max_transfer_time_in:
+  #max_transfer_time_out:
+  #memstatistics_file:
+  #minimal_responses:
+  #min_refresh_time:
+  #min_retry_time:
+  #multi_master:
+  notify: 'yes'
+  notify_source: '*'
+  #notify_source_v6:
+  #pid_file:
+  #port:
+  #preferred_glue:
+  #provide_ixfr:
+  #querylog:
+  query_source:
+#    address: '*'
+    port: '*'
+  #query_source_v6:
+  #random_device:
+  #recursing_file:
+  recursion: 'no'
+  #recursive_clients:
+  #request_ixfr:
+  #resolver_query_timeout:
+  #root_delegation_only:
+  #rrset_order:
+  #serial_query_rate:
+  #server_id:
+  #sig_validity_interval:
+  #stacksize:
+  #statistics_file:
+  #tcp_clients:
+  #tcp_listen_queue:
+  #transfer_format:
+  #transfers_per_ns:
+  #transfers_in:
+  transfer_source: '*'
+  #transfer_source_v6:
+  #transfers_out:
+  #use_alt_transfer_source:
+  version: "get lost!"
+  #zone_statistics:

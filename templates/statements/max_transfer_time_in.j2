@@ -1,0 +1,8 @@
+{% if clause.max_transfer_time_in is defined %}
+  max-transfer-time-in {{ clause.max_transfer_time_in }};
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  max_transfer_time_in: 120
+#}

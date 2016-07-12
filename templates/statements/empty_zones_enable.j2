@@ -1,0 +1,8 @@
+{% if clause.empty_zone_enable is defined %}
+  empty-zone-enable {{ clause.empty_zone_enable }};
+{% endif %}
+{# view, options
+---
+clause:
+  empty_zone_enable: yes
+#}

@@ -1,0 +1,24 @@
+{% if clause.listen_on is defined %}
+  listen-on {% if clause.listen_on_port is defined %}port {{ clause.listen_on_port }} {% endif %}{
+{% if clause.listen_on is string %}
+    {{ clause.listen_on }};
+{% else %}
+{% for element in clause.listen_on %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{% endif %}
+{# options
+---
+clause:
+  listen_on_port: 53
+  listen_on: any
+--- or
+clause:
+  listen_on_port: 53
+  listen_on:
+    - "acl_good_guys"
+    - 8.8.8.8
+    - ...
+#}

@@ -1,0 +1,8 @@
+{% if clause.key_directory is defined %}
+  key-directory "{{ clause.key_directory }}";
+{% endif %}
+{# options
+---
+clause:
+  key_directory: /some/path/
+#}

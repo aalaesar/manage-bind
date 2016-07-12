@@ -1,0 +1,8 @@
+{% if clause.sig_validity_internal is defined %}
+  sig-validity-internal {{ clause.sig_validity_internal }};
+{% endif %}
+{# zone, view, options
+---
+clause:
+  sig_validity_internal: 30 # in days, max 3650
+#}

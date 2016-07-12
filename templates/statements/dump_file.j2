@@ -1,0 +1,8 @@
+{% if clause.dump_file is defined %}
+  dump-file "{{ clause.dump_file }}";
+{% endif %}
+{# options
+---
+clause:
+  dump_file: /some/directory/
+#}

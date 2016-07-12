@@ -1,0 +1,8 @@
+{% if clause.random_device is defined %}
+  random-device "{{ clause.random_device }}";
+{% endif %}
+{# options
+---
+clause:
+  random_device: /dev/random
+#}

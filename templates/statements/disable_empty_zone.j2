@@ -1,0 +1,17 @@
+{% if clause.disable_empty_zone is defined %}
+{% if clause.disable_empty_zone is string %}
+  disable-empty-zone "{{ clause.disable_empty_zone }}";
+{% else %}
+{% for empty_zone in clause.disable_empty_zone %}
+  disable-empty-zone "{{ empty_zone }}";
+{% endfor %}
+{% endif %}
+{% endif %}
+{# view, options
+---
+clause:
+  disable_empty_zone:
+    - example.com
+    - empty.tld
+    - 0fgiven.tld
+#}

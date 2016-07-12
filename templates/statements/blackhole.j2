@@ -1,0 +1,22 @@
+{% if clause.blackhole is defined %}
+  blackhole {
+{% if clause.blackhole is string %}
+    {{ clause.blackhole }};
+{% else %}
+{% for element in clause.blackhole %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{% endif %}
+{# options
+---
+clause:
+  blackhole: "none"
+--- or
+clause:
+  blackhole:
+    - 8.8.8.8
+    - "acl_blacklist"
+    - ...
+#}

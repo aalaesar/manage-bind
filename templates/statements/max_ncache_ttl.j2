@@ -1,0 +1,8 @@
+{% if clause.max_ncache_ttl is defined %}
+  max-ncache-ttl {{ clause.max_ncache_ttl }};
+{% endif %}
+{# view, options
+---
+clause:
+  max_ncache_ttl: 10800  # =3h, max is 7d
+#}
