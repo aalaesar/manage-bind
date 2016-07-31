@@ -6,12 +6,12 @@
   tags: install_bind
 
   # configure named.conf.option
-- named: configure named.conf.options
+- name: configure named.conf.options
   include: configure_options.yml
   tags:  configure_options
   
   # configure named.conf.local
-- named: configure named.conf.local
+- name: configure named.conf.local
   include: configure_local.yml
   tags:  configure_local
 
