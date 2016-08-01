@@ -5,6 +5,11 @@
 - name: Load options file
   include_vars: "{{ options_file }}"
   when: options_file is defined
+  
+- name: Combine options and default options
+  set_fact:
+    options: "{{default_options|combine(options)}}"
+  when: options is defined
 
 - name: Generate Bind options
   template: 
