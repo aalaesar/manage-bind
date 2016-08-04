@@ -19,7 +19,7 @@ statements for master zones
 statements for slave zones
 #}
 {% if clause.type == 'slave' %}
-  file "{{ bind_zones_dir }}/db.{{ slave_zone.name }}";
+  file "{{ bind_zones_dir }}/db.{{ clause.name }}";
 {% include './templates/statements/masters.j2' %}
 {% include './templates/statements/alt_transfer_source.j2' %}
 {% include './templates/statements/alt_transfer_source_v6.j2' %}
