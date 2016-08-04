@@ -1,78 +1,11 @@
 // "{{ ansible_managed}}"
-//
-// Do any local configuration here
-//
 
-// Consider adding the 1918 zones here, if they are not used in your
-// organization
-// include "/etc/bind/zones.rfc1918";
+{% if RFC1918 == True %}
+include "/etc/bind/zones.rfc1918";
 
-// Master zones
-{% for master_zone in bind_config_master_zones %}
-zone "{{ master_zone.name }}" {
-	type master;
-{% if master_zone.ymlfile is defined %}
-	file "{{ bind_zones_dir }}/db.{{ master_zone.name }}";
-{% elif master_zone.rawfile is defined %}
-	file "{{ bind_zones_dir }}/{{ master_zone.rawfile.split('/')[-1] }}";
-{% else %}
-	file "{{ bind_zones_dir }}/db.{{ master_zone.name }}";
 {% endif %}
-{% if master_zone.allow_transfer is defined %}
-	allow-transfer {
-{% for allow_transfer in master_zone.allow_transfer %}
-		{{ allow_transfer }};
-{% endfor %}
-		};
-{% endif %}
-{% if master_zone.allow_update is defined %}
-	allow-update {
-{% for allow_update in master_zone.allow_update %}
-		{{ allow_update }};
-{% endfor %}
-		};
-{% endif %}
-{% if master_zone.notify is defined %}
-	also-notify {
-{% for notify in master_zone.notify %}
-		{{ notify }};
-{% endfor %}
-	};
-{% endif %}
-	};
+{% for zone in zones %}
+{% set clause = zone %}
+{% include './templates/clauses/zone.j2' %}
 
-{% endfor %}
-
-// Slave zones
-
-{% for slave_zone in bind_config_slave_zones %}
-zone "{{ slave_zone.name }}" {
-	type slave;
-	file "{{ bind_zones_dir }}/db.{{ slave_zone.name }}";
-	masters {
-{% for master in slave_zone.masters %}
-		{{ master }};
-{% endfor %}
-		};
-	};
-
-{% endfor %}
-
-// Forward zones
-
-{% for fwd_zone in bind_config_forward_zones %}
-// {{ fwd_zone.name }} ({{ fwd_zone|count }} zones)
-zone "{{ fwd_zone.name }}" {
-	type forward;
-{% if fwd_zone.forward is defined %}
-	forward {{ fwd_zone.forward }}; 
-{% else %}
-	forward only;
-{% endif %}
-	forwarders {
-{% for fwder in fwd_zone.forwarders %}
-		{{ fwder }};
-{% endfor %}
-		};
-	};
 {% endfor %}

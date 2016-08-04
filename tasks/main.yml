@@ -15,22 +15,16 @@
   include: configure_local.yml
   tags:  configure_local
 
-  # generate and create masters zones files
-- include: create_master_zones.yml
-  with_items: "{{ bind_config_master_zones }}"
-  tags: setup_bind_master_zones
-
-  # create slave zones files
-- name: works on slave zones files
-  include: create_slaves_zones.yml
-  with_items: "{{ bind_config_slave_zones }}"
-  tags: setup_bind_slave_zones
+  # generate/copy zones data
+- include: create_zone_db.yml
+  with_items: "{{ zones }}"
+  tags: setup_zones
 
   #remove unmanaged zone files
 - name: Clean the zone files folder
   include: remove_unmanaged_files.yml
   when: remove_unmanaged_files
 
-- include: setup_host_dns.yml
-  when: host_dns_srv == 'self' 
-  tags: setup_host_dns
+# - include: setup_host_dns.yml
+  # when: host_dns_srv == 'self' 
+  # tags: setup_host_dns

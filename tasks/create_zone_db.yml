@@ -1,0 +1,55 @@
+---
+- block:
+  - set_fact: "zone_filename=db.{{ item.name }}"
+
+  - name: Loading zone content for {{ item.name }} from {{ item.ymlfile }}
+    include_vars: "{{ item.ymlfile }}"
+    failed_when: records is not defined or records == ''
+    
+  - name: Setup zones files for {{ item.name }} and verify 
+    template:
+      src: db.zones.template.j2
+      dest: "{{ bind_zones_dir }}/{{ zone_filename }}"
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
+      mode: 0644
+      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
+    notify: reload bind
+  when: item.ymlfile is defined
+
+- block:
+  - set_fact: "zone_filename={{ item.textfile.split('/')[-1] }}"
+  
+  - name: "Copy and validate {{ item.name }} text zone file."
+    copy:
+      src: "{{ item.textfile }}"
+      dest: "{{ bind_zones_dir }}/{{ zone_filename }}"
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
+      mode: 0644
+      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
+    notify: reload bind
+  when: item.ymlfile is not defined and item.textfile is defined
+
+- block:
+  - set_fact: "zone_filename=db.{{ item.name }}"
+
+  - name: Loading zone content for {{ item.name }} from given Records
+    set_fact: "records={{ item.records }}"
+  
+  - name: Setup zones files for {{ item.name }} and verify 
+    template:
+      src: db.zones.template.j2
+      dest: "{{ bind_zones_dir }}/{{ zone_filename }}"
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
+      mode: 0644
+      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
+    notify: reload bind
+  when: item.ymlfile is not defined and item.textfile is not defined and item.records is defined
+
+- name: Clear zone data
+  set_fact: "records=''"
+
+- set_fact: "list_zone_files={{ list_zone_files + [zone_filename] }}"
+  when : remove_unmanaged_files

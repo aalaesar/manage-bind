@@ -5,7 +5,8 @@
   roles:
    - role: bind9
      options_file: ./tests/options.yml
-     bind_config_master_zones:
+     zones:
       - name: example.com
+        type: master
         ymlfile: tests/example.com.yml
-        #rawfile: tests/raw.example.com
+        #textfile: tests/raw.example.com

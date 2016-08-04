@@ -1,0 +1,8 @@
+{% if clause.check_names is defined %}
+  check-names {{ clause.check_names }};
+{% endif %}
+{# zone
+---
+clause:
+  check_names: ignore # warn|fail|ignore
+#}
