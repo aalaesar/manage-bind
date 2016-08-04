@@ -5,10 +5,10 @@ zone "{{ clause.name }}" {{ clause.class|default('') }} {
 statements for master zones
 #}
 {% if clause.type == 'master' %}
-{% if clause.ymlfile is defined %}
-  file "{{ bind_zones_dir }}/db.{{ clause.name }}";
-{% elif clause.textfile is defined %}
+{% if clause.textfile is defined %}
   file "{{ bind_zones_dir }}/{{ clause.textfile.split('/')[-1] }}";
+{% else %}
+  file "{{ bind_zones_dir }}/db.{{ clause.name }}";
 {% endif %}
 {% include './templates/statements/also_notify.j2' %}
 {% include './templates/statements/notify.j2' %}

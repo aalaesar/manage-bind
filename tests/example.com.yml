@@ -1,56 +1,56 @@
 ---
-zone:
- - name: example.com
-   ttl: 3d
-   SOA:
-     serial: 2016052601
-     ns: srvdns01.example.com.
-     email: admin.example.com.
-     refresh: 12h
-     retry: 30m
-     expire: 3w
-     negative: 2h30m
-   NS:
-     - srvdns01.example.com.
-   A:
-     127.0.0.1:
-       - '@'
-       - srvdns01.example.com.
-     12.34.56.78: host1
-     98.76.54.32: mailsrv
-     95.38.94.196: ftp.domain.tld.
-   AAAA:
-     fe80:cafe:fa:1::1de:
-       - '@'
-       - srvdns01.example.com.
-     fe80:cafe::bafe: mailsrv
-   MX:
-     '@': 
-       - target: mailsrv
-         ttl: 3w
-         priority: 10
-       - target: backup.fqdn.
-         priority: 20
-   SRV:
-     - srvce: _http
-       prot: _tcp
-       zone_name: example.com.
-       priority: 1
-       weight: 1
-       port: 80
-       target: host1
-     - srvce: _ftp
-       prot: _tcp
-       priority: 1
-       weight: 1
-       port: 21
-       target: ftp
-   CNAME:
-     ftp: host1
-     '@':
-       - www
-       - webmail
-   TXT:
-     - text: '"v=spf1 mx -all"'
-     - text: '( "v=DKIM1; k=rsa; t=s; n=core; p=someverylongstringbecausethisisakeyformailsecurity" )  ; ----- DKIM key mail for example.com'
-       label: mail._domainkey
+records:
+  ttl: 3d
+  SOA:
+    serial: 2016080401
+    ns: srvdns01.example.com.
+    email: admin.example.com.
+    refresh: 12h
+    retry: 30m
+    expire: 3w
+    negative: 2h30m
+  NS:
+    - srvdns01.example.com.
+  A:
+    127.0.0.1:
+      - '@'
+      - srvdns01.example.com.
+    12.34.56.78: host1
+    98.76.54.32: mailsrv
+    95.38.94.196: ftp.domain.tld.
+  AAAA:
+    'fe80:cafe:fa:1::1de':
+      - '@'
+      - srvdns01.example.com.
+    'fe80:cafe::bafe': mailsrv
+  MX:
+    '@': 
+      - target: mailsrv
+        ttl: 3w
+        priority: 10
+      - target: backup.fqdn.
+        priority: 20
+  SRV:
+    - srvce: _http
+      prot: _tcp
+      zone_name: example.com.
+      priority: 1
+      weight: 1
+      port: 80
+      target: host1
+    - srvce: _ftp
+      prot: _tcp
+      priority: 1
+      weight: 1
+      port: 21
+      target: ftp
+  CNAME:
+    ftp: host1
+    '@':
+      - www
+      - webmail
+  TXT:
+    - text: '"v=spf1 mx -all"'
+    - text: '( "v=DKIM1; k=rsa; t=s; n=core; p=someverylongstringbecausethisisakeyformailsecurity" )  ; ----- DKIM key mail for example.com'
+      label: mail._domainkey
+  
