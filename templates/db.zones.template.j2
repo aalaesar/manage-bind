@@ -1,13 +1,13 @@
 ;{ {{ ansible_managed }}
 
-$ttl {{ records.ttl|default( recordss_config_ttl ) }}
+$ttl {{ records.ttl|default( zones_config_ttl ) }}
 $ORIGIN {{ item.name }}.
 @           IN  SOA     {{ records.SOA.ns }}     {{ records.SOA.email }}  (
                 {{ records.SOA.serial }}    ; serial
-                {{ records.SOA.refresh|default( recordss_config_refresh ) }}      ; refresh
-                {{ records.SOA.retry|default( recordss_config_retry ) }}      ; retry
-                {{ records.SOA.expire|default( recordss_config_expire ) }}      ; expire
-                {{ records.SOA.negative|default( recordss_config_negative ) }}      ; negative
+                {{ records.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
+                {{ records.SOA.retry|default( zones_config_retry ) }}      ; retry
+                {{ records.SOA.expire|default( zones_config_expire ) }}      ; expire
+                {{ records.SOA.negative|default( zones_config_negative ) }}      ; negative
                 )
 {% for nameserver in records.NS %}
 @			IN	NS	{{ nameserver }}
