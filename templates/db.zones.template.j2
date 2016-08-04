@@ -52,8 +52,8 @@ $ORIGIN {{ item.name }}.
 
 {% endif %}
 {% if records.SRV is defined %}
-{% for records in records.SRV %}
-{{ records.srvce }}.{{ records.prot }}{% if records.records_name is defined %}.{{ records.records_name }}{% endif %}	IN	SRV	{{ records.priority }} {{ records.weight }} {{ records.port }}	{{ records.target }}
+{% for record in records.SRV %}
+{{ record.srvce }}.{{ record.prot }}{% if record.records_name is defined %}.{{ record.records_name }}{% endif %}	IN	SRV	{{ record.priority }} {{ record.weight }} {{ record.port }}	{{ record.target }}
 {% endfor %}
 
 {% endif %}
