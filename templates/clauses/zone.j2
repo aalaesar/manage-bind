@@ -7,8 +7,8 @@ statements for master zones
 {% if clause.type == 'master' %}
 {% if clause.ymlfile is defined %}
   file "{{ bind_zones_dir }}/db.{{ clause.name }}";
-{% elif clause.rawfile is defined %}
-  file "{{ bind_zones_dir }}/{{ clause.rawfile.split('/')[-1] }}";
+{% elif clause.textfile is defined %}
+  file "{{ bind_zones_dir }}/{{ clause.textfile.split('/')[-1] }}";
 {% endif %}
 {% include './templates/statements/also_notify.j2' %}
 {% include './templates/statements/notify.j2' %}

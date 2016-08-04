@@ -17,21 +17,21 @@
   when: item.ymlfile is defined
 
 - block:
-  - set_fact: "masterzone_filename={{ item.rawfile.split('/')[-1] }}"
+  - set_fact: "masterzone_filename={{ item.textfile.split('/')[-1] }}"
   
   - name: "Copy and validate {{ item.name }} raw zone file."
     copy:
-      src: "{{ item.rawfile }}"
+      src: "{{ item.textfile }}"
       dest: "{{ bind_zones_dir }}/{{ masterzone_filename }}"
       owner: "{{ bind_user }}"
       group: "{{ bind_group }}"
       mode: 0644
       validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
     notify: reload bind
-  when: item.ymlfile is not defined and item.rawfile is defined
+  when: item.ymlfile is not defined and item.textfile is defined
 
 - name: Loading zone content for {{ item.name }} from default location
   include_vars: "./vars/{{ item.name }}.yml"
-  when: item.ymlfile is not defined and item.rawfile is not defined
+  when: item.ymlfile is not defined and item.textfile is not defined
 
 - set_fact: "list_zone_files={{ list_zone_files + [masterzone_filename] }}"

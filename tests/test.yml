@@ -7,5 +7,6 @@
      options_file: ./tests/options.yml
      zones:
       - name: example.com
+        type: master
         ymlfile: tests/example.com.yml
-        #rawfile: tests/raw.example.com
+        #textfile: tests/raw.example.com
