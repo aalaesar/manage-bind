@@ -1,7 +1,9 @@
 ---
-- block:
-  - set_fact: "zone_filename=db.{{ item.name }}"
+- name: Add the db file name to managed list.
+  set_fact: "zone_filename=db.{{ item.name }}"
+  when: item.textfile is not defined
 
+- block:
   - name: Loading zone content for {{ item.name }} from {{ item.ymlfile }}
     include_vars: "{{ item.ymlfile }}"
     failed_when: records is not defined or records == ''
@@ -32,8 +34,6 @@
   when: item.ymlfile is not defined and item.textfile is defined
 
 - block:
-  - set_fact: "zone_filename=db.{{ item.name }}"
-
   - name: Loading zone content for {{ item.name }} from given Records
     set_fact: "records={{ item.records }}"
   
