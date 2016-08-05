@@ -49,7 +49,7 @@
   when: item.ymlfile is not defined and item.textfile is not defined and item.records is defined
 
 - name: Clear zone data
-  set_fact: "records=''"
+  set_fact: records={}
 
 - set_fact: "list_zone_files={{ list_zone_files + [zone_filename] }}"
   when : remove_unmanaged_files
