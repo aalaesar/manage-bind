@@ -1,82 +1,82 @@
-;{ {{ ansible_managed }}
+; {{ ansible_managed }}
 
-$ttl {{ records.ttl|default( zones_config_ttl ) }}
+$ttl {{ ZoneRecords.ttl|default( zones_config_ttl ) }}
 $ORIGIN {{ item.name }}.
-@           IN  SOA     {{ records.SOA.ns }}     {{ records.SOA.email }}  (
-                {{ records.SOA.serial }}    ; serial
-                {{ records.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
-                {{ records.SOA.retry|default( zones_config_retry ) }}      ; retry
-                {{ records.SOA.expire|default( zones_config_expire ) }}      ; expire
-                {{ records.SOA.negative|default( zones_config_negative ) }}      ; negative
+@           IN  SOA     {{ ZoneRecords.SOA.ns }}     {{ ZoneRecords.SOA.email }}  (
+                {{ ZoneRecords.SOA.serial }}    ; serial
+                {{ ZoneRecords.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
+                {{ ZoneRecords.SOA.retry|default( zones_config_retry ) }}      ; retry
+                {{ ZoneRecords.SOA.expire|default( zones_config_expire ) }}      ; expire
+                {{ ZoneRecords.SOA.negative|default( zones_config_negative ) }}      ; negative
                 )
-{% for nameserver in records.NS %}
+{% for nameserver in ZoneRecords.NS %}
 @			IN	NS	{{ nameserver }}
 {% endfor %}
 
-{% if records.A is defined %}
-{% for recordsv4 in records.A %}
-{% if records.A[recordsv4] is string %}
-{{ records.A[recordsv4] }}		IN	A	{{ recordsv4 }}
+{% if ZoneRecords.A is defined %}
+{% for recordv4 in ZoneRecords.A %}
+{% if ZoneRecords.A[recordv4] is string %}
+{{ ZoneRecords.A[recordv4] }}		IN	A	{{ recordv4 }}
 {% else %}
-{% for host in records.A[recordsv4] %}
-{{ host }}		IN	A	{{ recordsv4 }}
+{% for host in ZoneRecords.A[recordv4] %}
+{{ host }}		IN	A	{{ recordv4 }}
 {% endfor %}
 {% endif %}
 {% endfor %}
 
 {% endif %}
-{% if records.AAAA is defined %}
-{% for recordsv6 in records.AAAA %}
-{% if records.AAAA[recordsv6] is string %}
-{{ records.AAAA[recordsv6] }}		IN	AAAA	{{ recordsv6 }}
+{% if ZoneRecords.AAAA is defined %}
+{% for recordv6 in ZoneRecords.AAAA %}
+{% if ZoneRecords.AAAA[recordv6] is string %}
+{{ ZoneRecords.AAAA[recordv6] }}		IN	AAAA	{{ recordv6 }}
 {% else %}
-{% for host in records.AAAA[recordsv6] %}
-{{ host }}		IN	AAAA	{{ recordsv6 }}
+{% for host in ZoneRecords.AAAA[recordv6] %}
+{{ host }}		IN	AAAA	{{ recordv6 }}
 {% endfor %}
 {% endif %}
 {% endfor %}
 
 {% endif %}
-{% if records.PTR is defined %}
-{% for ptr in records.PTR %}
-{{ records.PTR[ptr] }}			IN	PTR	{{ ptr }}
+{% if ZoneRecords.PTR is defined %}
+{% for ptr in ZoneRecords.PTR %}
+{{ ZoneRecords.PTR[ptr] }}			IN	PTR	{{ ptr }}
 {% endfor %}
 
 {% endif %}
-{% if records.MX is defined %}
-{% for record in records.MX %}
-{% for entry in records.MX[record] %}
+{% if ZoneRecords.MX is defined %}
+{% for record in ZoneRecords.MX %}
+{% for entry in ZoneRecords.MX[record] %}
 {{ record }}		{{ entry.ttl|default('') }} IN	MX {{ entry.priority }}	{{ entry.target }}
 {% endfor %}
 {% endfor %}
 
 {% endif %}
-{% if records.SRV is defined %}
-{% for record in records.SRV %}
-{{ record.srvce }}.{{ record.prot }}{% if record.records_name is defined %}.{{ record.records_name }}{% endif %}	IN	SRV	{{ record.priority }} {{ record.weight }} {{ record.port }}	{{ record.target }}
+{% if ZoneRecords.SRV is defined %}
+{% for record in ZoneRecords.SRV %}
+{{ record.srvce }}.{{ record.prot }}{% if record.ZoneRecords_name is defined %}.{{ record.ZoneRecords_name }}{% endif %}	IN	SRV	{{ record.priority }} {{ record.weight }} {{ record.port }}	{{ record.target }}
 {% endfor %}
 
 {% endif %}
-{% if records.CNAME is defined %}
-{% for cname in records.CNAME %}
-{% if records.CNAME[cname] is string %}
-{{ cname }} 			IN	CNAME	{{ records.CNAME[cname] }}
+{% if ZoneRecords.CNAME is defined %}
+{% for cname in ZoneRecords.CNAME %}
+{% if ZoneRecords.CNAME[cname] is string %}
+{{ cname }} 			IN	CNAME	{{ ZoneRecords.CNAME[cname] }}
 {% else %}
-{% for alias in records.CNAME[cname] %}
+{% for alias in ZoneRecords.CNAME[cname] %}
 {{ alias }}			IN	CNAME	{{ cname }}
 {% endfor %}
 {% endif %}
 {% endfor %}
 
 {% endif %}
-{% if records.DNAME is defined %}
-{% for dname in records.DNAME %}
-{{ dname }}			IN	DNAME	{{ records.DNAME[dname] }}
+{% if ZoneRecords.DNAME is defined %}
+{% for dname in ZoneRecords.DNAME %}
+{{ dname }}			IN	DNAME	{{ ZoneRecords.DNAME[dname] }}
 {% endfor %}
 
 {% endif %}
-{% if records.TXT is defined %}
-{% for txt in records.TXT %}
+{% if ZoneRecords.TXT is defined %}
+{% for txt in ZoneRecords.TXT %}
 {{ txt.label|default('@') }}			IN	TXT	{{ txt.text }}
 {% endfor %}
 

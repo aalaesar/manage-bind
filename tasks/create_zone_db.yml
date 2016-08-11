@@ -4,9 +4,10 @@
   when: item.textfile is not defined
 
 - block:
-  - name: Loading zone content for {{ item.name }} from {{ item.ymlfile }}
+  - name: "Loading zone content for {{ item.name }} from {{ item.ymlfile }}"
     include_vars: "{{ item.ymlfile }}"
-    failed_when: records is not defined or records == ''
+  
+  - set_fact: "ZoneRecords={{ records }}"
     
   - name: Setup zones files for {{ item.name }} and verify 
     template:
@@ -35,7 +36,7 @@
 
 - block:
   - name: Loading zone content for {{ item.name }} from given Records
-    set_fact: "records={{ item.records }}"
+    set_fact: "ZoneRecords={{ item.records }}"
   
   - name: Setup zones files for {{ item.name }} and verify 
     template:
@@ -49,7 +50,7 @@
   when: item.ymlfile is not defined and item.textfile is not defined and item.records is defined
 
 - name: Clear zone data
-  set_fact: records={}
+  set_fact: ZoneRecords={}
 
 - set_fact: "list_zone_files={{ list_zone_files + [zone_filename] }}"
   when : remove_unmanaged_files
