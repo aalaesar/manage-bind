@@ -1,25 +1,29 @@
-This file is obsolete
-do not rely on it
-# manage-bind
-Install and manage bind9 configuration and zones ( master, slave and forward types) with zones content structured as an YAML files
-Bind is a very rich and powerfull tool, the configuration managed by this role does not cover
-all it's specifications but provide enough options for a large number of uses cases.
-### Requirements
+Work in progress
+# Ansible Role: manage-bind
+Install and manage your bind9 server on Debian/Ubuntu servers.
+Use YAML syntax/files to configure Bind options, zones, etc.
+
+## Requirements
 Ansible 2.0 or later.
-### Role Variables
+note that this role requires root access, so either run it in a playbook with a global `become: yes`, or invoke the role in your playbook like:
 
-### YAML zone File
+    - hosts: dnsserver
+      roles:
+        - role: aalaesar.manage-bind
+          become: yes
 
-**manage-bind** will not check the coherence of your zone records : you must know what you're doing.
+## Role Variables
+## YAML zone File
+
+**manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for validation.
 
 A **zone** is defined as a mapping of Ressource Records (RR) and a name.
 RR are grouped by type.
 
-###### Main mapping under **zone** :
+###### Main mapping under **records** :
 
-| RR/name | Type | Mandatory | Description |
+| RR | Type | Mandatory | Description |
 | :------------ | :---: | :-----: | :---------- |
-| **name** | string | [x] | the zone name, without the root |
 | **ttl** | string | [ ] | Global time to leave for each entry in the zone file |
 | **SOA** | Table | [x] | Start of authority. most critical RR. See *SOA details*. |
 | **NS** | List | [x] | zone name servers : list of host declared as name servers for this zone. |
@@ -30,13 +34,7 @@ RR are grouped by type.
 | **DNAME** | mapping zone:redirect | [ ] | zone/sub-zone DNS redirection : redirect all labels of a zone to another zone. |
 | **TXT** | Table | [ ] | associate some arbirary and unformatted text with a host or other name. Mostly used for SPF and DKIM |
 | **SRV** | Table | [ ] | Identifies the host that will support a particular service. **not implemented yet** |
-| **URI** | string | [ ] | Alternative to the SRV RR. return a single string containing all informations for a particular service. **not implemented yet** |
 | **PTR** | mapping FQDN: IP | [ ] | Pointer records : opposite of A and AAAA RR. Used in **Reverse Map** zone files to map an IP address (IPv4 or IPv6) to a host name. |
-| **KEY** | _null_ | [ ] | Public Key Record. **not implemented yet** |
-| **DNSKEY** | _null_ | [ ] | Part of the **DNSSEC** standard. Contain the public key used in zone signing operations. **not implemented yet** |
-| **DS** | _null_ | [ ] | Part of the **DNSSEC** standard. Delegated Signer RR. **not implemented yet** | 
-| **RRSIG** | _null_ | [ ] | Signed RRset. Part of the **DNSSEC** standard.**not implemented yet** |
-| **NSEC** | _null_ | [ ] | Next Secure record. Part of the **DNSSEC** standard. Seed for providing proof of non-existence of a name. **not implemented yet** |
 
 ###### Mapping under **SOA** :
 
@@ -62,35 +60,34 @@ RR are grouped by type.
 
 An example zone file can be found in the _test_ folder.
 
-### Dependencies
+## Dependencies
 
 None.
 
-### Example Playbooks
+## Example Playbooks
 
-###### Exemple configuration :
+### Exemple configuration :
 - You own the zones example.tld, example.com and example.org
 - You have 2 name servers : dnserver1 (11.22.33.44) & dnserver2 (55.66.77.88)
 - dnserver1 is master of example.tld and slave of example.com & example.org.
 - dnserver2 is master of example.com & example.org and slave of example.tld
 
-###### dnserver1's playbook :
+### dnserver1's playbook :
 ```YAML
 ---
 TODO
 ```
-###### dnserver2's playbook :
+### dnserver2's playbook :
 ```YAML
 ---
 TODO
 ```
-###### YAML file for example.com.yml on dnserver2
+### YAML file for example.com.yml on dnserver2
 ```YAML
 ---
 TODO
 ```
 
 ## License
-
 BSD
 
