@@ -1,0 +1,123 @@
+---
+options:
+  additional_from_auth: 'yes'
+  additional_from_cache: 'yes'
+  allow_notify: 10.10.10.62
+  allow_query_cache: 10.10.10.5
+  allow_query_cache_on: 10.10.10.5
+  allow_query: any
+  allow_query_on:
+    - 127.0.0.1
+    - 10.10.10.5
+  allow_recursion: 10.10.10.0/24
+  allow_recursion_on: 10.10.10.5
+  allow_transfer: "none"
+  allow_update_forwarding: 10.10.10.6
+  allow_update: 10.10.10.6
+  also_notify: 10.10.10.6
+  also_notify_port: 53
+  alt_transfer_source:
+    ip: 10.10.10.63
+    port: 53
+  #alt_transfer_source_v6:
+  auth_nxdomain: 'no'
+  avoid_v4_udp_ports:
+    - 22
+    - 19
+  #avoid_v6_udp_ports:
+  blackhole: 8.8.8.8
+  cleaning_interval: 60
+  coresize: 10m
+  datasize: 20m
+  deny_answer_addresses: 8.8.8.8
+  deny_answer_aliases: "test.org"
+  dialup: "no"
+  directory: "/var/cache/bind"
+  disable_algorithms:
+    - domain: example.com
+      algorithms:
+        - RSA
+        - RSASHA1
+  #disable_ds_digests:
+  #  - domain: example.com
+  #    digests: SHA-1
+  #  - domain: example.tld
+  #    digests:
+  #      - SHA-1
+  #      - GOST
+  disable_empty_zone: 0fgiven.tld
+  dnssec_enable: "no"
+  dnssec_validation: "yes"
+  dual_stack_servers: 10.10.10.6
+  dual-stack-servers_port: 53
+  dump_file: /tmp/named.dump
+  edns_udp_size: 4096
+  empty_contact: "hostmaster.example.com"
+  empty_server: "ns.example.com"
+  empty_zones_enable: "yes"
+  max_files: 512
+  forwarders: 10.10.10.6
+  forward: first
+  heartbeat_interval: 60
+  hostname: raspib.paris.crebassa.fr
+  interface_interval: 60
+  ixfr_from_differences: "yes"
+  key_directory: /etc/bind/keys
+  lame_ttl: 600
+  listen_on: any
+  listen_on_v6: any
+  masterfile_format: text
+  match_mapped_addresses: "no"
+  max_cache_size: 36000
+  max_cache_ttl: 604800
+  max_journal_size: 50k
+  max_ncache_ttl: 10800
+  max_refresh_time: 3600
+  max_retry_time: 3600
+  max_rsa_exponent_size: 2048
+  max_transfer_idle_in: 60
+  max_transfer_idle_out: 120
+  max_transfer_time_in: 120
+  max_transfer_time_out: 120
+  memstatistics_file: /var/log/bind_mem.stat
+  minimal_responses: "no"
+  min_refresh_time: 500
+  min_retry_time: 500
+  multi_master: "no"
+  notify: 'no'
+  notify_source: '*'
+  #notify_source_v6:
+  #pid_file:
+  port: 53
+  preferred_glue: A
+  provide_ixfr: "yes"
+  querylog: "yes"
+  query_source:
+    address: 127.0.0.1
+    port: '*'
+  #query_source_v6:
+  random_device: /dev/random
+  #recursing_file:
+  recursion: 'yes'
+  recursive_clients: 10
+  request_ixfr: "yes"
+  resolver_query_timeout: 10
+  #root_delegation_only:
+  rrset_order:
+    - order: cyclic
+  serial_query_rate: 20
+  server_id: "nameserver1 for example.com"
+  sig_validity_interval: 30
+  stacksize: 10k
+  #statistics_file:
+  tcp_clients: 100
+  tcp_listen_queue: 3
+  transfer_format: many-answers
+  transfers_per_ns: 2
+  transfers_in: 10
+  transfer_source: '*'
+  #transfer_source_v6:
+  transfers_out: 10
+  use_alt_transfer_source: yes
+  version: "get lost!"
+  zone_statistics: "yes"

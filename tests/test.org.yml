@@ -1,0 +1,29 @@
+---
+records:
+  ttl: 3d
+  SOA:
+    serial: 2016080401
+    ns: srvdns.test.org.
+    email: root.test.org.
+  NS:
+    - srvdns.test.org.
+  A:
+    127.0.0.1:
+      - '@'
+      - srvdns.test.org.
+    12.34.56.78: host1
+    98.76.54.32: mail
+  SRV:
+    - srvce: _http
+      prot: _tcp
+      zone_name: example.com.
+      priority: 1
+      weight: 1
+      port: 80
+      target: host1
+    - srvce: _ftp
+      prot: _tcp
+      priority: 1
+      weight: 1
+      port: 21
+      target: ftp
