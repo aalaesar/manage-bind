@@ -17,17 +17,36 @@ Note that this role requires root access, so either run it in a playbook with a 
 ## Bind Options
 
 ## Defining A zone.
+A Bind zone is defined in two location:
+- its **configuration** in Bind
+- its **content** of ressource records located somewhere
 
-**manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
-
-However, thoses tools are limited to **syntax** and **light coherence** verification.
 
 ### Zone configuration
+A zone is an element of the list named **'zones'**.
+**'zones'** is defined in the role call .
+```YAML
+- hosts: dnsserver
+  roles:
+    - role: aalaesar.manage-bind
+      become: yes
+      zones:
+        - ... # zone 1 
+        - ... # zone 2
+```
+One zone is defined with a various number of attributes/statements
+Some of thoses statements override the bind options for the zone only
+```YAML
+zones:
+  - name: example.com # Mandatory. The domain's name
+    type: master # Mandatory. The type of the zone : master|slave|forward|stub
+    
 
+```
 ### Zone Records
-A **zone's** Ressource Records (RR) are defined in mapping named **records**
+A **zone's** Ressource Records (RR) are defined in mapping named **'records'**
 
-**records** can be declared inside the main playbook  as a zone's sub element:
+**'records'** can be declared inside the main playbook as a zone's sub element:
 ```YAML
 zones: 
     - name: example.com
@@ -53,7 +72,10 @@ records:
   ... # etc
 ```
 
-**records** in yamlfile has precedence over **records** defined in the playbook.
+**'records'** in yamlfile has precedence over **'records'** defined in the playbook.
+
+**manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
+However, thoses tools are limited to **syntax** and **light coherence** verification. this role do not provide advanced validation method
 ###### Main mapping under **records** :
 
 | RR | Type | Mandatory | Description |
