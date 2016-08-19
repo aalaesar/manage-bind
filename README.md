@@ -4,22 +4,56 @@ Install and manage your bind9 server on Debian/Ubuntu servers.
 Use YAML syntax/files to configure Bind options, zones, etc.
 
 ## Requirements
-Ansible 2.0 or later.
-note that this role requires root access, so either run it in a playbook with a global `become: yes`, or invoke the role in your playbook like:
+Ansible 2.0 (Ansible 2.0.2+ introduced issue #3)
 
-    - hosts: dnsserver
-      roles:
-        - role: aalaesar.manage-bind
-          become: yes
-
+Note that this role requires root access, so either run it in a playbook with a global `become: yes`, or invoke the role in your playbook like:
+```YAML
+- hosts: dnsserver
+  roles:
+    - role: aalaesar.manage-bind
+      become: yes
+```
 ## Role Variables
-## YAML zone File
+## Bind Options
 
-**manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for validation.
+## Defining A zone.
 
-A **zone** is defined as a mapping of Ressource Records (RR) and a name.
-RR are grouped by type.
+**manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
 
+However, thoses tools are limited to **syntax** and **light coherence** verification.
+
+### Zone configuration
+
+### Zone Records
+A **zone's** Ressource Records (RR) are defined in mapping named **records**
+
+**records** can be declared inside the main playbook  as a zone's sub element:
+```YAML
+zones: 
+    - name: example.com
+      records:
+        SOA: ...
+        NS: ...
+        ... # etc
+```
+
+Or declared in an YAML file included using the __yamlfile__ record:
+```YAML
+zones: 
+    - name: example.com
+      yamlfile: "./files/example.com.yml
+```
+
+**records** must be top level in the yaml file:
+```YAML
+---
+records:
+  SOA: ...
+  NS: ...
+  ... # etc
+```
+
+**records** in yamlfile has precedence over **records** defined in the playbook.
 ###### Main mapping under **records** :
 
 | RR | Type | Mandatory | Description |
