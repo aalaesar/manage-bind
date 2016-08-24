@@ -51,9 +51,6 @@
 
 - name: Clear zone data
   set_fact: ZoneRecords={}
-- name: Clear zone records 2/2
-  set_fact: "ZoneRecords={{ ZoneRecords.clear() }}"
-- debug: var=ZoneRecords
 
 - set_fact: "list_zone_files={{ list_zone_files + [zone_filename] }}"
   when : remove_unmanaged_files
