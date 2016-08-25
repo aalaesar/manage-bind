@@ -7,24 +7,56 @@ Use YAML syntax/files to configure Bind options, zones, etc.
 Ansible 2.0 (Ansible 2.0.2+ introduced issue #3)
 
 Note that this role requires root access, so either run it in a playbook with a global `become: yes`, or invoke the role in your playbook like:
+> playbook.yml:
 ```YAML
 - hosts: dnsserver
   roles:
     - role: aalaesar.manage-bind
       become: yes
 ```
+
 ## Role Variables
 ## Bind Options
+### Defining options for bind
+When calling **manage-bind**, you can pass bind's main options as a mapping inside your playbook or in a external YAML file.
 
-## Defining A zone.
-A Bind zone is defined in two location:
-- its **configuration** in Bind
-- its **content** of ressource records located somewhere
+Options defined in an external file have precedence over options defined in the playbook but both have precedence over the default options.
 
+The list of all options statements availables is in **./tests/bind_options.yml**
+> playbook.yml:
+```YAML
+- hosts: dnsserver
+  roles:
+    - role: aalaesar.manage-bind
+      become: yes
+      options_file: ./files/option.yml # the role will load thoses options
+      options:
+        option1: ...
+        option2: ...
+```
 
+### Changing the role's default options :
+The role come with some default options for bind.
+They are defined in **./defaults/default_options.yml**
+You may use this file to share a common policy over your servers and override specific options easily
+### _Caution_ when defining options 
+- Escape special char like @ with quotes
+- Some statements requires "yes|no" value: Escape **yes** and **no** with quotes as ansible parses them as boolean.
+
+## Defining a zone.
+A Bind zone is defined in two locations:
+- its **configuration** in named.conf files.
+- its **data** of ressource records located in a file 
+
+### _Caution_ when defining a zone
+- **manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
+However, thoses tools are limited to **syntax** and **light coherence** verification. This role do not provide advanced validation methods.
+- Escape special char like @ with quotes
+- Some statements requires "yes|no" value: Escape **yes** and **no** with quotes as ansible parses them as boolean.
 ### Zone configuration
 A zone is an element of the list named **'zones'**.
-**'zones'** is defined in the role call .
+**'zones'** is defined in the role call and is mandatory.
+> playbook.yml:
 ```YAML
 - hosts: dnsserver
   roles:
@@ -34,36 +66,45 @@ A zone is an element of the list named **'zones'**.
         - ... # zone 1 
         - ... # zone 2
 ```
-One zone is defined with a various number of attributes/statements
-Some of thoses statements override the bind options for the zone only
+A zone configuration is defined with a various number of attributes/statements:
+- Some statements are specific to zones types
+- Other are common with bind's options and override them for only this zone. (this is a bind feature)
+> playbook.yml:
 ```YAML
 zones:
   - name: example.com # Mandatory. The domain's name
     type: master # Mandatory. The type of the zone : master|slave|forward|stub
-    
-
+    recursion: "no" # statement overriding global option recursion for this zone.
+    ... # etc
 ```
-### Zone Records
-A **zone's** Ressource Records (RR) are defined in mapping named **'records'**
+The list of all zone's statements availables is in **./tests/zone_statements.md**
 
-**'records'** can be declared inside the main playbook as a zone's sub element:
+### Zone Data (Records)
+In summary : A **zone's** data is defined in a mapping named **'records'**
+
+**'records'** can be declared _inside the main playbook_ as a zone's attribute,
+
+or declared in an YAML file using the **_yamlfile_** attribute.
+
+**Data** defined in yamlfile has precedence over **data** defined in the playbook.
+> playbook.yml:
 ```YAML
 zones: 
-    - name: example.com
-      records:
-        SOA: ...
-        NS: ...
-        ... # etc
+  - name: example.com
+    records:
+      SOA: ...
+      NS: ...
+      ... # etc
+    ... # etc
+  - name: test.tld
+    yamlfile: "./files/test.tld.yml
+    records: # will be ignored in this zone
+      SOA: ...
+      NS: ...
+    ... # etc
 ```
-
-Or declared in an YAML file included using the __yamlfile__ record:
-```YAML
-zones: 
-    - name: example.com
-      yamlfile: "./files/example.com.yml
-```
-
-**records** must be top level in the yaml file:
+In the yaml file, **records** must be top level:
+> ./files/test.tld.yml:
 ```YAML
 ---
 records:
@@ -71,11 +112,6 @@ records:
   NS: ...
   ... # etc
 ```
-
-**'records'** in yamlfile has precedence over **'records'** defined in the playbook.
-
-**manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
-However, thoses tools are limited to **syntax** and **light coherence** verification. this role do not provide advanced validation method
 ###### Main mapping under **records** :
 
 | RR | Type | Mandatory | Description |
