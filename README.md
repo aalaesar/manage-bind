@@ -19,12 +19,13 @@ Note that this role requires root access, so either run it in a playbook with a 
 
 
 ## Bind's configuration contexts
-Bind uses **clause contexts** to allow precise configuration.
-- A context is a **set** of statements.
+Bind uses **clause configuration contexts** to allow precise configuration.
+- A clause is a class with its own **set** of statements.
+- A statement is explicitely or implicitely defined in a context. It configures the server's behaviour for the context.
 - Contexts can **includes** (parent) and **be included** (child) by other contexts:
- - **Options** is the _largest_ context that include all others.
- - **zone** is the _smallest_ context. It can't include any other context.
-- Some statements are common to 2 or more clause contexts. In this case, inheritance rules apply:
+ - **Options** has the _largest_ context that include all others.
+ - **zone** has the _smallest_ context. It can't include any context.
+- Some statements are common to 2 or more clauses. In this case, inheritance rules apply:
  - A context implicitely inherit of it's parent's statements.
  - If defined, a context can override its parent's statement and pass on the new value to its child(ren). 
 - Some statements are clause specific and cannot be inherited or passed on. 
