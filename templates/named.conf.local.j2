@@ -4,6 +4,13 @@
 include "/etc/bind/zones.rfc1918";
 
 {% endif %}
+{% if keys is defined %}
+{% for key in keys %}
+{% set clause = key %}
+{% include './templates/clauses/key.j2' %}
+
+{% endfor %}
+{% endif %}
 {% for zone in zones %}
 {% set clause = zone %}
 {% include './templates/clauses/zone.j2' %}
