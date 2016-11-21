@@ -17,24 +17,53 @@ Note that this role requires root access, so either run it in a playbook with a 
 
 ## Role Variables
 
-
-## Bind's configuration contexts
+## Configuring Bind
+### Introduction to Bind's configuration contexts
 Bind uses **clause configuration contexts** to allow precise configuration.
 - A clause is a class with its own **set** of statements.
-- A statement is explicitely or implicitely defined in a context. It configures the server's behaviour for the context.
-- Contexts can **includes** (parent) and **be included** (child) by other contexts:
+- A context is an instance of a clause. They can be mutiple contexts of the same type.
+- A statement describes the server's behaviour how to perform a task, whether to perform a task. It is explicitely or implicitely defined in a context.
+- Contexts can **include** (parent) and **be included** (child) by other contexts:
  - **Options** has the _largest_ context that include all others.
  - **zone** has the _smallest_ context. It can't include any context.
-- Some statements are common to 2 or more clauses. In this case, inheritance rules apply:
+- Some statements are common to 2 or more clauses. POO class inheritance rules apply:
  - A context implicitely inherit of it's parent's statements.
  - If defined, a context can override its parent's statement and pass on the new value to its child(ren). 
-- Some statements are clause specific and cannot be inherited or passed on. 
+- Some statements are clause specific and cannot be inherited or passed on.
 
-manage-bind is constructed to use this functionnality.
-It support _options_ and _zone_ contexts.
-## Bind Options
-### Defining options for bind
-When calling **manage-bind**, you can pass bind's main options as a mapping inside your playbook or in a external YAML file.
+> Here is an ASCII example of this rules:
+```
+|##########|  
+|  zone1   |  |#########|
+|==========|  |  zone2  |
+|statement1|  |=========|
+|  =john   |  |         |
+|##########|  |#########|
+     /\            /\
+     ||            ||
+|#######################|   |##############|   |##############|
+|         view1         |   |   zone3      |   |    zone4     |
+|=======================|   |==============|   |              |
+|  statement2=kangaroo  |   |statement1=bar|   |##############|
+|#######################|   |##############|          /\
+           /\                     /\                  ||
+           ||                     ||                  ||
+|#############################################################|
+|                          Options                            |
+|=============================================================|
+|                       statement1=foo                        |
+|                      statement2=koala                       |
+|#############################################################|
+Final result:
+zone1: statement1=john, statement2=kangaroo
+zone2: statement1=foo, statement2=kangaroo
+zone3: statement1=bar, statement2=koala
+zone4: statement1=foo, statement2=koala
+```
+**manage-bind** is constructed to use this functionnality.
+It support _options_ and _zone_ clauses.
+### Defining options
+When calling **manage-bind**, you can pass bind's main options as a mapping inside your playbook or in an external YAML file.
 
 Options defined in an external file have precedence over options defined in the playbook but both have precedence over the default options.
 
