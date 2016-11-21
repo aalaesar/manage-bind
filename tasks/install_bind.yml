@@ -21,7 +21,7 @@
 
 - name: Setup default zones
   copy:
-    src: "./files/{{ item }}"
+    src: "{{ role_path }}/files/{{ item }}"
     dest: "{{ bind_configs_dir }}/{{ item }}"
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"

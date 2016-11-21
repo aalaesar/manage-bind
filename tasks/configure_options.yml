@@ -1,6 +1,6 @@
 ---
 - name: Load default options
-  include_vars: defaults/default_options.yml
+  include_vars: "{{ role_path }}/defaults/default_options.yml"
 
 - name: Load options file
   include_vars: "{{ options_file }}"
@@ -13,7 +13,7 @@
 
 - name: Generate Bind options
   template: 
-    src: clauses/options.j2
+    src: "{{ role_path }}/templates/clauses/options.j2"
     dest: "{{ bind_configs_dir }}/named.conf.options" 
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"
