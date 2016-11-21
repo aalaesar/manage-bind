@@ -60,7 +60,7 @@ $ORIGIN {{ item.name }}.
 {% if ZoneRecords.CNAME is defined %}
 {% for cname in ZoneRecords.CNAME %}
 {% if ZoneRecords.CNAME[cname] is string %}
-{{ cname }} 			IN	CNAME	{{ ZoneRecords.CNAME[cname] }}
+{{ ZoneRecords.CNAME[cname] }} 			IN	CNAME	{{ cname }}
 {% else %}
 {% for alias in ZoneRecords.CNAME[cname] %}
 {{ alias }}			IN	CNAME	{{ cname }}
