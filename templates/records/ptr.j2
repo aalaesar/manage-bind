@@ -1,3 +1,6 @@
+{% if ZoneRecords.PTR is defined %}
 {% for ptr in ZoneRecords.PTR %}
 {{ ZoneRecords.PTR[ptr] }}			IN	PTR	{{ ptr }}
 {% endfor %}
+
+{% endif %}

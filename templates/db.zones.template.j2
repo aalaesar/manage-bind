@@ -1,0 +1,15 @@
+; {{ ansible_managed }}
+
+$ttl {{ ZoneRecords.ttl|default( zones_config_ttl ) }}
+{% include "./templates/records/soa.j2" %}
+
+{% include "./templates/records/ns.j2" %}
+
+{% include "./templates/records/a.j2" %}
+{% include "./templates/records/aaaa.j2" %}
+{% include "./templates/records/ptr.j2" %}
+{% include "./templates/records/mx.j2" %}
+{% include "./templates/records/srv.j2" %}
+{% include "./templates/records/cname.j2" %}
+{% include "./templates/records/dname.j2" %}
+{% include "./templates/records/txt.j2" %}

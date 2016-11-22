@@ -1,3 +1,4 @@
+{% if ZoneRecords.AAAA is defined %}
 {% for recordv6 in ZoneRecords.AAAA %}
 {% if ZoneRecords.AAAA[recordv6] is string %}
 {{ ZoneRecords.AAAA[recordv6] }}		IN	AAAA	{{ recordv6 }}
@@ -7,3 +8,5 @@
 {% endfor %}
 {% endif %}
 {% endfor %}
+
+{% endif %}

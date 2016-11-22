@@ -1,3 +1,4 @@
+{% if ZoneRecords.CNAME is defined %}
 {% for cname in ZoneRecords.CNAME %}
 {% if ZoneRecords.CNAME[cname] is string %}
 {{ ZoneRecords.CNAME[cname] }} 			IN	CNAME	{{ cname }}
@@ -7,3 +8,5 @@
 {% endfor %}
 {% endif %}
 {% endfor %}
+
+{% endif %}
