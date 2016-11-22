@@ -1,0 +1,3 @@
+{% for txt in ZoneRecords.TXT %}
+{{ txt.label|default('@') }}			IN	TXT	{{ txt.text }}
+{% endfor %}

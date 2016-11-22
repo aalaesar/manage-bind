@@ -1,0 +1,3 @@
+{% for dname in ZoneRecords.DNAME %}
+{{ dname }}			IN	DNAME	{{ ZoneRecords.DNAME[dname] }}
+{% endfor %}

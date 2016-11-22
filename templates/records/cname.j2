@@ -1,0 +1,9 @@
+{% for cname in ZoneRecords.CNAME %}
+{% if ZoneRecords.CNAME[cname] is string %}
+{{ ZoneRecords.CNAME[cname] }} 			IN	CNAME	{{ cname }}
+{% else %}
+{% for alias in ZoneRecords.CNAME[cname] %}
+{{ alias }}			IN	CNAME	{{ cname }}
+{% endfor %}
+{% endif %}
+{% endfor %}

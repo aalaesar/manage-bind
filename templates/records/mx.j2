@@ -1,0 +1,5 @@
+{% for record in ZoneRecords.MX %}
+{% for entry in ZoneRecords.MX[record] %}
+{{ record }}		{{ entry.ttl|default('') }} IN	MX {{ entry.priority }}	{{ entry.target }}
+{% endfor %}
+{% endfor %}

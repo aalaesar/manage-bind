@@ -1,0 +1,3 @@
+{% for ptr in ZoneRecords.PTR %}
+{{ ZoneRecords.PTR[ptr] }}			IN	PTR	{{ ptr }}
+{% endfor %}
