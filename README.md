@@ -1,8 +1,8 @@
 Work in progress
 # Ansible Role: manage-bind
-This role is built as an abstraction layer to configure bind using its clauses' inheritance rules.
-Install and manage your bind9 server on Debian/Ubuntu servers.
-Use YAML syntax/files to configure Bind options, zones, etc.
+[x] This role is built as an abstraction layer to configure bind using its clauses' inheritance rules.
+[x] Install and manage your bind9 server on Debian/Ubuntu servers.
+[x] Use YAML syntax/files to configure Bind options, zones, etc.
 
 ## Requirements
 Ansible 2.0 (Ansible 2.0.2+ introduced issue #3)
@@ -68,8 +68,10 @@ zone4: statement1=foo, statement2=koala
 - _key_
 
 ### _Caution_ when defining a statement !
+- some statements are defined with complex mappings while others requires just a simple value.
+  Just in case, each statement have its own template self documented.
 - **manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
-However, thoses tools are limited to **syntax** and **light coherence** verification. This role do not provide advanced validation methods.
+  However, thoses tools are limited to **syntax** and **light coherence** verification. This role do not provide advanced validation methods.
 - Escape special char like @ with quotes
 - Some statements requires "yes|no" string values: Escape **yes** and **no** with quotes as Ansible evaluates them as boolean.
 
@@ -104,12 +106,14 @@ The list of all the statements available for the options is in **./tests/bind_op
 
 #### Changing the role's default options :
 They are defined in **./defaults/default_options.yml**
+
 You may use this file to share a common policy over your infrastructure and override specific options easily
 
 ### Zones clauses
 Zone clauses are defined with *statement** _and_ **zone records**
 #### zone declaration
 Each zone is declared as an element of the list named `zones`.
+
 **'zones'** have to be defined in the playbook and is _mandatory_.
 > playbook.yml:
 ```
@@ -136,6 +140,7 @@ zones:
     recursion: "no" # statement overriding global option "recursion" for this zone.
     ... # etc
 ```
+
 
 The list of all zone's statements available is in **./tests/zone_statements.md**
 
@@ -177,6 +182,7 @@ records:
 
 #### Adding records in the zone
 Zone records have different types.
+
 Currently, manage-bind support the following records
 - **SOA**
 - **NS**
