@@ -1,14 +1,15 @@
 Work in progress
 # Ansible Role: manage-bind
+This role is built as an abstraction layer to configure bind using its clauses' inheritance rules.
 Install and manage your bind9 server on Debian/Ubuntu servers.
 Use YAML syntax/files to configure Bind options, zones, etc.
 
 ## Requirements
 Ansible 2.0 (Ansible 2.0.2+ introduced issue #3)
-
-Note that this role requires root access, so either run it in a playbook with a global `become: yes`, or invoke the role in your playbook like:
+or Ansible 2.2+
+**Note:** this role requires root access, so either run it in a playbook with a global `become: yes`, or invoke the role in your playbook like:
 > playbook.yml:
-```YAML
+```
 - hosts: dnsserver
   roles:
     - role: aalaesar.manage-bind
@@ -18,19 +19,18 @@ Note that this role requires root access, so either run it in a playbook with a 
 ## Role Variables
 
 ## Configuring Bind
-### Introduction to Bind's configuration contexts
-Bind uses **clause configuration contexts** to allow precise configuration.
-- A clause is a class with its own **set** of statements.
-- A context is an instance of a clause. They can be mutiple contexts of the same type.
-- A statement describes the server's behaviour how to perform a task, whether to perform a task. It is explicitely or implicitely defined in a context.
-- Contexts can **include** (parent) and **be included** (child) by other contexts:
- - **Options** has the _largest_ context that include all others.
- - **zone** has the _smallest_ context. It can't include any context.
-- Some statements are common to 2 or more clauses. POO class inheritance rules apply:
- - A context implicitely inherit of it's parent's statements.
- - If defined, a context can override its parent's statement and pass on the new value to its child(ren). 
-- Some statements are clause specific and cannot be inherited or passed on.
-
+### Introduction to Bind's configuration
+Bind uses **clause's statements inheritance** mechanism to allow precise configuration.
+- A **_clause_** is a class with its own **set** of statements.
+  - They can have specific or common statements.
+  - A clause defined inside another clause will implicitly inherit its mother's common statements.
+- A **_statement_** is a clause's property.
+  - It describes the server's behavior on how to perform a task, whether, when, etc.
+  - It may be explicitly or implicitly defined.
+- ***Some inheritance rules***:
+ - **Options** is the _top_ clause that include all others.
+ - **zone** is the _lowest_ clause. It can't have any child. It also contains **zone records**.
+ - a clause can override its parent's statement and pass on the new value to its child(ren) by redefining explicitly the statement.
 > Here is an ASCII example of this rules:
 ```
 |##########|  
@@ -55,86 +55,102 @@ Bind uses **clause configuration contexts** to allow precise configuration.
 |                      statement2=koala                       |
 |#############################################################|
 Final result:
+According statement1 & statement2 are common to all clauses
 zone1: statement1=john, statement2=kangaroo
 zone2: statement1=foo, statement2=kangaroo
 zone3: statement1=bar, statement2=koala
 zone4: statement1=foo, statement2=koala
 ```
-**manage-bind** is constructed to use this functionnality.
-It support _options_ and _zone_ clauses.
-### Defining options
-When calling **manage-bind**, you can pass bind's main options as a mapping inside your playbook or in an external YAML file.
 
-Options defined in an external file have precedence over options defined in the playbook but both have precedence over the default options.
+**manage-bind** support the following clauses:
+- _options_
+- _zone_
+- _key_
 
-The list of all options statements availables is in **./tests/bind_options.yml**
-> playbook.yml:
-```YAML
-- hosts: dnsserver
-  roles:
-    - role: aalaesar.manage-bind
-      become: yes
-      options_file: ./files/option.yml # the role will load thoses options
-      options:
-        statement1: ...
-        statement2: ...
-```
-
-### Changing the role's default options :
-The role come with some default options for bind.
-They are defined in **./defaults/default_options.yml**
-You may use this file to share a common policy over your servers and override specific options easily
-### _Caution_ when defining options 
-- Escape special char like @ with quotes
-- Some statements requires "yes|no" value: Escape **yes** and **no** with quotes as ansible parses them as boolean.
-
-## Defining a zone.
-A Bind zone is defined in two locations:
-- its **configuration** in named.conf files.
-- its **data** of ressource records located in a file 
-
-### _Caution_ when defining a zone
+### _Caution_ when defining a statement !
 - **manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
 However, thoses tools are limited to **syntax** and **light coherence** verification. This role do not provide advanced validation methods.
 - Escape special char like @ with quotes
-- Some statements requires "yes|no" value: Escape **yes** and **no** with quotes as ansible parses them as boolean.
-### Zone configuration
-A zone is an element of the list named **'zones'**.
-**'zones'** is defined in the role call and is mandatory.
+- Some statements requires "yes|no" string values: Escape **yes** and **no** with quotes as Ansible evaluates them as boolean.
+
+### The Options clause
+**Note:** The role comes with some default options.
+#### Defining options' statements
+When calling **manage-bind**, you can pass options statements:
+ - in an external YAML file declared with `options_file`.
+   - it must contain a mapping of statements called `options`.
+ - in a mapping called `options` inside your playbook
+
+**Note:** _First method excludes the second:_ the role will load only the statements in the file is you declare it in your playbook.
 > playbook.yml:
-```YAML
+```
 - hosts: dnsserver
+  become: yes
   roles:
     - role: aalaesar.manage-bind
-      become: yes
+      options_file: ./files/options.yml # the role will only load those options
+      options: # the next lines are useless is this case
+        statement1: ...
+        statement2: ...
+```
+> ./files/options.yml:
+```
+---
+options:
+  statement1: ...
+  statement2: ...
+```
+The list of all the statements available for the options is in **./tests/bind_options.yml**
+
+#### Changing the role's default options :
+They are defined in **./defaults/default_options.yml**
+You may use this file to share a common policy over your infrastructure and override specific options easily
+
+### Zones clauses
+Zone clauses are defined with *statement** _and_ **zone records**
+#### zone declaration
+Each zone is declared as an element of the list named `zones`.
+**'zones'** have to be defined in the playbook and is _mandatory_.
+> playbook.yml:
+```
+- hosts: dnsserver
+  become: yes
+  roles:
+    - role: aalaesar.manage-bind
       zones:
-        - ... # zone 1 
+        - ... # zone 1
         - ... # zone 2
 ```
-A zone configuration is defined with a various number of attributes/statements:
-- Some statements are specific to zones types
-- Other are common with bind's options and override them for only this zone. (this is a bind feature)
+
+#### Defining zone's statements
+A zone is a mapping where its statements are keys:
+- `[statement]:value`
+- `name` and `type` are mandatory statements
+- Some zone type have their own mandatory statements
+
 > playbook.yml:
-```YAML
+```
 zones:
   - name: example.com # Mandatory. The domain's name
     type: master # Mandatory. The type of the zone : master|slave|forward|stub
-    recursion: "no" # statement overriding global option recursion for this zone.
+    recursion: "no" # statement overriding global option "recursion" for this zone.
     ... # etc
 ```
-The list of all zone's statements availables is in **./tests/zone_statements.md**
 
-### Zone Data (Records)
-In summary : A **zone's** data is defined in a mapping named **'records'**
+The list of all zone's statements available is in **./tests/zone_statements.md**
 
-**'records'** can be declared _inside the main playbook_ as a zone's attribute,
+#### Defining zone's records
+the **zone's** records are defined in a mapping named **'records'**
 
-or declared in an YAML file using the **_yamlfile_** attribute.
+This mapping **'records'** can be declared:
+- in an YAML file specified in the **_yamlfile_** key.
+- _as a zone's key_
 
-**Data** defined in yamlfile has precedence over **data** defined in the playbook.
+**Note:** _First method excludes the second:_ the role will load only the records in the file is you declare it in your playbook.
+
 > playbook.yml:
-```YAML
-zones: 
+```
+zones:
   - name: example.com
     records:
       SOA: ...
@@ -142,67 +158,43 @@ zones:
       ... # etc
     ... # etc
   - name: test.tld
-    yamlfile: "./files/test.tld.yml
+    yamlfile: "./files/test.tld.yml"
     records: # will be ignored in this zone
       SOA: ...
       NS: ...
     ... # etc
 ```
-In the yaml file, **records** must be top level:
+
+In the yaml file, **records** must be top level mapping:
 > ./files/test.tld.yml:
-```YAML
+```
 ---
 records:
   SOA: ...
   NS: ...
   ... # etc
 ```
-###### Main mapping under **records** :
 
-| RR | Type | Mandatory | Description |
-| :------------ | :---: | :-----: | :---------- |
-| **ttl** | string | [ ] | Global time to leave for each entry in the zone file |
-| **SOA** | Table | [x] | Start of authority. most critical RR. See *SOA details*. |
-| **NS** | List | [x] | zone name servers : list of host declared as name servers for this zone. |
-| **A** | mapping IP: host/list | [ ] | most common RR for mapping host and IPv4. |
-| **AAAA** | mapping IPv6: host/list | [ ] | common RR for mapping host and IPv6. |
-| **MX** | mapping host: integer | [ ] | RR for the zone mail servers along with their priority |
-| **CNAME** | mapping host: alias/list | [ ] | **Canonical name records** : alias of an host inside or outside of the zone |
-| **DNAME** | mapping zone:redirect | [ ] | zone/sub-zone DNS redirection : redirect all labels of a zone to another zone. |
-| **TXT** | Table | [ ] | associate some arbirary and unformatted text with a host or other name. Mostly used for SPF and DKIM |
-| **SRV** | Table | [ ] | Identifies the host that will support a particular service. **not implemented yet** |
-| **PTR** | mapping FQDN: IP | [ ] | Pointer records : opposite of A and AAAA RR. Used in **Reverse Map** zone files to map an IP address (IPv4 or IPv6) to a host name. |
-
-###### Mapping under **SOA** :
-
-| Name | Type | Mandatory | Description |
-| :------------ | :---: | :-----: | :---------- |
-| serial | Integer | [x] | Serial number for the zone file. **Must always increment** |
-| ns | string | [x] | Name server for this zone. must be fully Qualified name with the root '.' |
-| email | string | [x] | email of the zon administrator. '@' is susbtitued to '.'. Can be fully qualified or not. |
-| refresh | string | [ ] | Same function as zones_config_ttl. Default to zones_config_ttl. |
-| retry | string | [ ] | Same role as zones_config_retry. Default to zones_config_retry. |
-| expire | string | [ ] | Same role as zones_config_expire. Default to zones_config_expire. |
-| negative | string | [ ] | Same role as zones_config_negative. Default to zones_config_negative. |
-
-
-###### Mapping under **TXT**:
-
-| Name | Type | Mandatory | Description |
-| :------------ | :---: | :-----: | :---------- |
-| text | String | [x] | The actual record content. Anything between single quotes |
-| label | String | [ ] | the Record label. Anything between single quotes |
-
-###### Mapping under **SRV**: not yet implemented
-
-An example zone file can be found in the _test_ folder.
+#### Adding records in the zone
+Zone records have different types.
+Currently, manage-bind support the following records
+- **SOA**
+- **NS**
+- **A**
+- **AAAA**
+- **MX**
+- **SRV**
+- **PTR**
+- **CNAME**
+- **DNAME**
+- **TXT**
+- ttl can be declared along the zone's records
 
 ## Dependencies
 
 None.
 
 ## Example Playbooks
-
 ### Exemple configuration :
 - You own the zones example.tld, example.com and example.org
 - You have 2 name servers : dnserver1 (11.22.33.44) & dnserver2 (55.66.77.88)
