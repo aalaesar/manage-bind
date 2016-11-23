@@ -1,8 +1,8 @@
 Work in progress
 # Ansible Role: manage-bind
-[x] This role is built as an abstraction layer to configure bind using its clauses' inheritance rules.
-[x] Install and manage your bind9 server on Debian/Ubuntu servers.
-[x] Use YAML syntax/files to configure Bind options, zones, etc.
+ This role is built as an abstraction layer to configure bind and create DNS zones.
+- [x] Install and manage your bind9 server on Debian/Ubuntu servers.
+- [x] Use YAML syntax/files to configure Bind options, zones, etc.
 
 ## Requirements
 Ansible 2.0 (Ansible 2.0.2+ introduced issue #3)
@@ -83,7 +83,7 @@ When calling **manage-bind**, you can pass options statements:
    - it must contain a mapping of statements called `options`.
  - in a mapping called `options` inside your playbook
 
-**Note:** _First method excludes the second:_ the role will load only the statements in the file is you declare it in your playbook.
+**Note:** _First method excludes the second:_ the role will load only the statements in the file if you declare it in your playbook.
 > playbook.yml:
 ```
 - hosts: dnsserver
@@ -110,7 +110,7 @@ They are defined in **./defaults/default_options.yml**
 You may use this file to share a common policy over your infrastructure and override specific options easily
 
 ### Zones clauses
-Zone clauses are defined with *statement** _and_ **zone records**
+Zone clauses are defined with **statement** _and_ **zone records**
 #### zone declaration
 Each zone is declared as an element of the list named `zones`.
 
@@ -151,7 +151,7 @@ This mapping **'records'** can be declared:
 - in an YAML file specified in the **_yamlfile_** key.
 - _as a zone's key_
 
-**Note:** _First method excludes the second:_ the role will load only the records in the file is you declare it in your playbook.
+**Note:** _First method excludes the second:_ the role will load only the records in the file if you declare it in your playbook.
 
 > playbook.yml:
 ```
@@ -181,9 +181,12 @@ records:
 ```
 
 #### Adding records in the zone
-Zone records have different types.
+Zone records have different types, they are listed by type inside `records`.
 
-Currently, manage-bind support the following records
+_each records type is different and follow its own YAML structure.
+You can report yourself to the records templates or the wiki to know it._
+
+Manage-bind support the following records
 - **SOA**
 - **NS**
 - **A**
@@ -204,24 +207,88 @@ None.
 ### Exemple configuration :
 - You own the zones example.tld, example.com and example.org
 - You have 2 name servers : dnserver1 (11.22.33.44) & dnserver2 (55.66.77.88)
-- dnserver1 is master of example.tld and slave of example.com & example.org.
-- dnserver2 is master of example.com & example.org and slave of example.tld
+- dnserver1 is master of example.tld and slave of example.com.
+- dnserver2 is master of example.com and slave of example.tld
 
 ### dnserver1's playbook :
-```YAML
+```
 ---
-TODO
+- hosts: dnserver1
+  roles:
+    - role: aalaesar.manage-bind
+      options:
+        allow_recursion: '55.66.77.88'
+        allow_transfer: '55.66.77.88'
+      zones:
+        - name: example.tld
+          type: master
+          notify: '55.66.77.88'
+          records:
+            - SOA:
+                serial: 2016080401
+                ns: dnserver1.example.tld.
+                email: admin.example.tld.
+            - NS:
+              - dnserver1.example.tld.
+              - dnserver2.example.tld.
+            - A:
+                11.22.33.44: dnserver1
+                55.66.77.88: dnserver2
+        - name: example.com
+          type: slave
+          masters: '55.66.77.88'
 ```
 ### dnserver2's playbook :
-```YAML
+```
 ---
-TODO
+- hosts: dnserver2
+  roles:
+    - role: aalaesar.manage-bind
+      options:
+        allow_recursion: '11.22.33.44'
+        allow_transfer: '11.22.33.44'
+      zones:
+        - name: example.com
+          type: slave
+          notify: '11.22.33.44'
+        - name: example.tld
+         type: slave
+         masters: '11.22.33.44'
+         ymlfile: example.com.yml
 ```
 ### YAML file for example.com.yml on dnserver2
-```YAML
+```
 ---
-TODO
+records:
+  ttl: 3d
+  SOA:
+    serial: 2016080401
+    ns: dnserver2.example.com.
+    email: admin.example.com.
+  NS:
+    - srvdns01.example.com.
+  A:
+    127.0.0.1:
+      - '@'
+      - dnserver2.example.com.
+    12.34.56.78: host1
+    98.76.54.32: mailsrv
+    95.38.94.196: ftp.domain.tld.
+  MX:
+    '@':
+      - target: backup.fqdn.
+        priority: 20
+  CNAME:
+    host1: ftp
+    '@':
+      - www
+      - webmail
+  TXT:
+    - text: '"v=spf1 mx -all"'
+    - text: '( "v=DKIM1; k=rsa; t=s; n=core; p=someverylongstringbecausethisisakeyformailsecurity" )  ; ----- DKIM key mail for example.com'
+      label: mail._domainkey
 ```
 
+More examples are available in the tests folder
 ## License
 BSD
