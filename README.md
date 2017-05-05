@@ -1,6 +1,6 @@
 Work in progress
 # Ansible Role: manage-bind
- This role is built as an abstraction layer to configure bind and create DNS zones.
+ This role is built as an abstraction layer to configure bind and create DNS zones using YAML syntax.
 - [x] Install and manage your bind9 server on Debian/Ubuntu servers.
 - [x] Use YAML syntax/files to configure Bind options, zones, etc.
 
@@ -181,10 +181,10 @@ records:
 ```
 
 #### Adding records in the zone
-Zone records have different types, they are listed by type inside `records`.
+Zone records have different types, they are declared by type inside `records`.
 
 _each records type is different and follow its own YAML structure.
-You can report yourself to the records templates or the wiki to know it._
+Most records templates are self documented._
 
 Manage-bind support the following records
 - **SOA**
