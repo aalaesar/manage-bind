@@ -16,7 +16,7 @@ $ORIGIN {{ item.name }}.
 {% if ZoneRecords.A is defined %}
 {% for recordv4 in ZoneRecords.A %}
 {% if ZoneRecords.A[recordv4] is string %}
-{{ ZoneRecords.A[recordv4] }}		IN	A	{{ recordv4 }}
+{{ recordv4 }}		IN	A	{{ ZoneRecords.A[recordv4] }}
 {% else %}
 {% for host in ZoneRecords.A[recordv4] %}
 {{ host }}		IN	A	{{ recordv4 }}
@@ -28,7 +28,7 @@ $ORIGIN {{ item.name }}.
 {% if ZoneRecords.AAAA is defined %}
 {% for recordv6 in ZoneRecords.AAAA %}
 {% if ZoneRecords.AAAA[recordv6] is string %}
-{{ ZoneRecords.AAAA[recordv6] }}		IN	AAAA	{{ recordv6 }}
+{{ recordv6 }}		IN	AAAA	{{ ZoneRecords.AAAA[recordv6] }}
 {% else %}
 {% for host in ZoneRecords.AAAA[recordv6] %}
 {{ host }}		IN	AAAA	{{ recordv6 }}

@@ -232,8 +232,8 @@ None.
               - dnserver1.example.tld.
               - dnserver2.example.tld.
             - A:
-                11.22.33.44: dnserver1
-                55.66.77.88: dnserver2
+                dnserver1: 11.22.33.44
+                dnserver2: 55.66.77.88
         - name: example.com
           type: slave
           masters: '55.66.77.88'
@@ -271,9 +271,9 @@ records:
     127.0.0.1:
       - '@'
       - dnserver2.example.com.
-    12.34.56.78: host1
-    98.76.54.32: mailsrv
-    95.38.94.196: ftp.domain.tld.
+    host1: 12.34.56.78
+    mailsrv: 98.76.54.32
+    'ftp.domain.tld.': 95.38.94.196
   MX:
     '@':
       - target: backup.fqdn.

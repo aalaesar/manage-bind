@@ -9,7 +9,7 @@ default_options:
   #allow_query_on:
   #allow_recursion:
   #allow_recursion_on:
-  allow_transfer: "none"
+  #allow_transfer: "none"
   #allow_update_forwarding:
   #allow_update:
   also_notify: []
