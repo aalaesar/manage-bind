@@ -6,10 +6,10 @@
 - block:
   - name: "Loading zone content for {{ item.name }} from {{ item.ymlfile }}"
     include_vars: "{{ item.ymlfile }}"
-  
+
   - set_fact: "ZoneRecords={{ records }}"
-    
-  - name: Setup zones files for {{ item.name }} and verify 
+
+  - name: Setup zones files for {{ item.name }} and verify
     template:
       src: db.zones.template.j2
       dest: "{{ bind_zones_dir }}/{{ zone_filename }}"
@@ -22,7 +22,7 @@
 
 - block:
   - set_fact: "zone_filename={{ item.textfile.split('/')[-1] }}"
-  
+
   - name: "Copy and validate {{ item.name }} text zone file."
     copy:
       src: "{{ item.textfile }}"
@@ -37,8 +37,8 @@
 - block:
   - name: Loading zone content for {{ item.name }} from given Records
     set_fact: "ZoneRecords={{ item.records }}"
-  
-  - name: Setup zones files for {{ item.name }} and verify 
+
+  - name: Setup zones files for {{ item.name }} and verify
     template:
       src: db.zones.template.j2
       dest: "{{ bind_zones_dir }}/{{ zone_filename }}"

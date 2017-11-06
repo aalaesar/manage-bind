@@ -1,7 +1,0 @@
-@           IN  SOA     {{ ZoneRecords.SOA.ns }}     {{ ZoneRecords.SOA.email }}  (
-                {{ ZoneRecords.SOA.serial }}    ; serial
-                {{ ZoneRecords.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
-                {{ ZoneRecords.SOA.retry|default( zones_config_retry ) }}      ; retry
-                {{ ZoneRecords.SOA.expire|default( zones_config_expire ) }}      ; expire
-                {{ ZoneRecords.SOA.negative|default( zones_config_negative ) }}      ; negative
-                )

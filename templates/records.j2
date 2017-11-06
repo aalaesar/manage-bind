@@ -1,0 +1,74 @@
+{% macro NS(nameservers) %}
+{% for nameserver in nameservers %}
+@			IN	NS	{{ nameserver }}
+{% endfor %}
+
+{% endmacro%}
+{% macro A(recordsv4) %}
+{% for recordv4 in recordsv4 %}
+{% if recordsv4[recordv4] is string %}
+{{ recordv4 }}		IN	A	{{ recordsv4[recordv4] }}
+{% else %}
+{% for host in recordsv4[recordv4] %}
+{{ host }}		IN	A	{{ recordv4 }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% endmacro%}
+{% macro AAAA(recordsv6) %}
+{% for recordv6 in recordsv6 %}
+{% if recordsv6[recordv6] is string %}
+{{ recordv6 }}		IN	AAAA	{{ recordsv6[recordv6] }}
+{% else %}
+{% for host in recordsv6[recordv6] %}
+{{ host }}		IN	AAAA	{{ recordv6 }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% endmacro%}
+{% macro CNAME(cnames) %}
+{% for cname in cnames %}
+{% if cnames[cname] is string %}
+{{ cnames[cname] }} 			IN	CNAME	{{ cname }}
+{% else %}
+{% for alias in cnames[cname] %}
+{{ alias }}			IN	CNAME	{{ cname }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% endmacro%}
+{% macro DNAME(dnames) %}
+{% for dname in dnames %}
+{{ dname }}			IN	DNAME	{{ dnames[dname] }}
+{% endfor %}
+
+{% endmacro%}
+{% macro MX(mxs) %}
+{% for record in mxs %}
+{% for entry in mxs[record] %}
+{{ record }}		{{ entry.ttl|default('') }} IN	MX {{ entry.priority }}	{{ entry.target }}
+{% endfor %}
+{% endfor %}
+
+{% endmacro%}
+{% macro PTR(pointers) %}
+{% for ptr in pointers %}
+{{ pointers[ptr] }}			IN	PTR	{{ ptr }}
+{% endfor %}
+
+{% endmacro%}
+{% macro SRV(services) %}
+{% for record in services %}
+{{[record.srvce, record.prot, record.ZoneRecords_name]| reject('undefined') | join('.')}}	IN	SRV	{{ record.priority }} {{ record.weight }} {{ record.port }}	{{ record.target }}
+{% endfor %}
+
+{% endmacro%}
+{% macro TXT(texts) %}
+{% for txt in texts %}
+{{ txt.label|default('@') }}			IN	TXT	{{ txt.text }}
+{% endfor %}
+
+{% endmacro%}

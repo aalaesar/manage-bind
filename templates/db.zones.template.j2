@@ -1,15 +1,38 @@
 ; {{ ansible_managed }}
-
+{% import "./templates/records.j2" as record %}
 $ttl {{ ZoneRecords.ttl|default( zones_config_ttl ) }}
-{% include "./templates/records/soa.j2" %}
+$ORIGIN {{ item.name }}.
+@     IN  SOA     {{ ZoneRecords.SOA.ns }}     {{ ZoneRecords.SOA.email }}  (
+      {{ ZoneRecords.SOA.serial }}    ; serial
+      {{ ZoneRecords.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
+      {{ ZoneRecords.SOA.retry|default( zones_config_retry ) }}      ; retry
+      {{ ZoneRecords.SOA.expire|default( zones_config_expire ) }}      ; expire
+      {{ ZoneRecords.SOA.negative|default( zones_config_negative ) }}      ; negative
+      )
 
-{% include "./templates/records/ns.j2" %}
+{{ record.NS(ZoneRecords.NS) }}
 
-{% include "./templates/records/a.j2" %}
-{% include "./templates/records/aaaa.j2" %}
-{% include "./templates/records/ptr.j2" %}
-{% include "./templates/records/mx.j2" %}
-{% include "./templates/records/srv.j2" %}
-{% include "./templates/records/cname.j2" %}
-{% include "./templates/records/dname.j2" %}
-{% include "./templates/records/txt.j2" %}
+{% if ZoneRecords.A is defined %}
+{{ record.A(ZoneRecords.A) }}
+{% endif %}
+{% if ZoneRecords.AAAA is defined %}
+{{ record.AAAA(ZoneRecords.AAAA) }}
+{% endif %}
+{% if ZoneRecords.PTR is defined %}
+{{ record.PTR(ZoneRecords.PTR) }}
+{% endif %}
+{% if ZoneRecords.MX is defined %}
+{{ record.MX(ZoneRecords.MX) }}
+{% endif %}
+{% if ZoneRecords.SRV is defined %}
+{{ record.SRV(ZoneRecords.SRV) }}
+{% endif %}
+{% if ZoneRecords.CNAME is defined %}
+{{ record.CNAME(ZoneRecords.CNAME) }}
+{% endif %}
+{% if ZoneRecords.DNAME is defined %}
+{{ record.DNAME(ZoneRecords.DNAME) }}
+{% endif %}
+{% if ZoneRecords.TXT is defined %}
+{{ record.TXT(ZoneRecords.TXT) }}
+{% endif %}

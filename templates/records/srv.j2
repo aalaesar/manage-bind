@@ -1,6 +1,0 @@
-{% if ZoneRecords.SRV is defined %}
-{% for record in ZoneRecords.SRV %}
-{{ record.srvce }}.{{ record.prot }}{% if record.ZoneRecords_name is defined %}.{{ record.ZoneRecords_name }}{% endif %}	IN	SRV	{{ record.priority }} {{ record.weight }} {{ record.port }}	{{ record.target }}
-{% endfor %}
-
-{% endif %}
