@@ -1,3 +1,4 @@
+{% import './templates/statements.j2' as statements %}
 zone "{{ clause.name }}" {{ clause.class|default('') }} {
 {# statements for zone clauses #}
   type {{ clause.type }};
@@ -10,58 +11,167 @@ statements for master zones
 {% else %}
   file "{{ bind_zones_dir }}/db.{{ clause.name }}";
 {% endif %}
-{% include './templates/statements/also_notify.j2' %}
-{% include './templates/statements/notify.j2' %}
-{% include './templates/statements/notify_source.j2' %}
-{% include './templates/statements/notify_source_v6.j2' %}
+{% if clause.allow_update is defined and clause.update_policy is not defined %}
+{{ statements.allow_update(clause.allow_update) }}
+{% endif %}
+{% if clause.also_notify is defined %}
+{% if clause.also_notify_port is defined %}
+{{ statements.also_notify(clause.also_notify, clause.also_notify_port) }}
+{% else %}
+{{ statements.also_notify(clause.also_notify) }}
+{% endif %}
+{% endif %}
+{% if clause.max_transfer_idle_out is defined %}
+{{ statements.max_transfer_idle_out(clause.max_transfer_idle_out) }}
+{% endif %}
+{% if clause.max_transfer_time_out is defined %}
+{{ statements.max_transfer_time_out(clause.max_transfer_time_out) }}
+{% endif %}
+{% if clause.notify is defined %}
+{{ statements.notify(clause.notify) }}
+{% endif %}
+{% if clause.notify_source is defined %}
+{{ statements.notify_source(clause.notify_source) }}
+{% endif %}
+{% if clause.notify_source_v6 is defined %}
+{{ statements.notify_source_v6(clause.notify_source_v6) }}
+{% endif %}
+{% if clause.masterfile_format is defined %}
+{{ statements.masterfile_format(clause.masterfile_format) }}
+{% endif %}
+{% if clause.transfer_format is defined %}
+{{ statements.transfer_format(clause.transfer_format) }}
+{% endif %}
 {% endif %}
 {#
 statements for slave zones
 #}
 {% if clause.type == 'slave' %}
   file "{{ bind_zones_dir }}/db.{{ clause.name }}";
-{% include './templates/statements/masters.j2' %}
-{% include './templates/statements/alt_transfer_source.j2' %}
-{% include './templates/statements/alt_transfer_source_v6.j2' %}
-{% include './templates/statements/max_refresh_time.j2' %}
-{% include './templates/statements/min_refresh_time.j2' %}
-{% include './templates/statements/max_retry_time.j2' %}
-{% include './templates/statements/min_retry_time.j2' %}
-{% include './templates/statements/multi_master.j2' %}
-{% include './templates/statements/notify.j2' %}
+{% if clause.masters is defined %}
+{% if clause.masters_port is defined %}
+{{ statements.masters(clause.masters, clause.masters_port) }}
+{% else %}
+{{ statements.masters(clause.masters) }}
+{% endif %}
+{% endif %}
+{% if clause.masterfile_format is defined %}
+{{ statements.masterfile_format(clause.masterfile_format) }}
+{% endif %}
+{% if clause.transfer_source is defined %}
+{{ statements.transfer_source(clause.transfer_source) }}
+{% endif %}
+{% if clause.transfer_source_v6 is defined %}
+{{ statements.transfer_source_v6(clause.transfer_source_v6) }}
+{% endif %}
+{% if clause.alt_transfer_source is defined %}
+{{ statements.alt_transfer_source(clause.alt_transfer_source) }}
+{% endif %}
+{% if clause.alt_transfer_source_v6 is defined %}
+{{ statements.alt_transfer_source_v6(clause.alt_transfer_source_v6) }}
+{% endif %}
+{% if clause.max_transfer_idle_in is defined %}
+{{ statements.max_transfer_idle_in(clause.max_transfer_idle_in) }}
+{% endif %}
+{% if clause.max_transfer_time_in is defined %}
+{{ statements.max_transfer_time_in(clause.max_transfer_time_in) }}
+{% endif %}
+{% if clause.max_refresh_time is defined %}
+{{ statements.max_refresh_time(clause.max_refresh_time) }}
+{% endif %}
+{% if clause.min_refresh_time is defined %}
+{{ statements.min_refresh_time(clause.min_refresh_time) }}
+{% endif %}
+{% if clause.max_retry_time is defined %}
+{{ statements.max_retry_time(clause.max_retry_time) }}
+{% endif %}
+{% if clause.min_retry_time is defined %}
+{{ statements.min_retry_time(clause.min_retry_time) }}
+{% endif %}
+{% if clause.multi_master is defined %}
+{{ statements.multi_master(clause.multi_master) }}
+{% endif %}
+{% if clause.notify is defined %}
+{{ statements.notify(clause.notify) }}
+{% endif %}
+{% if clause.allow_notify is defined %}
+{{ statements.allow_notify(clause.allow_notify) }}
+{% endif %}
 {% endif %}
 {#
 statements for forward zones
 #}
 {% if clause.type == 'forward' %}
-{% include './templates/statements/forward.j2' %}
-{% include './templates/statements/forwarders.j2' %}
+{% if clause.forward is defined %}
+{{ statements.forward(clause.forward) }}
+{% endif %}
+{% if clause.forwarders is defined %}
+{{ statements.forwarders(clause.forwarders) }}
+{% endif %}
 {% endif %}
 {#
 statements for static-stub zones
 #}
 {% if clause.type == 'static_stub' %}
-{% include './templates/statements/max_refresh_time.j2' %}
-{% include './templates/statements/min_refresh_time.j2' %}
-{% include './templates/statements/max_retry_time.j2' %}
-{% include './templates/statements/min_retry_time.j2' %}
-{% include './templates/statements/server_names.j2' %}
-{% include './templates/statements/server_addresses.j2' %}
+{% if clause.max_refresh_time is defined %}
+{{ statements.max_refresh_time(clause.max_refresh_time) }}
+{% endif %}
+{% if clause.min_refresh_time is defined %}
+{{ statements.min_refresh_time(clause.min_refresh_time) }}
+{% endif %}
+{% if clause.max_retry_time is defined %}
+{{ statements.max_retry_time(clause.max_retry_time) }}
+{% endif %}
+{% if clause.min_retry_time is defined %}
+{{ statements.min_retry_time(clause.min_retry_time) }}
+{% endif %}
+{% if clause.server_names is defined %}
+{{ statements.server_names(clause.server_names) }}
+{% endif %}
+{% if clause.server_addresses is defined %}
+{{ statements.server_addresses(clause.server_addresses) }}
+{% endif %}
 {% endif %}
 {#
 common statements
 #}
-{% include './templates/statements/allow_query.j2' %}
-{% include './templates/statements/allow_query_on.j2' %}
-{% include './templates/statements/allow_transfer.j2' %}
-{% include './templates/statements/allow_update_forwarding.j2' %}
-{% include './templates/statements/check_names_zone.j2' %}
-{% include './templates/statements/delegation_only.j2' %}
-{% include './templates/statements/dialup.j2' %}
-{% include './templates/statements/masterfile_format.j2' %}
-{% include './templates/statements/sig_validity_interval.j2' %}
-{% include './templates/statements/update_policy.j2' %}
-{% include './templates/statements/use_alt_transfer_source.j2' %}
-{% include './templates/statements/zone_statistics.j2' %}
-
+{% if clause.allow_query is defined %}
+{{ statements.allow_query(clause.allow_query) }}
+{% endif %}
+{% if clause.allow_query_on is defined %}
+{{ statements.allow_query_on(clause.allow_query_on) }}
+{% endif %}
+{% if clause.allow_transfer is defined %}
+{{ statements.allow_transfer(clause.allow_transfer) }}
+{% endif %}
+{% if clause.allow_update_forwarding is defined %}
+{{ statements.allow_update_forwarding(clause.allow_update_forwarding) }}
+{% endif %}
+{% if clause.check_names is defined %}
+{{ statements.check_names(clause.check_names) }}
+{% endif %}
+{% if clause.delegation_only is defined %}
+{{ statements.delegation_only(clause.delegation_only) }}
+{% endif %}
+{% if clause.dialup is defined %}
+{{ statements.dialup(clause.dialup) }}
+{% endif %}
+{% if clause.ixfr_from_differences is defined %}
+{{ statements.ixfr_from_differences(clause.ixfr_from_differences) }}
+{% endif %}
+{% if clause.max_journal_size is defined %}
+{{ statements.max_journal_size(clause.max_journal_size) }}
+{% endif %}
+{% if clause.sig_validity_internal is defined %}
+{{ statements.sig_validity_internal(clause.sig_validity_internal) }}
+{% endif %}
+{% if clause.update_policy is defined %}
+{{ statements.update_policy(clause.update_policy) }}
+{% endif %}
+{% if clause.use_alt_transfer_source is defined %}
+{{ statements.use_alt_transfer_source(clause.use_alt_transfer_source) }}
+{% endif %}
+{% if clause.zone_statictics is defined %}
+{{ statements.zone_statictics(clause.zone_statictics) }}
+{% endif %}
 };
