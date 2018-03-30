@@ -1053,12 +1053,12 @@ clause:
 #}
 {% endmacro %}
 
-{% macro bind_port(args) %}
+{% macro port(args) %}
   port {{ args }};
 {# options
 ---
 clause:
-  bind_port: 53
+  port: 53
 #}
 {% endmacro %}
 
