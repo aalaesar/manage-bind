@@ -1,117 +1,317 @@
 {% set clause = options2 %}
+{% import './templates/statements.j2' as statements %}
 // {{ ansible_managed }}
 
 options {
 // Operations statements
-{% include "./templates/statements/port.j2" %}
-{% include "./templates/statements/avoid_v4_udp_ports.j2" %}
-{% include "./templates/statements/avoid_v6_udp_ports.j2" %}
-{% include "./templates/statements/coresize.j2" %}
-{% include "./templates/statements/datasize.j2" %}
-{% include "./templates/statements/dialup.j2" %}
-{% include "./templates/statements/directory.j2" %}
-{% include "./templates/statements/dual_stack_servers.j2" %}
-{% include "./templates/statements/dump_file.j2" %}
-{% include "./templates/statements/edns_udp_size.j2" %}
-{% include "./templates/statements/files.j2" %}
-{% include "./templates/statements/hostname.j2" %}
-{% include "./templates/statements/key_directory.j2" %}
-{% include "./templates/statements/lame_ttl.j2" %}
-{% include "./templates/statements/listen_on.j2" %}
-{% include "./templates/statements/listen_on_v6.j2" %}
-{% include "./templates/statements/match_mapped_addresses.j2" %}
-{% include "./templates/statements/max_cache_size.j2" %}
-{% include "./templates/statements/max_cache_ttl.j2" %}
-{% include "./templates/statements/max_ncache_ttl.j2" %}
-{% include "./templates/statements/memstatistics_file.j2" %}
-{% include "./templates/statements/pid_file.j2" %}
-{% include "./templates/statements/preferred_glue.j2" %}
-{% include "./templates/statements/querylog.j2" %}
-{% include "./templates/statements/recursing_file.j2" %}
-{% include "./templates/statements/server_id.j2" %}
-{% include "./templates/statements/stacksize.j2" %}
-{% include "./templates/statements/statistics_file.j2" %}
-{% include "./templates/statements/tcp_clients.j2" %}
-{% include "./templates/statements/tcp_listen_queue.j2" %}
-{% include "./templates/statements/version.j2" %}
-{% include "./templates/statements/zone_statistics.j2" %}
+{% if clause.port is defined %}
+{{ statements.port(clause.port) }}
+{% endif %}
+{% if clause.avoid_v4_udp_ports is defined %}
+{{ statements.avoid_v4_udp_ports(clause.avoid_v4_udp_ports) }}
+{% endif %}
+{% if clause.avoid_v2_udp_ports is defined %}
+{{ statements.avoid_v6_udp_ports(clause.avoid_v6_udp_ports) }}
+{% endif %}
+{% if clause.coresize is defined %}
+{{ statements.coresize(clause.coresize) }}
+{% endif %}
+{% if clause.datasize is defined %}
+{{ statements.datasize(clause.datasize) }}
+{% endif %}
+{% if clause.dialup is defined %}
+{{ statements.dialup(clause.dialup) }}
+{% endif %}
+{% if clause.directory is defined %}
+{{ statements.directory(clause.directory) }}
+{% endif %}
+{% if clause.dual_stack_servers is defined %}
+{{ statements.dual_stack_servers(clause.dual_stack_servers) }}
+{% endif %}
+{% if clause.dump_file is defined %}
+{{ statements.dump_file(clause.dump_file) }}
+{% endif %}
+{% if clause.edns_udp_size is defined %}
+{{ statements.edns_udp_size(clause.edns_udp_size) }}
+{% endif %}
+{% if clause.files is defined %}
+{{ statements.files(clause.files) }}
+{% endif %}
+{% if clause.hostname is defined %}
+{{ statements.hostname(clause.hostname) }}
+{% endif %}
+{% if clause.key_directory is defined %}
+{{ statements.key_directory(clause.key_directory) }}
+{% endif %}
+{% if clause.lame_ttl is defined %}
+{{ statements.lame_ttl(clause.lame_ttl) }}
+{% endif %}
+{% if clause.listen_on is defined %}
+{{ statements.listen_on(clause.listen_on) }}
+{% endif %}
+{% if clause.listen_on_v6 is defined %}
+{{ statements.listen_on_v6(clause.listen_on_v6) }}
+{% endif %}
+{% if clause.match_mapped_addresses is defined %}
+{{ statements.match_mapped_addresses(clause.match_mapped_addresses) }}
+{% endif %}
+{% if clause.max_cache_size is defined %}
+{{ statements.max_cache_size(clause.max_cache_size) }}
+{% endif %}
+{% if clause.max_cache_ttl is defined %}
+{{ statements.max_cache_ttl(clause.max_cache_ttl) }}
+{% endif %}
+{% if clause.max_ncache_ttl is defined %}
+{{ statements.max_ncache_ttl(clause.max_ncache_ttl) }}
+{% endif %}
+{% if clause.memstatistics_file is defined %}
+{{ statements.memstatistics_file(clause.memstatistics_file) }}
+{% endif %}
+{% if clause.pid_file is defined %}
+{{ statements.pid_file(clause.pid_file) }}
+{% endif %}
+{% if clause.preferred_glue is defined %}
+{{ statements.preferred_glue(clause.preferred_glue) }}
+{% endif %}
+{% if clause.querylog is defined %}
+{{ statements.querylog(clause.querylog) }}
+{% endif %}
+{% if clause.recursing_file is defined %}
+{{ statements.recursing_file(clause.recursing_file) }}
+{% endif %}
+{% if clause.server_id is defined %}
+{{ statements.server_id(clause.server_id) }}
+{% endif %}
+{% if clause.stacksize is defined %}
+{{ statements.stacksize(clause.stacksize) }}
+{% endif %}
+{% if clause.statistics_file is defined %}
+{{ statements.statistics_file(clause.statistics_file) }}
+{% endif %}
+{% if clause.tcp_clients is defined %}
+{{ statements.tcp_clients(clause.tcp_clients) }}
+{% endif %}
+{% if clause.tcp_listen_queue is defined %}
+{{ statements.tcp_listen_queue(clause.tcp_listen_queue) }}
+{% endif %}
+{{ statements.version(clause.version) }}
+{% if clause.zone_statistics is defined %}
+{{ statements.zone_statistics(clause.zone_statistics) }}
+{% endif %}
 
 // transfer statements
-{% include "./templates/statements/allow_notify.j2" %}
-{% include "./templates/statements/allow_transfer.j2" %}
-{% include "./templates/statements/allow_update.j2" %}
-{% include "./templates/statements/allow_update_forwarding.j2" %}
-{% include "./templates/statements/also_notify.j2" %}
-{% include "./templates/statements/alt_transfer_source.j2" %}
-{% include "./templates/statements/alt_transfer_source_v6.j2" %}
-{% include "./templates/statements/ixfr_from_differences.j2" %}
-{% include "./templates/statements/max_journal_size.j2" %}
-{% include "./templates/statements/max_refresh_time.j2" %}
-{% include "./templates/statements/min_refresh_time.j2" %}
-{% include "./templates/statements/max_retry_time.j2" %}
-{% include "./templates/statements/min_retry_time.j2" %}
-{% include "./templates/statements/max_transfer_idle_in.j2" %}
-{% include "./templates/statements/max_transfer_idle_out.j2" %}
-{% include "./templates/statements/max_transfer_time_in.j2" %}
-{% include "./templates/statements/max_transfer_time_out.j2" %}
-{% include "./templates/statements/notify.j2" %}
-{% include "./templates/statements/notify_source.j2" %}
-{% include "./templates/statements/notify_source_v6.j2" %}
-{% include "./templates/statements/provide_ixfr.j2" %}
-{% include "./templates/statements/request_ixfr.j2" %}
-{% include "./templates/statements/serial_query_rate.j2" %}
-{% include "./templates/statements/transfer_format.j2" %}
-{% include "./templates/statements/transfer_source.j2" %}
-{% include "./templates/statements/transfer_source_v6.j2" %}
-{% include "./templates/statements/transfers_in.j2" %}
-{% include "./templates/statements/transfers_out.j2" %}
-{% include "./templates/statements/transfers_per_ns.j2" %}
-{% include "./templates/statements/use_alt_transfer_source.j2" %}
-{% include "./templates/statements/multi_master.j2" %}
+{% if clause.allow_notify is defined %}
+{{ statements.allow_notify(clause.allow_notify) }}
+{% endif %}
+{% if clause.allow_transfer is defined %}
+{{ statements.allow_transfer(clause.allow_transfer) }}
+{% endif %}
+{% if clause.allow_update is defined %}
+{{ statements.allow_update(clause.allow_update) }}
+{% endif %}
+{% if clause.allow_update_forwarding is defined %}
+{{ statements.allow_update_forwarding(clause.allow_update_forwarding) }}
+{% endif %}
+{% if clause.also_notify is defined %}
+{{ statements.also_notify(clause.also_notify) }}
+{% endif %}
+{% if clause.alt_transfer_source is defined %}
+{{ statements.alt_transfer_source(clause.alt_transfer_source) }}
+{% endif %}
+{% if clause.alt_transfer_source_v6 is defined %}
+{{ statements.alt_transfer_source_v6(clause.alt_transfer_source_v6) }}
+{% endif %}
+{% if clause.ixfr_from_differences is defined %}
+{{ statements.ixfr_from_differences(clause.ixfr_from_differences) }}
+{% endif %}
+{% if clause.max_journal_size is defined %}
+{{ statements.max_journal_size(clause.max_journal_size) }}
+{% endif %}
+{% if clause.max_refresh_time is defined %}
+{{ statements.max_refresh_time(clause.max_refresh_time) }}
+{% endif %}
+{% if clause.min_refresh_time is defined %}
+{{ statements.min_refresh_time(clause.min_refresh_time) }}
+{% endif %}
+{% if clause.max_retry_time is defined %}
+{{ statements.max_retry_time(clause.max_retry_time) }}
+{% endif %}
+{% if clause.min_retry_time is defined %}
+{{ statements.min_retry_time(clause.min_retry_time) }}
+{% endif %}
+{% if clause.max_transfer_idle_in is defined %}
+{{ statements.max_transfer_idle_in(clause.max_transfer_idle_in) }}
+{% endif %}
+{% if clause.max_transfer_idle_out is defined %}
+{{ statements.max_transfer_idle_out(clause.max_transfer_idle_out) }}
+{% endif %}
+{% if clause.max_transfer_time_in is defined %}
+{{ statements.max_transfer_time_in(clause.max_transfer_time_in) }}
+{% endif %}
+{% if clause.max_transfer_time_out is defined %}
+{{ statements.max_transfer_time_out(clause.max_transfer_time_out) }}
+{% endif %}
+{% if clause.notify is defined %}
+{{ statements.notify(clause.notify) }}
+{% endif %}
+{% if clause.notify_source is defined %}
+{{ statements.notify_source(clause.notify_source) }}
+{% endif %}
+{% if clause.notify_source_v6 is defined %}
+{{ statements.notify_source_v6(clause.notify_source_v6) }}
+{% endif %}
+{% if clause.provide_ixfr is defined %}
+{{ statements.provide_ixfr(clause.provide_ixfr) }}
+{% endif %}
+{% if clause.request_ixfr is defined %}
+{{ statements.request_ixfr(clause.request_ixfr) }}
+{% endif %}
+{% if clause.serial_query_rate is defined %}
+{{ statements.serial_query_rate(clause.serial_query_rate) }}
+{% endif %}
+{% if clause.transfer_format is defined %}
+{{ statements.transfer_format(clause.transfer_format) }}
+{% endif %}
+{% if clause.transfer_source is defined %}
+{{ statements.transfer_source(clause.transfer_source) }}
+{% endif %}
+{% if clause.transfer_source_v6 is defined %}
+{{ statements.transfer_source_v6(clause.transfer_source_v6) }}
+{% endif %}
+{% if clause.transfers_in is defined %}
+{{ statements.transfers_in(clause.transfers_in) }}
+{% endif %}
+{% if clause.transfers_out is defined %}
+{{ statements.transfers_out(clause.transfers_out) }}
+{% endif %}
+{% if clause.transfers_per_ns is defined %}
+{{ statements.transfers_per_ns(clause.transfers_per_ns) }}
+{% endif %}
+{% if clause.use_alt_transfer_source is defined %}
+{{ statements.use_alt_transfer_source(clause.use_alt_transfer_source) }}
+{% endif %}
+{% if clause.multi_master is defined %}
+{{ statements.multi_master(clause.multi_master) }}
+{% endif %}
 
 // Zone statements
-{% include "./templates/statements/masterfile_format.j2" %}
+{% if clause.masterfile_format is defined %}
+{{ statements.masterfile_format(clause.masterfile_format) }}
+{% endif %}
 
 // query statements
-{% include "./templates/statements/additional_from_auth.j2" %}
-{% include "./templates/statements/additional_from_cache.j2" %}
-{% include "./templates/statements/allow_query_cache.j2" %}
-{% include "./templates/statements/allow_query_cache_on.j2" %}
-{% include "./templates/statements/allow_query.j2" %}
-{% include "./templates/statements/allow_query_on.j2" %}
-{% include "./templates/statements/allow_recursion.j2" %}
-{% include "./templates/statements/allow_recursion_on.j2" %}
-{% include "./templates/statements/auth_nxdomain.j2" %}
-{% include "./templates/statements/blackhole.j2" %}
-{% include "./templates/statements/deny_answer_addresses.j2" %}
-{% include "./templates/statements/deny_answer_aliases.j2" %}
-{% include "./templates/statements/disable_empty_zone.j2" %}
-{% include "./templates/statements/empty_contact.j2" %}
-{% include "./templates/statements/empty_server.j2" %}
-{% include "./templates/statements/empty_zones_enable.j2" %}
-{% include "./templates/statements/forward.j2" %}
-{% include "./templates/statements/forwarders.j2" %}
-{% include "./templates/statements/minimal_responses.j2" %}
-{% include "./templates/statements/query_source.j2" %}
-{% include "./templates/statements/query_source_v6.j2" %}
-{% include "./templates/statements/recursion.j2" %}
-{% include "./templates/statements/recursive_clients.j2" %}
-{% include "./templates/statements/resolver_query_timeout.j2" %}
-{% include "./templates/statements/root_delegation_only.j2" %}
-{% include "./templates/statements/rrset_order.j2" %}
+{% if clause.additional_from_auth is defined %}
+{{ statements.additional_from_auth(clause.additional_from_auth) }}
+{% endif %}
+{% if clause.additional_from_cache is defined %}
+{{ statements.additional_from_cache(clause.additional_from_cache) }}
+{% endif %}
+{% if clause.allow_query_cache is defined %}
+{{ statements.allow_query_cache(clause.allow_query_cache) }}
+{% endif %}
+{% if clause.allow_query_cache_on is defined %}
+{{ statements.allow_query_cache_on(clause.allow_query_cache_on) }}
+{% endif %}
+{% if clause.allow_query is defined %}
+{{ statements.allow_query(clause.allow_query) }}
+{% endif %}
+{% if clause.allow_query_on is defined %}
+{{ statements.allow_query_on(clause.allow_query_on) }}
+{% endif %}
+{% if clause.allow_recursion is defined %}
+{{ statements.allow_recursion(clause.allow_recursion) }}
+{% endif %}
+{% if clause.allow_recursion_on is defined %}
+{{ statements.allow_recursion_on(clause.allow_recursion_on) }}
+{% endif %}
+
+{% if clause.auth_nxdomain is defined %}
+{{ statements.auth_nxdomain(clause.auth_nxdomain) }}
+{% endif %}
+{% if clause.blackhole is defined %}
+{{ statements.blackhole(clause.blackhole) }}
+{% endif %}
+{% if clause.deny_answer_addresses is defined %}
+{{ statements.deny_answer_addresses(clause.deny_answer_addresses) }}
+{% endif %}
+{% if clause.deny_answer_aliases is defined %}
+{{ statements.deny_answer_aliases(clause.deny_answer_aliases) }}
+{% endif %}
+{% if clause.disable_empty_zone is defined %}
+{{ statements.disable_empty_zone(clause.disable_empty_zone) }}
+{% endif %}
+{% if clause.empty_contact is defined %}
+{{ statements.empty_contact(clause.empty_contact) }}
+{% endif %}
+{% if clause.empty_server is defined %}
+{{ statements.empty_server(clause.empty_server) }}
+{% endif %}
+{% if clause.empty_zones_enable is defined %}
+{{ statements.empty_zones_enable(clause.empty_zones_enable) }}
+{% endif %}
+{% if clause.forward is defined %}
+{{ statements.forward(clause.forward) }}
+{% endif %}
+{% if clause.forwarders is defined %}
+{{ statements.forwarders(clause.forwarders) }}
+{% endif %}
+{% if clause.minimal_responses is defined %}
+{{ statements.minimal_responses(clause.minimal_responses) }}
+{% endif %}
+{% if clause.query_source is defined %}
+{{ statements.query_source(clause.query_source) }}
+{% endif %}
+{% if clause.query_source_v6 is defined %}
+{{ statements.query_source_v6(clause.query_source_v6) }}
+{% endif %}
+{% if clause.recursion is defined %}
+{{ statements.recursion(clause.recursion) }}
+{% endif %}
+{% if clause.recursive_clients is defined %}
+{{ statements.recursive_clients(clause.recursive_clients) }}
+{% endif %}
+{% if clause.resolver_query_timeout is defined %}
+{{ statements.resolver_query_timeout(clause.resolver_query_timeout) }}
+{% endif %}
+{% if clause.root_delegation_only is defined %}
+{{ statements.root_delegation_only(clause.root_delegation_only) }}
+{% endif %}
+{% if clause.rrset_order is defined %}
+{{ statements.rrset_order(clause.rrset_order) }}
+{% endif %}
 
 // Security statements
-{% include "./templates/statements/disable_algorithms.j2" %}
-{% include "./templates/statements/disable_ds_digests.j2" %}
-{% include "./templates/statements/dnssec_enable.j2" %}
-{% include "./templates/statements/dnssec_validation.j2" %}
-{% include "./templates/statements/max_rsa_exponent_size.j2" %}
-{% include "./templates/statements/random_device.j2" %}
-{% include "./templates/statements/sig_validity_interval.j2" %}
+{% if clause.disable_algorithms is defined %}
+{{ statements.disable_algorithms(clause.disable_algorithms) }}
+{% endif %}
+{% if clause.disable_ds_digests is defined %}
+{{ statements.disable_ds_digests(clause.disable_ds_digests) }}
+{% endif %}
+{% if clause.dnssec_enable is defined %}
+{{ statements.dnssec_enable(clause.dnssec_enable) }}
+{% endif %}
+{% if clause.dnssec_validation is defined %}
+{{ statements.dnssec_validation(clause.dnssec_validation) }}
+{% endif %}
+{% if clause.max_rsa_exponent_size is defined %}
+{{ statements.max_rsa_exponent_size(clause.max_rsa_exponent_size) }}
+{% endif %}
+{% if clause.random_device is defined %}
+{{ statements.random_device(clause.random_device) }}
+{% endif %}
+{% if clause.sig_validity_interval is defined %}
+{{ statements.sig_validity_interval(clause.sig_validity_interval) }}
+{% endif %}
 
 // Periodic statements
-{% include "./templates/statements/cleaning_interval.j2" %}
-{% include "./templates/statements/heartbeat_interval.j2" %}
-{% include "./templates/statements/interface_interval.j2" %}
+{% if clause.cleaning_interval is defined %}
+{{ statements.cleaning_interval(clause.cleaning_interval) }}
+{% endif %}
+{% if clause.heartbeat_interval is defined %}
+{{ statements.heartbeat_interval(clause.heartbeat_interval) }}
+{% endif %}
+{% if clause.interface_interval is defined %}
+{{ statements.interface_interval(clause.interface_interval) }}
+{% endif %}
 
 };
