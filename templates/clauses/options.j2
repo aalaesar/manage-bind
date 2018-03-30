@@ -4,314 +4,46 @@
 
 options {
 // Operations statements
-{% if clause.port is defined %}
-{{ statements.port(clause.port) }}
-{% endif %}
-{% if clause.avoid_v4_udp_ports is defined %}
-{{ statements.avoid_v4_udp_ports(clause.avoid_v4_udp_ports) }}
-{% endif %}
-{% if clause.avoid_v2_udp_ports is defined %}
-{{ statements.avoid_v6_udp_ports(clause.avoid_v6_udp_ports) }}
-{% endif %}
-{% if clause.coresize is defined %}
-{{ statements.coresize(clause.coresize) }}
-{% endif %}
-{% if clause.datasize is defined %}
-{{ statements.datasize(clause.datasize) }}
-{% endif %}
-{% if clause.dialup is defined %}
-{{ statements.dialup(clause.dialup) }}
-{% endif %}
-{% if clause.directory is defined %}
-{{ statements.directory(clause.directory) }}
-{% endif %}
-{% if clause.dual_stack_servers is defined %}
-{{ statements.dual_stack_servers(clause.dual_stack_servers) }}
-{% endif %}
-{% if clause.dump_file is defined %}
-{{ statements.dump_file(clause.dump_file) }}
-{% endif %}
-{% if clause.edns_udp_size is defined %}
-{{ statements.edns_udp_size(clause.edns_udp_size) }}
-{% endif %}
-{% if clause.files is defined %}
-{{ statements.files(clause.files) }}
-{% endif %}
-{% if clause.hostname is defined %}
-{{ statements.hostname(clause.hostname) }}
-{% endif %}
-{% if clause.key_directory is defined %}
-{{ statements.key_directory(clause.key_directory) }}
-{% endif %}
-{% if clause.lame_ttl is defined %}
-{{ statements.lame_ttl(clause.lame_ttl) }}
-{% endif %}
-{% if clause.listen_on is defined %}
-{{ statements.listen_on(clause.listen_on) }}
-{% endif %}
-{% if clause.listen_on_v6 is defined %}
-{{ statements.listen_on_v6(clause.listen_on_v6) }}
-{% endif %}
-{% if clause.match_mapped_addresses is defined %}
-{{ statements.match_mapped_addresses(clause.match_mapped_addresses) }}
-{% endif %}
-{% if clause.max_cache_size is defined %}
-{{ statements.max_cache_size(clause.max_cache_size) }}
-{% endif %}
-{% if clause.max_cache_ttl is defined %}
-{{ statements.max_cache_ttl(clause.max_cache_ttl) }}
-{% endif %}
-{% if clause.max_ncache_ttl is defined %}
-{{ statements.max_ncache_ttl(clause.max_ncache_ttl) }}
-{% endif %}
-{% if clause.memstatistics_file is defined %}
-{{ statements.memstatistics_file(clause.memstatistics_file) }}
-{% endif %}
-{% if clause.pid_file is defined %}
-{{ statements.pid_file(clause.pid_file) }}
-{% endif %}
-{% if clause.preferred_glue is defined %}
-{{ statements.preferred_glue(clause.preferred_glue) }}
-{% endif %}
-{% if clause.querylog is defined %}
-{{ statements.querylog(clause.querylog) }}
-{% endif %}
-{% if clause.recursing_file is defined %}
-{{ statements.recursing_file(clause.recursing_file) }}
-{% endif %}
-{% if clause.server_id is defined %}
-{{ statements.server_id(clause.server_id) }}
-{% endif %}
-{% if clause.stacksize is defined %}
-{{ statements.stacksize(clause.stacksize) }}
-{% endif %}
-{% if clause.statistics_file is defined %}
-{{ statements.statistics_file(clause.statistics_file) }}
-{% endif %}
-{% if clause.tcp_clients is defined %}
-{{ statements.tcp_clients(clause.tcp_clients) }}
-{% endif %}
-{% if clause.tcp_listen_queue is defined %}
-{{ statements.tcp_listen_queue(clause.tcp_listen_queue) }}
-{% endif %}
-{{ statements.version(clause.version) }}
-{% if clause.zone_statistics is defined %}
-{{ statements.zone_statistics(clause.zone_statistics) }}
-{% endif %}
+{% for statement in clauses.options.operations -%}
+  {% if clause[statement] is defined -%}
+    {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
+{{ statements.version(clause.version) | indent(width=2, first=True)}}
 
-// transfer statements
-{% if clause.allow_notify is defined %}
-{{ statements.allow_notify(clause.allow_notify) }}
-{% endif %}
-{% if clause.allow_transfer is defined %}
-{{ statements.allow_transfer(clause.allow_transfer) }}
-{% endif %}
-{% if clause.allow_update is defined %}
-{{ statements.allow_update(clause.allow_update) }}
-{% endif %}
-{% if clause.allow_update_forwarding is defined %}
-{{ statements.allow_update_forwarding(clause.allow_update_forwarding) }}
-{% endif %}
-{% if clause.also_notify is defined %}
-{{ statements.also_notify(clause.also_notify) }}
-{% endif %}
-{% if clause.alt_transfer_source is defined %}
-{{ statements.alt_transfer_source(clause.alt_transfer_source) }}
-{% endif %}
-{% if clause.alt_transfer_source_v6 is defined %}
-{{ statements.alt_transfer_source_v6(clause.alt_transfer_source_v6) }}
-{% endif %}
-{% if clause.ixfr_from_differences is defined %}
-{{ statements.ixfr_from_differences(clause.ixfr_from_differences) }}
-{% endif %}
-{% if clause.max_journal_size is defined %}
-{{ statements.max_journal_size(clause.max_journal_size) }}
-{% endif %}
-{% if clause.max_refresh_time is defined %}
-{{ statements.max_refresh_time(clause.max_refresh_time) }}
-{% endif %}
-{% if clause.min_refresh_time is defined %}
-{{ statements.min_refresh_time(clause.min_refresh_time) }}
-{% endif %}
-{% if clause.max_retry_time is defined %}
-{{ statements.max_retry_time(clause.max_retry_time) }}
-{% endif %}
-{% if clause.min_retry_time is defined %}
-{{ statements.min_retry_time(clause.min_retry_time) }}
-{% endif %}
-{% if clause.max_transfer_idle_in is defined %}
-{{ statements.max_transfer_idle_in(clause.max_transfer_idle_in) }}
-{% endif %}
-{% if clause.max_transfer_idle_out is defined %}
-{{ statements.max_transfer_idle_out(clause.max_transfer_idle_out) }}
-{% endif %}
-{% if clause.max_transfer_time_in is defined %}
-{{ statements.max_transfer_time_in(clause.max_transfer_time_in) }}
-{% endif %}
-{% if clause.max_transfer_time_out is defined %}
-{{ statements.max_transfer_time_out(clause.max_transfer_time_out) }}
-{% endif %}
-{% if clause.notify is defined %}
-{{ statements.notify(clause.notify) }}
-{% endif %}
-{% if clause.notify_source is defined %}
-{{ statements.notify_source(clause.notify_source) }}
-{% endif %}
-{% if clause.notify_source_v6 is defined %}
-{{ statements.notify_source_v6(clause.notify_source_v6) }}
-{% endif %}
-{% if clause.provide_ixfr is defined %}
-{{ statements.provide_ixfr(clause.provide_ixfr) }}
-{% endif %}
-{% if clause.request_ixfr is defined %}
-{{ statements.request_ixfr(clause.request_ixfr) }}
-{% endif %}
-{% if clause.serial_query_rate is defined %}
-{{ statements.serial_query_rate(clause.serial_query_rate) }}
-{% endif %}
-{% if clause.transfer_format is defined %}
-{{ statements.transfer_format(clause.transfer_format) }}
-{% endif %}
-{% if clause.transfer_source is defined %}
-{{ statements.transfer_source(clause.transfer_source) }}
-{% endif %}
-{% if clause.transfer_source_v6 is defined %}
-{{ statements.transfer_source_v6(clause.transfer_source_v6) }}
-{% endif %}
-{% if clause.transfers_in is defined %}
-{{ statements.transfers_in(clause.transfers_in) }}
-{% endif %}
-{% if clause.transfers_out is defined %}
-{{ statements.transfers_out(clause.transfers_out) }}
-{% endif %}
-{% if clause.transfers_per_ns is defined %}
-{{ statements.transfers_per_ns(clause.transfers_per_ns) }}
-{% endif %}
-{% if clause.use_alt_transfer_source is defined %}
-{{ statements.use_alt_transfer_source(clause.use_alt_transfer_source) }}
-{% endif %}
-{% if clause.multi_master is defined %}
-{{ statements.multi_master(clause.multi_master) }}
-{% endif %}
+// transfers statements
+{% for statement in clauses.options.transfers -%}
+  {%- if clause[statement] is defined -%}
+    {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+  {%- endif -%}
+{%- endfor %}
 
 // Zone statements
-{% if clause.masterfile_format is defined %}
-{{ statements.masterfile_format(clause.masterfile_format) }}
-{% endif %}
+{% for statement in clauses.options.zones -%}
+  {% if clause[statement] is defined -%}
+    {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
 
-// query statements
-{% if clause.additional_from_auth is defined %}
-{{ statements.additional_from_auth(clause.additional_from_auth) }}
-{% endif %}
-{% if clause.additional_from_cache is defined %}
-{{ statements.additional_from_cache(clause.additional_from_cache) }}
-{% endif %}
-{% if clause.allow_query_cache is defined %}
-{{ statements.allow_query_cache(clause.allow_query_cache) }}
-{% endif %}
-{% if clause.allow_query_cache_on is defined %}
-{{ statements.allow_query_cache_on(clause.allow_query_cache_on) }}
-{% endif %}
-{% if clause.allow_query is defined %}
-{{ statements.allow_query(clause.allow_query) }}
-{% endif %}
-{% if clause.allow_query_on is defined %}
-{{ statements.allow_query_on(clause.allow_query_on) }}
-{% endif %}
-{% if clause.allow_recursion is defined %}
-{{ statements.allow_recursion(clause.allow_recursion) }}
-{% endif %}
-{% if clause.allow_recursion_on is defined %}
-{{ statements.allow_recursion_on(clause.allow_recursion_on) }}
-{% endif %}
-
-{% if clause.auth_nxdomain is defined %}
-{{ statements.auth_nxdomain(clause.auth_nxdomain) }}
-{% endif %}
-{% if clause.blackhole is defined %}
-{{ statements.blackhole(clause.blackhole) }}
-{% endif %}
-{% if clause.deny_answer_addresses is defined %}
-{{ statements.deny_answer_addresses(clause.deny_answer_addresses) }}
-{% endif %}
-{% if clause.deny_answer_aliases is defined %}
-{{ statements.deny_answer_aliases(clause.deny_answer_aliases) }}
-{% endif %}
-{% if clause.disable_empty_zone is defined %}
-{{ statements.disable_empty_zone(clause.disable_empty_zone) }}
-{% endif %}
-{% if clause.empty_contact is defined %}
-{{ statements.empty_contact(clause.empty_contact) }}
-{% endif %}
-{% if clause.empty_server is defined %}
-{{ statements.empty_server(clause.empty_server) }}
-{% endif %}
-{% if clause.empty_zones_enable is defined %}
-{{ statements.empty_zones_enable(clause.empty_zones_enable) }}
-{% endif %}
-{% if clause.forward is defined %}
-{{ statements.forward(clause.forward) }}
-{% endif %}
-{% if clause.forwarders is defined %}
-{{ statements.forwarders(clause.forwarders) }}
-{% endif %}
-{% if clause.minimal_responses is defined %}
-{{ statements.minimal_responses(clause.minimal_responses) }}
-{% endif %}
-{% if clause.query_source is defined %}
-{{ statements.query_source(clause.query_source) }}
-{% endif %}
-{% if clause.query_source_v6 is defined %}
-{{ statements.query_source_v6(clause.query_source_v6) }}
-{% endif %}
-{% if clause.recursion is defined %}
-{{ statements.recursion(clause.recursion) }}
-{% endif %}
-{% if clause.recursive_clients is defined %}
-{{ statements.recursive_clients(clause.recursive_clients) }}
-{% endif %}
-{% if clause.resolver_query_timeout is defined %}
-{{ statements.resolver_query_timeout(clause.resolver_query_timeout) }}
-{% endif %}
-{% if clause.root_delegation_only is defined %}
-{{ statements.root_delegation_only(clause.root_delegation_only) }}
-{% endif %}
-{% if clause.rrset_order is defined %}
-{{ statements.rrset_order(clause.rrset_order) }}
-{% endif %}
+// queries statements
+{% for statement in clauses.options.queries -%}
+  {% if clause[statement] is defined -%}
+    {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
 
 // Security statements
-{% if clause.disable_algorithms is defined %}
-{{ statements.disable_algorithms(clause.disable_algorithms) }}
-{% endif %}
-{% if clause.disable_ds_digests is defined %}
-{{ statements.disable_ds_digests(clause.disable_ds_digests) }}
-{% endif %}
-{% if clause.dnssec_enable is defined %}
-{{ statements.dnssec_enable(clause.dnssec_enable) }}
-{% endif %}
-{% if clause.dnssec_validation is defined %}
-{{ statements.dnssec_validation(clause.dnssec_validation) }}
-{% endif %}
-{% if clause.max_rsa_exponent_size is defined %}
-{{ statements.max_rsa_exponent_size(clause.max_rsa_exponent_size) }}
-{% endif %}
-{% if clause.random_device is defined %}
-{{ statements.random_device(clause.random_device) }}
-{% endif %}
-{% if clause.sig_validity_interval is defined %}
-{{ statements.sig_validity_interval(clause.sig_validity_interval) }}
-{% endif %}
+{% for statement in clauses.options.security -%}
+  {% if clause[statement] is defined -%}
+    {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
 
 // Periodic statements
-{% if clause.cleaning_interval is defined %}
-{{ statements.cleaning_interval(clause.cleaning_interval) }}
-{% endif %}
-{% if clause.heartbeat_interval is defined %}
-{{ statements.heartbeat_interval(clause.heartbeat_interval) }}
-{% endif %}
-{% if clause.interface_interval is defined %}
-{{ statements.interface_interval(clause.interface_interval) }}
-{% endif %}
+{% for statement in clauses.options.periodics -%}
+  {% if clause[statement] is defined -%}
+    {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
 
 };

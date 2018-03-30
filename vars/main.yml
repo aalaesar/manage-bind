@@ -1,0 +1,161 @@
+---
+# vars file for manage-bind
+clauses:
+  key:
+  options:
+    operations:
+      - port
+      - avoid_v4_udp_ports
+      - avoid_v6_udp_ports
+      - coresize
+      - datasize
+      - dialup
+      - directory
+      - dual_stack_servers
+      - dump_file
+      - edns_udp_size
+      - files
+      - hostname
+      - key_directory
+      - lame_ttl
+      - listen_on
+      - listen_on_v6
+      - match_mapped_addresses
+      - max_cache_size
+      - max_cache_ttl
+      - max_ncache_ttl
+      - memstatistics_file
+      - pid_file
+      - preferred_glue
+      - querylog
+      - recursing_file
+      - server_id
+      - stacksize
+      - statistics_file
+      - tcp_clients
+      - tcp_listen_queue
+      - zone_statistics
+    transfers:
+      - allow_notify
+      - allow_transfer
+      - allow_update
+      - allow_update_forwarding
+      - also_notify
+      - alt_transfer_source
+      - alt_transfer_source_v6
+      - ixfr_from_differences
+      - max_journal_size
+      - max_refresh_time
+      - min_refresh_time
+      - max_retry_time
+      - min_retry_time
+      - max_transfer_idle_in
+      - max_transfer_idle_out
+      - max_transfer_time_in
+      - max_transfer_time_out
+      - notify
+      - notify_source
+      - notify_source_v6
+      - provide_ixfr
+      - request_ixfr
+      - serial_query_rate
+      - transfer_format
+      - transfer_source
+      - transfer_source_v6
+      - transfers_in
+      - transfers_out
+      - transfers_per_ns
+      - use_alt_transfer_source
+      - multi_master
+    zones:
+      - masterfile_format
+    queries:
+      - additional_from_auth
+      - additional_from_cache
+      - allow_query_cache
+      - allow_query_cache_on
+      - allow_query
+      - allow_query_on
+      - allow_recursion
+      - allow_recursion_on
+      - auth_nxdomain
+      - blackhole
+      - deny_answer_addresses
+      - deny_answer_aliases
+      - disable_empty_zone
+      - empty_contact
+      - empty_server
+      - empty_zones_enable
+      - forward
+      - forwarders
+      - minimal_responses
+      - query_source
+      - query_source_v6
+      - recursion
+      - recursive_clients
+      - resolver_query_timeout
+      - root_delegation_only
+      - rrset_order
+    security:
+      - disable_algorithms
+      - disable_ds_digests
+      - dnssec_enable
+      - dnssec_validation
+      - max_rsa_exponent_size
+      - random_device
+      - sig_validity_interval
+    periodics:
+      - cleaning_interval
+      - heartbeat_interval
+      - interface_interval
+  zone:
+    common:
+      - allow_query
+      - allow_query_on
+      - allow_transfer
+      - allow_update_forwarding
+      - check_names
+      - delegation_only
+      - dialup
+      - ixfr_from_differences
+      - max_journal_size
+      - sig_validity_interval
+      - update_policy
+      - use_alt_transfer_source
+      - zone_statictics
+    master:
+      - allow_update
+      - also_notify
+      - max_transfer_idle_out
+      - max_transfer_time_out
+      - notify
+      - notify_source
+      - notify_source_v6
+      - masterfile_format
+      - transfer_format
+    slave:
+      - masters
+      - masterfile_format
+      - transfer_source
+      - transfer_source_v6
+      - alt_transfer_source
+      - alt_transfer_source_v6
+      - max_transfer_idle_in
+      - max_transfer_time_in
+      - max_refresh_time
+      - min_refresh_time
+      - max_retry_time
+      - min_retry_time
+      - multi_master
+      - notify
+      - allow_notify
+    forward:
+      - forward
+      - forwarders
+    static_stub:
+      - max_refresh_time
+      - min_refresh_time
+      - max_retry_time
+      - min_retry_time
+      - server_names
+      - server_addresses
