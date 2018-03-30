@@ -1,7 +1,7 @@
 ---
 
 # defaults file for bind9
-# host configuration 
+# host configuration
 bind_user:  bind
 bind_group: bind
 host_dns_srv: self
@@ -10,7 +10,7 @@ host_dns_srv: self
 bind_log_dir: /var/log/bind
 
 # Installation configuration
-bind_pkg_state: installed
+bind_pkg_state: present
 bind_pkgs: ['bind9', 'dnsutils']
 bind_service_state: started
 bind_service_enabled: yes

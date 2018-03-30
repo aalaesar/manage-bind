@@ -2,6 +2,7 @@
 - name: Add the db file name to managed list.
   set_fact: "zone_filename=db.{{ item.name }}"
   when: item.textfile is not defined
+  tags: setup_zones
 
 - block:
   - name: "Loading zone content for {{ item.name }} from {{ item.ymlfile }}"
@@ -19,6 +20,7 @@
       validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
     notify: reload bind
   when: item.ymlfile is defined
+  tags: setup_zones
 
 - block:
   - set_fact: "zone_filename={{ item.textfile.split('/')[-1] }}"
@@ -33,6 +35,7 @@
       validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
     notify: reload bind
   when: item.ymlfile is not defined and item.textfile is defined
+  tags: setup_zones
 
 - block:
   - name: Loading zone content for {{ item.name }} from given Records
@@ -48,9 +51,12 @@
       validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
     notify: reload bind
   when: item.ymlfile is not defined and item.textfile is not defined and item.records is defined
+  tags: setup_zones
 
 - name: Clear zone data
   set_fact: ZoneRecords={}
+  tags: setup_zones
 
 - set_fact: "list_zone_files={{ list_zone_files + [zone_filename] }}"
   when : remove_unmanaged_files
+  tags: setup_zones

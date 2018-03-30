@@ -1,6 +1,15 @@
 ---
 # vars file for manage-bind
-clauses:
+bind_records:
+  - A
+  - AAAA
+  - PTR
+  - MX
+  - SRV
+  - CNAME
+  - DNAME
+  - TXT
+bind_clauses:
   key:
   options:
     operations:

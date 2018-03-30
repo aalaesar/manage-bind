@@ -1,30 +1,30 @@
 ---
   # install requirements
 - name: Make sure bind is installed and running
-  include: install_bind.yml
-  when: bind_pkg_state in ['present', 'installed', 'latest']
+  include_tasks: install_bind.yml
+  when: bind_pkg_state in ['present', 'latest']
   tags: install_bind
 
   # configure named.conf.option
 - name: configure named.conf.options
-  include: configure_options.yml
+  include_tasks: configure_options.yml
   tags:  configure_options
-  
+
   # configure named.conf.local
 - name: configure named.conf.local
-  include: configure_local.yml
+  include_tasks: configure_local.yml
   tags:  configure_local
 
   # generate/copy zones data
-- include: create_zone_db.yml
+- include_tasks: create_zone_db.yml
   with_items: "{{ zones }}"
   tags: setup_zones
 
   #remove unmanaged zone files
 - name: Clean the zone files folder
-  include: remove_unmanaged_files.yml
+  include_tasks: remove_unmanaged_files.yml
   when: remove_unmanaged_files
 
 # - include: setup_host_dns.yml
-  # when: host_dns_srv == 'self' 
+  # when: host_dns_srv == 'self'
   # tags: setup_host_dns

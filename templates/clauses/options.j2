@@ -4,7 +4,7 @@
 
 options {
 // Operations statements
-{% for statement in clauses.options.operations -%}
+{% for statement in bind_clauses.options.operations -%}
   {% if clause[statement] is defined -%}
     {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
   {%- endif %}
@@ -12,35 +12,35 @@ options {
 {{ statements.version(clause.version) | indent(width=2, first=True)}}
 
 // transfers statements
-{% for statement in clauses.options.transfers -%}
+{% for statement in bind_clauses.options.transfers -%}
   {%- if clause[statement] is defined -%}
     {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
   {%- endif -%}
 {%- endfor %}
 
 // Zone statements
-{% for statement in clauses.options.zones -%}
+{% for statement in bind_clauses.options.zones -%}
   {% if clause[statement] is defined -%}
     {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
   {%- endif %}
 {%- endfor %}
 
 // queries statements
-{% for statement in clauses.options.queries -%}
+{% for statement in bind_clauses.options.queries -%}
   {% if clause[statement] is defined -%}
     {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
   {%- endif %}
 {%- endfor %}
 
 // Security statements
-{% for statement in clauses.options.security -%}
+{% for statement in bind_clauses.options.security -%}
   {% if clause[statement] is defined -%}
     {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
   {%- endif %}
 {%- endfor %}
 
 // Periodic statements
-{% for statement in clauses.options.periodics -%}
+{% for statement in bind_clauses.options.periodics -%}
   {% if clause[statement] is defined -%}
     {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
   {%- endif %}
