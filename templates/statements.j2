@@ -233,13 +233,13 @@ clause:
 {% macro allow_update(args) %}
 {# if clause.allow_update is defined and clause.update_policy is not defined #}
   allow-update {
-{% if args is string %}
+{% if args is string -%}
      {{ args }};
 {% else %}
-{% for element in args %}
+{% for element in args -%}
 		{{ element }};
-{% endfor %}
-{% endif %}
+{%- endfor %}
+{%- endif %}
   };
 {# master zone, view, options
 ---
