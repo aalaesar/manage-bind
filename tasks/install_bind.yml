@@ -4,6 +4,7 @@
     name: "{{ item }}"
     state: "{{ bind_pkg_state}}"
   with_items: "{{ bind_pkgs }}"
+  tags: install_bind
 
 - name: Created the log directory for bind
   file:
@@ -11,6 +12,7 @@
     state: directory
     owner: "{{ bind_user }}"
     group: "{{ bind_group }}"
+  tags: install_bind
 
 - name: Check ACL for the zones folder
   file:
@@ -18,6 +20,7 @@
     state: directory
     owner: root
     group: "{{ bind_group }}"
+  tags: install_bind
 
 - name: Setup default zones
   copy:
@@ -37,3 +40,4 @@
     - db.root
   when: bind_config_default_zones == 'yes'
   notify: reload bind
+  tags: install_bind

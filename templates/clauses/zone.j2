@@ -1,3 +1,4 @@
+{% import './templates/statements.j2' as statements %}
 zone "{{ clause.name }}" {{ clause.class|default('') }} {
 {# statements for zone clauses #}
   type {{ clause.type }};
@@ -10,58 +11,59 @@ statements for master zones
 {% else %}
   file "{{ bind_zones_dir }}/db.{{ clause.name }}";
 {% endif %}
-{% include './templates/statements/also_notify.j2' %}
-{% include './templates/statements/notify.j2' %}
-{% include './templates/statements/notify_source.j2' %}
-{% include './templates/statements/notify_source_v6.j2' %}
-{% endif %}
+  {% for statement in bind_clauses.zone.master -%}
+    {% if clause[statement] is defined -%}
+      {%- if statement == 'also_notify' -%}
+        {{ statements.also_notify(clause.also_notify, (clause.also_notify_port|default('')))}}
+      {%- elif statement == 'allow_update' and clause.update_policy is not defined -%}
+        {{ statements[statement](clause[statement])}}
+      {%- else -%}
+        {{ statements[statement](clause[statement])}}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor %}
+{%- endif %}
 {#
 statements for slave zones
 #}
-{% if clause.type == 'slave' %}
+{% if clause.type == 'slave' -%}
   file "{{ bind_zones_dir }}/db.{{ clause.name }}";
-{% include './templates/statements/masters.j2' %}
-{% include './templates/statements/alt_transfer_source.j2' %}
-{% include './templates/statements/alt_transfer_source_v6.j2' %}
-{% include './templates/statements/max_refresh_time.j2' %}
-{% include './templates/statements/min_refresh_time.j2' %}
-{% include './templates/statements/max_retry_time.j2' %}
-{% include './templates/statements/min_retry_time.j2' %}
-{% include './templates/statements/multi_master.j2' %}
-{% include './templates/statements/notify.j2' %}
-{% endif %}
+  {% for statement in bind_clauses.zone.slave -%}
+    {% if clause[statement] is defined -%}
+      {% if statement == 'masters' -%}
+        {{ statements.masters(clause.masters, (clause.masters_port|default('')))}}
+      {% else %}
+        {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+      {%- endif %}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
 {#
 statements for forward zones
 #}
-{% if clause.type == 'forward' %}
-{% include './templates/statements/forward.j2' %}
-{% include './templates/statements/forwarders.j2' %}
-{% endif %}
+{% if clause.type == 'forward' -%}
+  {% for statement in bind_clauses.zone.forward -%}
+    {% if clause[statement] is defined -%}
+      {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
 {#
 statements for static-stub zones
 #}
-{% if clause.type == 'static_stub' %}
-{% include './templates/statements/max_refresh_time.j2' %}
-{% include './templates/statements/min_refresh_time.j2' %}
-{% include './templates/statements/max_retry_time.j2' %}
-{% include './templates/statements/min_retry_time.j2' %}
-{% include './templates/statements/server_names.j2' %}
-{% include './templates/statements/server_addresses.j2' %}
-{% endif %}
+{% if clause.type == 'static_stub' -%}
+  {% for statement in bind_clauses.zone.static_stub -%}
+    {% if clause[statement] is defined -%}
+      {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
 {#
 common statements
 #}
-{% include './templates/statements/allow_query.j2' %}
-{% include './templates/statements/allow_query_on.j2' %}
-{% include './templates/statements/allow_transfer.j2' %}
-{% include './templates/statements/allow_update_forwarding.j2' %}
-{% include './templates/statements/check_names_zone.j2' %}
-{% include './templates/statements/delegation_only.j2' %}
-{% include './templates/statements/dialup.j2' %}
-{% include './templates/statements/masterfile_format.j2' %}
-{% include './templates/statements/sig_validity_interval.j2' %}
-{% include './templates/statements/update_policy.j2' %}
-{% include './templates/statements/use_alt_transfer_source.j2' %}
-{% include './templates/statements/zone_statistics.j2' %}
-
+{% for statement in bind_clauses.zone.common -%}
+  {% if clause[statement] is defined -%}
+    {{ statements[statement](clause[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
 };

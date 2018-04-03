@@ -1,15 +1,18 @@
 ---
 - name: Load default options
   include_vars: "{{ role_path }}/defaults/default_options.yml"
+  tags:  configure_options
 
 - name: Load options file
   include_vars: "{{ options_file }}"
   when: options_file is defined
+  tags:  configure_options
 
 - name: Combine options and default options
   set_fact:
     options2: "{{default_options|combine(options)}}"
   when: options is defined
+  tags:  configure_options
 
 - name: Generate Bind options
   template:
@@ -20,3 +23,4 @@
     mode: 0644
     validate: "/usr/sbin/named-checkconf %s"
   notify: reload bind
+  tags:  configure_options

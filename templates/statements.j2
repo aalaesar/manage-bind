@@ -1,0 +1,1453 @@
+{% macro additional_from_auth(args) %}
+{# if clause.additional_from_auth is defined and (clause.recursion is defined and clause.recursion == 'no') #}
+  additional-from-auth {{ args }};
+{# view, options
+---
+clause:
+  recursion: no
+  additional_from_auth: yes
+#}
+{% endmacro %}
+
+{% macro additional_from_cache(args) %}
+{# if clause.additional_from_cache is defined and (clause.recursion is defined and clause.recursion == 'no') #}
+  additional-from-cache {{ args }};
+{# view, options
+---
+clause:
+  recursion: no
+  additional_from_cache: yes
+#}
+{% endmacro %}
+
+{% macro allow_notify(args) %}
+  allow-notify {
+{% if args is string %}
+   {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{#  slave zone, view, options
+---
+clause:
+  allow_notify: "acl_name"
+--- or
+clause:
+  type: slave
+  allow_notify:
+    - "acl_name"
+    - key key-name
+    - 8.8.4.4
+#}
+{% endmacro %}
+
+{% macro allow_query_cache(args) %}
+  allow-query-cache {
+{% if args is string  %}
+    {{ args }};
+{% else %}
+{% for element in args%}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# view, options
+---
+clause:
+  allow_query_cache: "acl_name"
+--- or
+clause:
+  allow_query_cache:
+    - 1.1.1.1
+    - 2.2.2.0/24
+    - "key dnssec_key"
+    - "acl_name"
+#}
+{% endmacro %}
+
+{% macro allow_query_cache_on(args) %}
+  allow-query-cache-on {
+{% if args is string  %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# view, options
+---
+clause:
+  allow_query_cache_on: "acl_name"
+--- or
+clause:
+  allow_query_cache_on:
+    - 1.1.1.1
+    - 2.2.2.0/24
+    - "key dnssec_key"
+    - "acl_name"
+#}
+{% endmacro %}
+
+{% macro allow_query(args) %}
+  allow-query {
+{% if args is string %}
+   {{ args }};
+{% else %}
+{% for element in args %}
+   {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# zone, view, options
+---
+clause:
+  allow_query:
+    - 1.1.1.1
+    - 2.2.2.2
+    - 3.3.3.3
+    - ...
+--- or
+clause:
+  allow_query: 1.1.1.1
+#}
+{% endmacro %}
+
+{% macro allow_query_on(args) %}
+  allow-query-on {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# zone, view, options
+---
+clause:
+  allow_query_on: 192.168.0.2
+--- or
+clause:
+  allow_query_on:
+    - 192.168.0.2
+    - 172.16.0.254
+    - 10.0.0.255
+#}
+{% endmacro %}
+
+{% macro allow_recursion(args) %}
+  allow-recursion {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# view, options
+---
+clause:
+  allow_recursion: "acl_list"
+--- or
+clause:
+  allow_recursion:
+    - 10.0.0.0/8
+    - "key key_recursion"
+    - 192.168.0.2
+#}
+{% endmacro %}
+
+{% macro allow_recursion_on(args) %}
+  allow-recursion-on {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# view, options
+---
+clause:
+  allow_recursion_on: 192.168.0.5
+--- or
+clause:
+  allow_recursion_on:
+    - 192.168.0.5
+    - 10.0.0.254
+#}
+{% endmacro %}
+
+{% macro allow_transfer(args) %}
+  allow-transfer {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for allow_transfer in args %}
+    {{ allow_transfer }};
+{% endfor %}
+{% endif %}
+  };
+{# zone, view, options
+---
+clause:
+  allow_transfer: "any"
+--- or
+clause:
+  allow_transfer:
+    - "acl_name"
+    - "key key-name"
+    - 8.8.4.4
+#}
+{% endmacro %}
+
+{% macro allow_update_forwarding(args) %}
+  allow-update-forwarding {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+		{{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# zone, view, options
+---
+clause:
+  allow_update_forwarding: "acl_name"
+--- or
+clause:
+  allow_update_forwarding:
+    - "acl_name"
+    - key key-name
+    - 8.8.4.4
+#}
+{% endmacro %}
+
+{% macro allow_update(args) %}
+{# if clause.allow_update is defined and clause.update_policy is not defined #}
+  allow-update {
+{% if args is string -%}
+     {{ args }};
+{% else %}
+{% for element in args -%}
+		{{ element }};
+{%- endfor %}
+{%- endif %}
+  };
+{# master zone, view, options
+---
+clause:
+  allow_update: "acl_name"
+--- or
+clause:
+  allow_update:
+    - "acl_name"
+    - key key-name
+    - 8.8.4.4
+#}
+{% endmacro %}
+
+{% macro also_notify(args, port='') %}
+  also-notify {% if port != '' %}port {{port}} {% endif %}{
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for notify in args %}
+{% if notify is string %}
+    {{ notify }};
+{% else %}
+    {{notify.host}}
+    {% if notify.port is defined %}port {{notify.port}}{% endif %}
+    {% if notify.key is defined %}key {{notify.key}}{% endif %};
+{% endif %}
+{% endfor %}
+{% endif %}
+  };
+{# master zone, view, options
+---
+clause:
+  also_notify:
+    - "acl_name"
+    - host: 10.10.10.62
+      port: 53
+      key: "key_notify"
+    - 8.8.4.4
+  also_notify_port: 53
+#}
+{% endmacro %}
+
+{% macro alt_transfer_source(args) %}
+{% if args is string %}
+  alt-transfer-source {{ args }};
+{% else %}
+  alt-transfer-source {{ args.ip }}{% if args.port is defined %} port {{ args.port }} {% endif %};
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  alt_transfer_source: 8.8.8.8
+--- or
+clause:
+  alt_transfer_source:
+    ip: 8.8.8.8
+    port: 53
+---
+#}
+{% endmacro %}
+
+{% macro alt_transfer_source_v6(args) %}
+{% if args is string %}
+  alt-transfer-source-v6 {{ args }};
+{% else %}
+  alt-transfer-source-v6 {{ args.ipv6 }}{% if args.port is defined %} port {{args.port}}{% endif %};
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  alt_transfer_source_v6: fe80::1
+--- or
+clause:
+  alt_transfer_source_v6:
+    ipv6: fe80::1
+    port: 53
+---
+#}
+{% endmacro %}
+
+{% macro auth_nxdomain(args) %}
+  auth-nxdomain {{ args }};
+{# view, options
+---
+clause:
+  auth_nxdomain: no
+#}
+{% endmacro %}
+
+{% macro avoid_v4_udp_ports(args) %}
+  avoid-v4-udp-ports {
+{% for port in args %}
+    {{ port }};
+{% endfor %}
+  };
+{# options
+---
+clause:
+  avoid_v4_udp_ports:
+    - 23
+    - 56
+    - 42
+    - ...
+#}
+{% endmacro %}
+
+{% macro avoid_v6_udp_ports(args) %}
+  avoid-v6-udp-ports {
+{% for port in args %}
+    {{ port }};
+{% endfor %}
+  };
+{# options
+---
+clause:
+  avoid_v6_udp_ports:
+    - 23
+    - 56
+    - 42
+    - ...
+#}
+{% endmacro %}
+
+{% macro blackhole(args) %}
+  blackhole {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# options
+---
+clause:
+  blackhole: "none"
+--- or
+clause:
+  blackhole:
+    - 8.8.8.8
+    - "acl_blacklist"
+    - ...
+#}
+{% endmacro %}
+
+{% macro check_names(args) %}
+  check-names {{ args }};
+{# zone
+---
+clause:
+  check_names: ignore # warn|fail|ignore
+#}
+{% endmacro %}
+
+{% macro cleaning_interval(args) %}
+  cleaning-interval {{ args }};
+{# view, options
+---
+clause:
+  cleaning_interval: 60
+#}
+{% endmacro %}
+
+{% macro coresize(args) %}
+  coresize {{ args }};
+{# options
+---
+clause:
+  coresize: 10m
+#}
+{% endmacro %}
+
+{% macro datasize(args) %}
+  datasize {{ args }};
+{# options
+---
+clause:
+  datasize: 20m
+#}
+{% endmacro %}
+
+{% macro delegation_only(args) %}
+  delegation-only {{ args }};
+{# zone
+---
+clause:
+  delegation_only: yes
+#}
+{% endmacro %}
+
+{% macro deny_answer_addresses(args) %}
+{# not fully implemented #}
+  deny-answer-addresses {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# options
+---
+clause:
+  deny_answer_addresses:
+    - host1
+    - 8.8.8.8
+TODO : add options
+#}
+{% endmacro %}
+
+{% macro deny_answer_aliases(args) %}
+{# not fully implemented #}
+  deny-answer-aliases {
+{% if args is string %}
+    "{{ args }}";
+{% else %}
+{% for element in args %}
+    "{{ element }}";
+{% endfor %}
+{% endif %}
+  };
+{# options
+--
+clause:
+  deny_answer_aliases:
+  - list of acl/ip/etc
+TODO: add options
+#}
+{% endmacro %}
+
+{% macro dialup(args) %}
+  dialup {{ args }};
+{# zone, view, options
+---
+clause:
+  dialup: no
+#}
+{% endmacro %}
+
+{% macro directory(args) %}
+  directory "{{ args }}";
+{# options
+---
+clause:
+  directory: /path/name/
+#}
+{% endmacro %}
+
+{% macro disable_algorithms(args) %}
+{% for elem in args %}
+  disable-algorithms "{{ elem.domain }}" {
+{% if elem.algorithms is string %}
+    "{{ elem.algorithms }}";
+{% else %}
+{% for algo in elem.algorithms %}
+    "{{ algo }}";
+{% endfor %}
+{% endif %}
+  };
+{% endfor %}
+{# options
+  ---
+  clause:
+    disable_algorithms:
+      - domain: test.tld
+        algorithms:
+          - NSEC3RSASHA1
+          - RSASHA256
+          - RSASHA512
+          - ECCGOST
+          - ECDSAP256SHA256
+          - ECDSAP384SHA384
+      - domain: example.com
+        algorithms:
+          - RSAMD5
+          - RSA
+          - DH
+          - DSA
+          - NSEC3DSA
+          - ECC
+          - RSASHA1
+#}
+{% endmacro %}
+
+{% macro disable_ds_digests(args) %}
+{% for elem in args %}
+  disable-ds-digests "{{ elem.domain}}" {
+{% if elem.digests is string %}
+    "{{ elem.digests }}";
+{% else %}
+{% for digest in elem.digests %}
+    "{{ digest }}";
+{% endfor %}
+{% endif %}
+  };
+{% endfor %}
+{# options
+  ---
+  clause:
+    disable_ds_digests:
+      - domain: test.tld
+        digests:
+          - SHA-1
+          - GOST
+      - domain: example.com
+        digests:
+          - SHA-256
+          - SHA-384
+#}
+{% endmacro %}
+
+{% macro disable_empty_zone(args) %}
+{% if args is string %}
+  disable-empty-zone "{{ args }}";
+{% else %}
+{% for empty_zone in args %}
+  disable-empty-zone "{{ empty_zone }}";
+{% endfor %}
+{% endif %}
+{# view, options
+---
+clause:
+  disable_empty_zone:
+    - example.com
+    - empty.tld
+    - 0fgiven.tld
+#}
+{% endmacro %}
+
+{% macro dnssec_enable(args) %}
+  dnssec-enable {{ args }};
+{# view, options
+---
+clause:
+  dnssec_enable: no
+#}
+{% endmacro %}
+
+{% macro dnssec_validation(args) %}
+  dnssec-validation {{ args }};
+{# view, options
+---
+clause:
+  dnssec_validation: yes
+#}
+{% endmacro %}
+
+{% macro dual_stack_servers(args, port='') %}
+  dual-stack-servers {% if port != '' %}port {{ port }} {% endif %}{
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for servers in args %}
+{% if server is string %}
+    {{ server }};
+{% else %}
+    "{{ server.host }}"{% if server.port is defined %} port {{ server.port }}{% endif %};
+{% endif %}
+{% endfor %}
+{% endif %}
+  };
+{# view, options
+---
+clause:
+  dual-stack-servers:
+    - host: example.com
+      port: 2253
+    - 8.8.8.8
+    - fe80::cafe
+  dual-stack-servers_port: 53
+#}
+{% endmacro %}
+
+{% macro dump_file(args) %}
+  dump-file "{{ args }}";
+{# options
+---
+clause:
+  dump_file: /some/directory/
+#}
+{% endmacro %}
+
+{% macro edns_udp_size(args) %}
+  edns-udp-size {{ args }} ;
+{# view, options
+---
+clause:
+  edns_udp_size: 4096
+#}
+{% endmacro %}
+
+{% macro empty_contact(args) %}
+  empty-contact "{{ args }}";
+{# view, options
+---
+clause:
+  empty_contact: "hostmaster.example.com"
+#}
+{% endmacro %}
+
+{% macro empty_server(args) %}
+  empty-server "{{ args }}";
+{# view, options
+---
+clause:
+  empty_server: "ns.example.com"
+#}
+{% endmacro %}
+
+{% macro empty_zones_enable(args) %}
+  empty-zone-enable {{ args }};
+{# view, options
+---
+clause:
+  empty_zone_enable: yes
+#}
+{% endmacro %}
+
+{% macro files(args) %}
+  files {{ args }};
+{# view, options
+---
+clause:
+  max_files: 512
+#}
+{% endmacro %}
+
+{% macro forwarders(args) %}
+  forwarders {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for fwder in args %}
+{% if fwder is string %}
+    {{ fwder }};
+{% else %}
+    {{ fwder.host }} port {{ fwder.port }};
+{% endif %}
+{% endfor %}
+{% endif %}
+    };
+{# forward zone, view, options
+---
+clause:
+  forwarders:
+    - 10.2.3.4
+    - host: 192.168.0.2
+      port: 53
+#}
+{% endmacro %}
+
+{% macro forward(args) %}
+	forward {{ args }};
+{# forward zone, view, options
+---
+clause:
+  forward: first # only | first
+#}
+{% endmacro %}
+
+{% macro heartbeat_interval(args) %}
+  heartbeat-interval {{ args }};
+{# view, options
+---
+clause:
+  heartbeat_interval: 60
+#}
+{% endmacro %}
+
+{% macro hostname(args='none') %}
+  hostname "{{ args }}";
+{# view, options
+---
+clause:
+  hostname: myhost
+#}
+{% endmacro %}
+
+{% macro interface_interval(args) %}
+  interface-interval {{ args }};
+{# options
+---
+clause:
+  interface_interval: 60
+#}
+{% endmacro %}
+
+{% macro ixfr_from_differences(args) %}
+  ixfr-from-differences {{ args }};
+{# zone, view, options
+---
+clause:
+  ixfr_from_differences: yes
+#}
+{% endmacro %}
+
+{% macro key_directory(args) %}
+  key-directory "{{ args }}";
+{# options
+---
+clause:
+  key_directory: /some/path/
+#}
+{% endmacro %}
+
+{% macro lame_ttl(args) %}
+  lame-ttl {{ args }};
+{# view, options
+---
+clause:
+  lame_ttl: 600
+#}
+{% endmacro %}
+
+{% macro listen_on(args, port='') %}
+  listen-on {% if port != '' %}port {{ port }} {% endif %}{
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# options
+---
+clause:
+  listen_on_port: 53
+  listen_on: any
+--- or
+clause:
+  listen_on_port: 53
+  listen_on:
+    - "acl_good_guys"
+    - 8.8.8.8
+    - ...
+#}
+{% endmacro %}
+
+{% macro listen_on_v6(args, port='') %}
+  listen-on-v6 {% if port != '' %}port {{ port }} {% endif %}{
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for element in args %}
+    {{ element }};
+{% endfor %}
+{% endif %}
+  };
+{# options
+---
+clause:
+  listen_on_v6_port: 53
+  listen_on_v6: any
+--- or
+clause:
+  listen_on_v6_port: 53
+  listen_on_v6:
+    - "acl_good_guys"
+    - 8.8.8.8
+    - ...
+#}
+{% endmacro %}
+
+{% macro masterfile_format(args) %}
+  masterfile-format {{ args }};
+{# master slave zone, view, options
+---
+clause:
+  masterfile_format: text # text | raw | map
+  # master zone default = text
+  # slave zones default = raw
+#}
+{% endmacro %}
+
+{% macro masters(args, port='') %}
+	masters {% if port != '' %}port {{ port }} {% endif %}{
+{% for master in args %}
+{% if master is string %}
+    {{ master }};
+{% else %}
+    {{ master.host }}{% if master.port is defined %} port {{ master.port }}{% endif %}{% if master.key is defined %} key {{ master.key }}{% endif %};
+{% endif %}
+{% endfor %}
+};
+{# slave zone
+---
+clause:
+  masters_port: 53 # optional
+  masters: 192.168.0.53
+--- or
+clause:
+  masters_port: 53 # optional
+  masters:
+    - host: 192.168.0.5
+      port: 53 # optional
+      key: "key_master" # optional
+    - host: 10.0.0.255
+#}
+{% endmacro %}
+
+{% macro match_mapped_addresses(args) %}
+  match-mapped-addresses {{args}};
+{# options
+---
+clause:
+  match_mapped_addresses: no
+#}
+{% endmacro %}
+
+{% macro max_cache_size(args) %}
+  max-cache-size {{ args }};
+{# view, options
+---
+clause:
+  max_cache_size: 36000
+#}
+{% endmacro %}
+
+{% macro max_cache_ttl(args) %}
+  max-cache-ttl {{ args }};
+{# view, options
+---
+clause:
+  max_cache_ttl: 604 800 # = 1 week
+#}
+{% endmacro %}
+
+{% macro max_journal_size(args) %}
+  max-journal-size {{ args }};
+{# zone, view, options
+---
+clause:
+  max-journal-size: 50k
+#}
+{% endmacro %}
+
+{% macro max_ncache_ttl(args) %}
+  max-ncache-ttl {{ args }};
+{# view, options
+---
+clause:
+  max_ncache_ttl: 10800  # =3h, max is 7d
+#}
+{% endmacro %}
+
+{% macro max_refresh_time(args) %}
+  max-refresh-time {{ args }};
+{# slave zone, view, options
+---
+clause:
+  max_refresh_time: 3600
+#}
+{% endmacro %}
+
+{% macro max_retry_time(args) %}
+  max-retry-time {{ args }};
+{# slave zone, view, options
+---
+clause:
+  max_retry_time: 3600
+#}
+{% endmacro %}
+
+{% macro max_rsa_exponent_size(args) %}
+  max-rsa-exponent-size {{ args }};
+{# options
+---
+clause:
+  max_rsa_exponent_size: 2048
+#}
+{% endmacro %}
+
+{% macro max_transfer_idle_in(args) %}
+  max-transfer-idle-in {{ args }};
+{# slave zone, view, options
+---
+clause:
+  max_transfer_idle_in: 60
+#}
+{% endmacro %}
+
+{% macro max_transfer_idle_out(args) %}
+  max-transfer-idle-out {{ args }};
+{# master zone, view, options
+---
+clause:
+  max_transfer_idle_out: 120
+#}
+{% endmacro %}
+
+{% macro max_transfer_time_in(args) %}
+  max-transfer-time-in {{ args }};
+{# slave zone, view, options
+---
+clause:
+  max_transfer_time_in: 120
+#}
+{% endmacro %}
+
+{% macro max_transfer_time_out(args) %}
+  max-transfer-time-out {{ args }};
+{# master zone, view, options
+---
+clause:
+  max_transfer_time_out: 120
+#}
+{% endmacro %}
+
+{% macro memstatistics_file(args) %}
+  memstatistics-file "{{ args }}";
+{# options
+---
+clause:
+  memstatistics_file: /some/path/to/afile # absolute or relative to directory statement
+#}
+{% endmacro %}
+
+{% macro minimal_responses(args) %}
+  minimal-responses {{ args }};
+{# view, options
+---
+clause:
+  minimal_responses: no # yes | no
+#}
+{% endmacro %}
+
+{% macro min_refresh_time(args) %}
+  min-refresh-time {{ args }};
+{# slave zone, view, options
+---
+clause:
+  min_refresh_time: 500
+#}
+{% endmacro %}
+
+{% macro min_retry_time(args) %}
+  min-retry-time {{ args }};
+{# slave zone, view, options
+---
+clause:
+  min_retry_time: 500
+#}
+{% endmacro %}
+
+{% macro multi_master(args) %}
+  multi-master {{ args }};
+{# slave zone, view, options
+---
+clause:
+  multi_master: no # yes | no
+#}
+{% endmacro %}
+
+{% macro notify(args) %}
+  notify {{ args }};
+{# master slave zone, view, options
+---
+clause:
+  notify: yes # yes | no | explicit
+#}
+{% endmacro %}
+
+{% macro notify_source(args) %}
+{% if args is string %}
+  notify-source {{ args }};
+{% else %}
+  notify-source {{ args }}{% if args.port is defined %} port {{args.port}}{% endif %};
+{% endif %}
+{# master zone, view, options
+---
+clause:
+  notify_source: * # ip | *
+--- or
+clause:
+  notify_source:
+    ip: 192.168.0.5
+    port: 53
+---
+#}
+{% endmacro %}
+
+{% macro notify_source_v6(args) %}
+{% if args is string %}
+  notify-source-v6 {{ args }};
+{% else %}
+  notify-source-v6 {{ args.ipv6 }}{% if args.port is defined %} port {{args.port}}{% endif %};
+{% endif %}
+{# master zone, view, options
+---
+clause:
+  notify_source_v6: fe80::1 # ipv6 | *
+--- or
+clause:
+  notify_source_v6:
+    ipv6: fe80::1
+    port: 53
+---
+#}
+{% endmacro %}
+
+{% macro pid_file(args) %}
+  pid-file "{{ args }}";
+{# options
+---
+clause:
+  pid_file: /some/path/toa/file # absolute or relative to directory statement
+#}
+{% endmacro %}
+
+{% macro port(args) %}
+  port {{ args }};
+{# options
+---
+clause:
+  port: 53
+#}
+{% endmacro %}
+
+{% macro preferred_glue(args) %}
+  preferred-glue {{ args }};
+{# view, options
+---
+clause:
+  preferred_glue: A # A or AAAA
+#}
+{% endmacro %}
+
+{% macro provide_ixfr(args) %}
+  provide-ixfr {{ args }};
+{# view, options
+---
+clause:
+  provide_ixfr: yes # yes | no
+#}
+{% endmacro %}
+
+{% macro querylog(args) %}
+  querylog {{ args }};
+{# options
+---
+clause:
+  querylog: yes # yes | no
+#}
+{% endmacro %}
+
+{% macro query_source(args) %}
+  query-source address {{ args.address|default('*') }}{% if args.port is defined %} port {{ args.port }}{% endif %};
+{# view, options
+---
+clause:
+  query_source:
+    address: 192.168.0.5 # ip | *
+    port: 1024 # ip_port | *
+#}
+{% endmacro %}
+
+{% macro query_source_v6(args) %}
+  query-source-v6 address {{ args[address]|default('*') }}{% if args[port] is defined %} port {{ args[port] }}{% endif %};
+{# view, options
+---
+clause:
+  query_source_v6:
+    address: fe80::cafe # ipv6 | *
+    port: 1024 # ip_port | *
+#}
+{% endmacro %}
+
+{% macro random_device(args) %}
+  random-device "{{ args }}";
+{# options
+---
+clause:
+  random_device: /dev/random
+#}
+{% endmacro %}
+
+{% macro recursing_file(args) %}
+  recursing-file "{{ args }}";
+{# options
+---
+clause:
+  recursing_file: bind.recurse # absolute or relative path to directory statement
+#}
+{% endmacro %}
+
+{% macro recursion(args) %}
+  recursion {{ args }};
+{# view, options
+---
+clause:
+  recursion: "yes" # yes | no
+#}
+{% endmacro %}
+
+{% macro recursive_clients(args) %}
+  recursive-clients {{ args }};
+{# options
+---
+clause:
+  recursive_clients: 1000
+#}
+{% endmacro %}
+
+{% macro request_ixfr(args) %}
+  request-ixfr {{ args }};
+{# view, options
+---
+clause:
+  request_ixfr: yes # yes | no
+#}
+{% endmacro %}
+
+{% macro resolver_query_timeout(args) %}
+  resolver-query-timeout {{ args }};
+{# options
+---
+clause:
+  resolver_query_timeout 10 # 10 to 30. special : 0 = 10
+#}
+{% endmacro %}
+
+{% macro root_delegation_only(args) %}
+{% if args.exclude is defined %}
+  root-delegation-only exclude {
+{% for tld in args.exclude %}
+    "{{ tld }}";
+{% endfor %}
+  };
+{% endif %}
+{% if args.domains is defined %}
+  root-delegation-only {
+{%for element in args.domains %}
+    "{{ tld }}";
+{% endfor %}
+{% endif %}
+  };
+{# view, options
+---
+clause:
+  root_delegation_only:
+    exclude: # list of domains to exclude
+      - com
+      - fr
+    domains: # list of domains to delegate
+      - tld
+      - net
+      - example.org
+#}
+{% endmacro %}
+
+{% macro rrset_order(args) %}
+  rrset-order {
+{% for order_spec in args %}
+    {% if order_spec.class is defined%}class {{ order_spec.class }}{% endif %}
+    {% if order_spec.type is defined%}type {{ order_spec.type }}{% endif %}
+    {% if order_spec.name is defined%}name "{{ order_spec.name }}"{% endif %}
+    order {{ order_spec.order }};
+{% endfor %}
+  };
+{# view, options
+---
+clause:
+  rrset_order:
+    - order: random # mandatory. fixed | random | cyclic
+      class: IN # default: IN
+      type: MX
+      name: example.com
+    - order: cyclic
+#}
+{% endmacro %}
+
+{% macro serial_query_rate(args) %}
+  serial-query-rate {{ args }};
+
+{# options
+---
+clause:
+  serial_query_rate: 20
+#}
+{% endmacro %}
+
+{% macro server_addresses(args) %}
+  server-addresses {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for address in args %}
+    { address };
+{% endfor %}
+{% endif %}
+  };
+{# static-stub zones
+---
+clause:
+  server_addresses: 10.0.0.1
+--- or
+clause:
+  server_addresses:
+    - 192.168.1.1
+    - 10.0.0.1
+#}
+{% endmacro %}
+
+{% macro server_id(args) %}
+  server-id "{{ args }}";
+
+{# options
+---
+clause:
+  server_id: "name server" # default set to none
+#}
+{% endmacro %}
+
+{% macro server_names(args) %}
+  server-names {
+{% if args is string %}
+    {{ args }};
+{% else %}
+{% for srvname in args %}
+    { srvname };
+{% endfor %}
+{% endif %}
+  };
+{# static-stub zones
+---
+clause:
+  server_names: host.example.com
+--- or
+clause:
+  server_names:
+    - host.example.com
+    - another_host.example.net
+#}
+{% endmacro %}
+
+{% macro sig_validity_interval(args) %}
+  sig-validity-internal {{ args }};
+{# zone, view, options
+---
+clause:
+  sig_validity_internal: 30 # in days, max 3650
+#}
+{% endmacro %}
+
+{% macro stacksize(args) %}
+  stacksize {{ args }};
+{# options
+---
+clause:
+  stacksize: 10k # default = none
+#}
+{% endmacro %}
+
+{% macro statistics_file(args) %}
+  statistics-file "{{ args }}";
+{# options
+---
+clause:
+  statistics_file: /some/path/to/afile # absolute or relative to directory statement
+#}
+{% endmacro %}
+
+{% macro tcp_clients(args) %}
+  tcp-clients {{ args }};
+{# options
+---
+clause:
+  tcp_clients: 100
+#}
+{% endmacro %}
+
+{% macro tcp_listen_queue(args) %}
+  tcp-listen-queue {{ args }};
+{# options
+---
+clause:
+  tcp_listen_queue: 3 # default & mini = 3
+#}
+{% endmacro %}
+
+{% macro transfer_format(args) %}
+  transfer-format {{ args }};
+{# master zone, view, options
+---
+clause:
+  transfer_format: many-answers # one-answer | many-answers
+#}
+{% endmacro %}
+
+{% macro transfers_in(args) %}
+  transfers-in {{ args }};
+{# options
+---
+clause:
+  transfers_in: 10
+#}
+{% endmacro %}
+
+{% macro transfer_source(args) %}
+{% if args is string %}
+  transfer-source {{ args }};
+{% else %}
+  transfer-source {{ args.ip }}{% if args.port is defined %} port {{args.port}}{% endif %};
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  transfer_source: 8.8.8.8
+--- or
+clause:
+  transfer_source:
+    ip: 8.8.8.8
+    port: 53
+---
+#}
+{% endmacro %}
+
+{% macro transfer_source_v6(args) %}
+{% if args is string %}
+  transfer-source-v6 {{ args }};
+{% else %}
+  transfer-source-v6 {{ args }}{% if args.port is defined %} port {{args.port}}{% endif %};
+{% endif %}
+{# slave zone, view, options
+---
+clause:
+  transfer_source_v6: fe80::1
+--- or
+clause:
+  transfer_source_v6:
+    ipv6: fe80::1
+    port: 53
+---
+#}
+{% endmacro %}
+
+{% macro transfers_out(args) %}
+  transfers-out {{ args }};
+{# options
+---
+clause:
+  transfers_out: 10
+#}
+{% endmacro %}
+
+{% macro transfers_per_ns(args) %}
+  transfers-per-ns {{ args }};
+{# options
+---
+clause:
+  transfers_per_ns: 2
+#}
+{% endmacro %}
+
+{% macro update_policy(args) %}
+{% if args == 'local' %}
+  update-policy local;
+{% else %}
+  update-policy {
+    {{ args.permission }}
+    {{ args.identity }}
+    {{ argsargs.matchtype }}
+    {{ args.tname|default('') }}
+    {{ args.rr|default('') }};
+    };
+{% endif %}
+{# zone
+---
+clause:
+  update_policy: local
+--- or
+clause:
+  update_policy:
+    permission: grant
+    identity: *
+    matchtype: zonesub
+    tname: *
+    rr: "A MX PTR"
+#}
+{% endmacro %}
+
+{% macro use_alt_transfer_source(args) %}
+  use-alt-transfer-source {{ args }};
+{# zone, view, options
+---
+clause:
+  use_alt_transfer_source: yes
+#}
+{% endmacro %}
+
+{% macro version(args='get lost!') %}
+  version "{{ args }}";
+{# options
+---
+clause:
+  version: 'get lost'
+#}
+{% endmacro %}
+
+{% macro zone_statistics(args) %}
+  zone-statictics {{ args }};
+{# zone, view, options
+---
+clause:
+  zone_statictics: yes # yes | no
+#}
+{% endmacro %}
