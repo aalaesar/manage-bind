@@ -1,18 +1,18 @@
 ; {{ ansible_managed }}
-{% import "./templates/records.j2" as records %}
-$ttl {{ ZoneRecords.ttl|default( zones_config_ttl ) }}
-$ORIGIN {{ item.name }}.
-@     IN  SOA     {{ ZoneRecords.SOA.ns }}     {{ ZoneRecords.SOA.email }}  (
-      {{ ZoneRecords.SOA.serial }}    ; serial
-      {{ ZoneRecords.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
-      {{ ZoneRecords.SOA.retry|default( zones_config_retry ) }}      ; retry
-      {{ ZoneRecords.SOA.expire|default( zones_config_expire ) }}      ; expire
-      {{ ZoneRecords.SOA.negative|default( zones_config_negative ) }}      ; negative
+{% import "./templates/records.j2" as macro_records %}
+$ttl {{ full_zone.records.ttl|default( zones_config_ttl ) }}
+$ORIGIN {{ bind_zone.key }}.
+@     IN  SOA     {{ full_zone.records.SOA.ns }}     {{ full_zone.records.SOA.email }}  (
+      {{ full_zone.records.SOA.serial }}    ; serial
+      {{ full_zone.records.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
+      {{ full_zone.records.SOA.retry|default( zones_config_retry ) }}      ; retry
+      {{ full_zone.records.SOA.expire|default( zones_config_expire ) }}      ; expire
+      {{ full_zone.records.SOA.negative|default( zones_config_negative ) }}      ; negative
       )
 
-{{ records.NS(ZoneRecords.NS) }}
-{% for record in bind_records -%}
-  {% if ZoneRecords[record] is defined -%}
-{{ records[record](ZoneRecords[record]) }}
+{{ macro_records.NS(full_zone.records.NS) }}
+{% for my_record in bind_records -%}
+  {% if full_zone.records[my_record] is defined -%}
+{{ macro_records[my_record](full_zone.records[my_record]) }}
   {%- endif %}
 {%- endfor %}

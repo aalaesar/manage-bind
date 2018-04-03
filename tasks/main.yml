@@ -17,7 +17,9 @@
 
   # generate/copy zones data
 - include_tasks: create_zone_db.yml
-  with_items: "{{ zones }}"
+  with_dict: "{{ zones }}"
+  loop_control:
+    loop_var: bind_zone
   tags: setup_zones
 
   #remove unmanaged zone files
