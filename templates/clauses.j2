@@ -1,0 +1,140 @@
+{% import './templates/statements.j2' as macro_statements %}
+
+{% macro key(name, algorithm=none, secret=none) %}
+key {{ name }} {
+{% if algorithm is not none %}
+  algorithm {{ algorithm }};
+{% endif %}
+{% if secret is not none %}
+  secret "{{ secret }}";
+{% endif %}
+};
+{#
+keys:
+  - name: dhcp_updater
+    algorithm: "HMAC-MD5.SIG-ALG.REG.INT"
+    secret: "thisisntaverysecurepassphrase"
+#}
+{%- endmacro %}
+
+
+{% macro options(options_args) -%}
+options {
+// Operations statements
+{% for statement in bind_clauses.options.operations -%}
+  {% if options_args[statement] is defined -%}
+    {{ macro_statements[statement](options_args[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
+{{ macro_statements.version(options_args.version) | indent(width=2, first=True)}}
+
+// transfers statements
+{% for statement in bind_clauses.options.transfers -%}
+  {%- if options_args[statement] is defined -%}
+    {{ macro_statements[statement](options_args[statement]) | indent(width=2, first=True)}}
+  {%- endif -%}
+{%- endfor %}
+
+// Zone statements
+{% for statement in bind_clauses.options.zones -%}
+  {% if options_args[statement] is defined -%}
+    {{ macro_statements[statement](options_args[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
+
+// queries statements
+{% for statement in bind_clauses.options.queries -%}
+  {% if options_args[statement] is defined -%}
+    {{ macro_statements[statement](options_args[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
+
+// Security statements
+{% for statement in bind_clauses.options.security -%}
+  {% if options_args[statement] is defined -%}
+    {{ macro_statements[statement](options_args[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
+
+// Periodic statements
+{% for statement in bind_clauses.options.periodics -%}
+  {% if options_args[statement] is defined -%}
+    {{ macro_statements[statement](options_args[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
+
+};
+{%- endmacro %}
+
+
+{% macro zone(my_name, properties) %}
+zone "{{ my_name }}" {{ properties.class|default('') }} {
+{# statements for zone argss #}
+  type {{ properties.type }};
+{#
+statements for master zones
+#}
+{% if properties.type == 'master' %}
+{% if properties.textfile is defined %}
+  file "{{ bind_zones_dir }}/{{ properties.textfile.split('/')[-1] }}";
+{% else %}
+  file "{{ bind_zones_dir }}/db.{{ my_name }}";
+{% endif %}
+  {% for statement in bind_clauses.zone.master -%}
+    {% if properties[statement] is defined -%}
+      {% if statement == 'also_notify' -%}
+        {{ macro_statements.also_notify(properties.also_notify, (properties.also_notify_port|default('')))}}
+      {%- elif statement == 'allow_update' and properties.update_policy is not defined -%}
+        {{ macro_statements[statement](properties[statement]) | indent(width=2, first=True)}}
+      {%- else -%}
+        {{ macro_statements[statement](properties[statement]) | indent(width=2, first=True)}}
+      {%- endif %}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{#
+statements for slave zones
+#}
+{% if properties.type == 'slave' -%}
+  file "{{ bind_zones_dir }}/db.{{ my_name }}";
+  {% for statement in bind_clauses.zone.slave -%}
+    {% if properties[statement] is defined -%}
+      {% if statement == 'masters' -%}
+        {{ macro_statements.masters(properties.masters, (properties.masters_port|default('')))}}
+      {% else %}
+        {{ macro_statements[statement](properties[statement]) | indent(width=2, first=True)}}
+      {%- endif %}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{#
+statements for forward zones
+#}
+{% if properties.type == 'forward' -%}
+  {% for statement in bind_clauses.zone.forward -%}
+    {% if properties[statement] is defined -%}
+      {{ macro_statements[statement](properties[statement]) | indent(width=2, first=True)}}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{#
+statements for static-stub zones
+#}
+{% if properties.type == 'static_stub' -%}
+  {% for statement in bind_clauses.zone.static_stub -%}
+    {% if properties[statement] is defined -%}
+      {{ macro_statements[statement](properties[statement]) | indent(width=2, first=True)}}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{#
+common statements
+#}
+{% for statement in bind_clauses.zone.common -%}
+  {% if properties[statement] is defined -%}
+    {{ macro_statements[statement](properties[statement]) | indent(width=2, first=True)}}
+  {%- endif %}
+{%- endfor %}
+};
+
+{% endmacro %}
