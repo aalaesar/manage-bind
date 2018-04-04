@@ -1,18 +1,16 @@
-// "{{ ansible_managed}}"
+// {{ ansible_managed}}
+{% import './templates/clauses.j2' as clauses with context %}
 
 {% if RFC1918 == True %}
 include "/etc/bind/zones.rfc1918";
-
 {% endif %}
-{% if keys is defined %}
-{% for key in keys %}
-{% set clause = key %}
-{% include './templates/clauses/key.j2' %}
 
-{% endfor %}
-{% endif %}
+{% if keys is defined -%}
+  {% for key in keys -%}
+    {{ clauses.key(key.name, (key.algorithm|default(none)), (key.secret|default(none)))}}
+  {%- endfor %}
+{%- endif %}
+
 {% for zone in zones %}
-{% set clause = zone %}
-{% include './templates/clauses/zone.j2' %}
-
+{{ clauses.zone(zone ,zones[zone])}}
 {% endfor %}

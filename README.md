@@ -5,9 +5,9 @@ Work in progress
 - [x] Use YAML syntax/files to configure Bind options, zones, etc.
 
 ## Requirements
-Ansible 2.0 (Ansible 2.0.2+ introduced issue #3)
-or Ansible 2.2+
-**Note:** this role requires root access, so either run it in a playbook with a global `become: yes`, or invoke the role in your playbook like:
+Ansible 2.4+
+
+**Note:** this role requires root access to the bind server
 > playbook.yml:
 ```
 - hosts: dnsserver
@@ -62,17 +62,23 @@ zone3: statement1=bar, statement2=koala
 zone4: statement1=foo, statement2=koala
 ```
 
-**manage-bind** support the following clauses:
+**manage-bind** support the following `clauses`:
 - _options_
 - _zone_
 - _key_
+
+The list of supported `statements`:
+See `./vars/main.yml`
+
+**TODO**:  _views_
+
 
 ### _Caution_ when defining a statement !
 - some statements are defined with complex mappings while others requires just a simple value.
   Just in case, each statement have its own template self documented.
 - **manage-bind** uses bind's tools **named-checkconf** and **named-checkzone** for configuration and zone validation.
-  However, thoses tools are limited to **syntax** and **light coherence** verification. This role do not provide advanced validation methods.
-- Escape special char like @ with quotes
+  However, thoses tools are limited to **syntax** and **light coherence** verification. _This role do **not** provide advanced validation methods._
+- Escape special chars like @ with quotes
 - Some statements requires "yes|no" string values: Escape **yes** and **no** with quotes as Ansible evaluates them as boolean.
 
 ### The Options clause
@@ -122,20 +128,23 @@ Each zone is declared as an element of the list named `zones`.
   roles:
     - role: aalaesar.manage-bind
       zones:
-        - ... # zone 1
-        - ... # zone 2
+        "zone 1":
+          statements ...
+        "zone 2":
+          statements ...
 ```
 
 #### Defining zone's statements
-A zone is a mapping where its statements are keys:
+A zone is a mapping where the zone name is its main key  and its statements are keys:value
 - `[statement]:value`
-- `name` and `type` are mandatory statements
-- Some zone type have their own mandatory statements
+- `type` is mandatory statements
+- `force_file` [boolean]: Tell ansible to rewrite the records database file. Useful if your zone is dynamically populated by DNS. - _false for slaves zones_ - _true for others_
+- Some zone types have their own mandatory statements
 
 > playbook.yml:
 ```
 zones:
-  - name: example.com # Mandatory. The domain's name
+  example.com # The domain's name
     type: master # Mandatory. The type of the zone : master|slave|forward|stub
     recursion: "no" # statement overriding global option "recursion" for this zone.
     ... # etc
@@ -149,9 +158,9 @@ the **zone's** records are defined in a mapping named **'records'**
 
 This mapping **'records'** can be declared:
 - in an YAML file specified in the **_yamlfile_** key.
-- _as a zone's key_
+- _as a mapping inside its zone's mapping_
 
-**Note:** _First method excludes the second:_ the role will load only the records in the file if you declare it in your playbook.
+**Note:** _the content of the Yaml files is combined with the zone config:_ So, in case of duplicates records, __the file content will have precedence.__
 
 > playbook.yml:
 ```
@@ -164,9 +173,12 @@ zones:
     ... # etc
   - name: test.tld
     yamlfile: "./files/test.tld.yml"
-    records: # will be ignored in this zone
+    records:
       SOA: ...
       NS: ...
+      A:
+       localhost: 127.0.0.1
+       test1 # will be overriden by the yamlfile
     ... # etc
 ```
 
@@ -177,14 +189,16 @@ In the yaml file, **records** must be top level mapping:
 records:
   SOA: ...
   NS: ...
+  A:
+   test1: 1.2.3.4
+   test2: 5.6.7.8
   ... # etc
 ```
 
 #### Adding records in the zone
 Zone records have different types, they are declared by type inside `records`.
 
-_each records type is different and follow its own YAML structure.
-Most records templates are self documented._
+_each records type is different and follow its own YAML structure._
 
 Manage-bind support the following records
 - **SOA**
@@ -209,6 +223,7 @@ None.
 - You have 2 name servers : dnserver1 (11.22.33.44) & dnserver2 (55.66.77.88)
 - dnserver1 is master of example.tld and slave of example.com.
 - dnserver2 is master of example.com and slave of example.tld
+- example.tld is dynamically populated by a DHCP server
 
 ### dnserver1's playbook :
 ```
@@ -220,9 +235,12 @@ None.
         allow_recursion: '55.66.77.88'
         allow_transfer: '55.66.77.88'
       zones:
-        - name: example.tld
+        example.tld:
           type: master
+          force_file: no
           notify: '55.66.77.88'
+          allow_update:
+            - key dhcp_updater
           records:
             - SOA:
                 serial: 2016080401
@@ -234,9 +252,13 @@ None.
             - A:
                 dnserver1: 11.22.33.44
                 dnserver2: 55.66.77.88
-        - name: example.com
+        example.com:
           type: slave
           masters: '55.66.77.88'
+      keys:
+      - name: dhcp_updater
+        algorithm: "hmac-md5"
+        secret: "{{myvault_dhcp_key}}"
 ```
 ### dnserver2's playbook :
 ```
@@ -248,10 +270,10 @@ None.
         allow_recursion: '11.22.33.44'
         allow_transfer: '11.22.33.44'
       zones:
-        - name: example.com
+        example.com:
           type: slave
           notify: '11.22.33.44'
-        - name: example.tld
+        example.tld:
          type: slave
          masters: '11.22.33.44'
          ymlfile: example.com.yml

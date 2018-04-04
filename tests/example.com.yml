@@ -22,9 +22,9 @@ records:
     'fe80:cafe:fa:1::1de':
       - '@'
       - srvdns01.example.com.
-    'fe80:cafe::bafe': mailsrv
+    'fe80:cafe::42:bafe': mailsrv
   MX:
-    '@': 
+    '@':
       - target: mailsrv
         ttl: 3w
         priority: 10
@@ -53,4 +53,3 @@ records:
     - text: '"v=spf1 mx -all"'
     - text: '( "v=DKIM1; k=rsa; t=s; n=core; p=someverylongstringbecausethisisakeyformailsecurity" )  ; ----- DKIM key mail for example.com'
       label: mail._domainkey
-  

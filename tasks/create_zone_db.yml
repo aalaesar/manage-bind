@@ -1,60 +1,47 @@
 ---
-- name: Add the db file name to managed list.
-  set_fact: "zone_filename=db.{{ item.name }}"
-  when: item.textfile is not defined
+- name: Generate filename.
+  set_fact: "zone_filename=db.{{ bind_zone.key }}"
+  when: bind_zone.value.textfile is not defined
   tags: setup_zones
 
 - block:
-  - name: "Loading zone content for {{ item.name }} from {{ item.ymlfile }}"
-    include_vars: "{{ item.ymlfile }}"
+  - name: Generate filename.
+    set_fact: "zone_filename={{ bind_zone.value.textfile.split('/')[-1] }}"
 
-  - set_fact: "ZoneRecords={{ records }}"
-
-  - name: Setup zones files for {{ item.name }} and verify
-    template:
-      src: db.zones.template.j2
-      dest: "{{ bind_zones_dir }}/{{ zone_filename }}"
-      owner: "{{ bind_user }}"
-      group: "{{ bind_group }}"
-      mode: 0644
-      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
-    notify: reload bind
-  when: item.ymlfile is defined
-  tags: setup_zones
-
-- block:
-  - set_fact: "zone_filename={{ item.textfile.split('/')[-1] }}"
-
-  - name: "Copy and validate {{ item.name }} text zone file."
+  - name: "Copy and validate {{ bind_zone.key }} text zone file."
     copy:
-      src: "{{ item.textfile }}"
+      src: "{{ bind_zone.value.textfile }}"
       dest: "{{ bind_zones_dir }}/{{ zone_filename }}"
       owner: "{{ bind_user }}"
       group: "{{ bind_group }}"
       mode: 0644
-      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
+      validate: "/usr/sbin/named-checkzone {{ bind_zone.key }} %s"
     notify: reload bind
-  when: item.ymlfile is not defined and item.textfile is defined
+  when: bind_zone.value.textfile is defined
   tags: setup_zones
 
 - block:
-  - name: Loading zone content for {{ item.name }} from given Records
-    set_fact: "ZoneRecords={{ item.records }}"
+  - name: "Loading zone content for {{ bind_zone.key }} from yaml file"
+    include_vars:
+      file: "{{ bind_zone.value.ymlfile }}"
+      name: my_records
+    when: bind_zone.value.ymlfile is defined
 
-  - name: Setup zones files for {{ item.name }} and verify
+  - name: "Building records list..."
+    set_fact:
+      full_zone: "{{ zones[bind_zone.key] | combine( (my_records|default({})), recursive=True) }}"
+
+  - name: Setup zones files for {{ bind_zone.key }} and verify
     template:
       src: db.zones.template.j2
       dest: "{{ bind_zones_dir }}/{{ zone_filename }}"
       owner: "{{ bind_user }}"
       group: "{{ bind_group }}"
       mode: 0644
-      validate: "/usr/sbin/named-checkzone {{ item.name }} %s"
+      validate: "/usr/sbin/named-checkzone {{ bind_zone.key }} %s"
+      force: "{{ 'no' if full_zone.type == 'slave' else (full_zone.force_file|default(omit)) }}"
     notify: reload bind
-  when: item.ymlfile is not defined and item.textfile is not defined and item.records is defined
-  tags: setup_zones
-
-- name: Clear zone data
-  set_fact: ZoneRecords={}
+  when: bind_zone.value.textfile is not defined
   tags: setup_zones
 
 - set_fact: "list_zone_files={{ list_zone_files + [zone_filename] }}"
