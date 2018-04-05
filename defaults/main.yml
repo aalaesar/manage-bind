@@ -29,7 +29,7 @@ zones_config_ttl: 38400
 zones_config_refresh: 10800
 zones_config_retry: 3600
 zones_config_expire: 604800
-zones_config_negative: 38400
+zones_config_minimum: 38400
 
 # remove unmanaged files to keep the server clean
 remove_unmanaged_files: true

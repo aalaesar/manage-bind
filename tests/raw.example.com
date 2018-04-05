@@ -5,7 +5,7 @@ $ORIGIN example.com.
                 12h      ; refresh
                 30m      ; retry
                 3w      ; expire
-                2h30m      ; negative
+                2h30m      ; minimum
                 )
 @			IN	NS	srvdns01.example.com.
 

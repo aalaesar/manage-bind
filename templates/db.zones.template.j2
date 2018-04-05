@@ -7,7 +7,7 @@ $ORIGIN {{ bind_zone.key }}.
       {{ full_zone.records.SOA.refresh|default( zones_config_refresh ) }}      ; refresh
       {{ full_zone.records.SOA.retry|default( zones_config_retry ) }}      ; retry
       {{ full_zone.records.SOA.expire|default( zones_config_expire ) }}      ; expire
-      {{ full_zone.records.SOA.negative|default( zones_config_negative ) }}      ; negative
+      {{ full_zone.records.SOA.minimum|default( zones_config_minimum ) }}      ; minimum
       )
 
 {{ macro_records.NS(full_zone.records.NS) }}

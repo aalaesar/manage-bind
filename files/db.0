@@ -7,6 +7,6 @@ $TTL	604800
 			 604800		; Refresh
 			  86400		; Retry
 			2419200		; Expire
-			 604800 )	; Negative Cache TTL
+			 604800 )	; minimum Cache TTL
 ;
 @	IN	NS	localhost.

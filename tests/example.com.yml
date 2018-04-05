@@ -8,7 +8,7 @@ records:
     refresh: 12h
     retry: 30m
     expire: 3w
-    negative: 2h30m
+    minimum: 2h30m
   NS:
     - srvdns01.example.com.
   A:
