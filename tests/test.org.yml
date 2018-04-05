@@ -11,8 +11,8 @@ records:
     127.0.0.1:
       - '@'
       - srvdns.test.org.
-    12.34.56.78: host1
-    98.76.54.32: mail
+    host: 112.34.56.78
+    mail: 98.76.54.32
   SRV:
     - srvce: _http
       prot: _tcp

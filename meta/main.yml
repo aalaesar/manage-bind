@@ -1,9 +1,9 @@
 galaxy_info:
   author: Aalaesar
-  description: Install and manage your bind9 server on Debian/Ubuntu servers. Use YAML syntax/files to precisely configure Bind options, zones data, etc from Ansible
+  description: Use YAML syntax/files to precisely configure Bind: options, zones data, etc from Ansible (also nstall and manage the bind9 server on Debian/Ubuntu servers).
   license: BSD
-  
-  min_ansible_version: 2.0
+
+  min_ansible_version: 2.4
 
   # Optionally specify the branch Galaxy will use when accessing the GitHub
   # repo for this role. During role install, if no tags are available,
@@ -12,7 +12,7 @@ galaxy_info:
   # branch will be accepted. Otherwise, in all cases, the repo's default branch
   # (usually master) will be used.
   #github_branch:
-  
+
   #
   # Below are all platforms currently available. Just uncomment
   # the ones that apply to your role. If you don't see your
@@ -103,7 +103,7 @@ galaxy_info:
   #  - 9.3
   - name: Ubuntu
     versions:
-  #  - all
+     - all
   #  - lucid
   #  - maverick
   #  - natty
@@ -116,7 +116,7 @@ galaxy_info:
   #  - utopic
   #  - vivid
   #  - wily
-    - xenial
+  #  - xenial
   #- name: SLES
   #  versions:
   #  - all
@@ -136,13 +136,13 @@ galaxy_info:
   #  - any
   - name: Debian
     versions:
-  #  - all
+    - all
   #  - etch
-    - jessie
+  #  - jessie
   #  - lenny
   #  - squeeze
   #  - wheezy
-  
+
   galaxy_tags:
     - network
     - DNS

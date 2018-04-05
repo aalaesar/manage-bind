@@ -15,14 +15,14 @@ records:
     127.0.0.1:
       - '@'
       - srvdns01.example.com.
-    12.34.56.78: host1
-    98.76.54.32: mailsrv
-    95.38.94.196: ftp.domain.tld.
+    host1: 12.34.56.78
+    mailsrv: 98.76.54.32
+    ftp.domain.tld.: 95.38.94.196
   AAAA:
     'fe80:cafe:fa:1::1de':
       - '@'
       - srvdns01.example.com.
-    'fe80:cafe::42:bafe': mailsrv
+    mailsrv: 'fe80:cafe::42:bafe'
   MX:
     '@':
       - target: mailsrv
