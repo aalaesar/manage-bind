@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/aalaesar/manage-bind.svg?branch=master)](https://travis-ci.org/aalaesar/manage-bind)
 # Ansible Role: manage-bind 2.0
  This role is built as an abtraction layer to configure bind and create DNS zones using YAML syntax.
 - [x] Install and manage your bind9 server on Debian/Ubuntu servers.

@@ -1,12 +1,13 @@
 ---
-- hosts: raspib
+- hosts: localhost
   gather_facts: no
+  become: yes
   #remote_user: root
   roles:
-   - role: bind9
+   - role: manage-bind
      options_file: ./tests/options.yml
      zones:
-      - name: example.com
+      example.com:
         type: master
         ymlfile: tests/example.com.yml
         #textfile: tests/raw.example.com
