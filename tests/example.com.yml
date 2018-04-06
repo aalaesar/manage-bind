@@ -45,7 +45,7 @@ records:
       port: 21
       target: ftp
   CNAME:
-    ftp: host1
+    host1: ftp
     '@':
       - www
       - webmail
