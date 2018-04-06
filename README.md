@@ -9,7 +9,7 @@ Ansible 2.4+
 
 **Note:** this role requires root access to the bind server
 > playbook.yml:
-```
+```yaml
 - hosts: dnsserver
   roles:
     - role: aalaesar.manage-bind
@@ -17,6 +17,37 @@ Ansible 2.4+
 ```
 
 ## Role Variables
+```yaml
+# host configuration
+bind_user:  bind
+bind_group: bind
+host_dns_srv: self
+# log directory
+bind_log_dir: /var/log/bind
+# Installation configuration
+bind_pkg_state: present
+bind_pkgs: ['bind9', 'dnsutils']
+bind_service_state: started
+bind_service_enabled: yes
+# Configs
+bind_configs_dir: /etc/bind
+bind_config_master_zones: []
+bind_config_default_zones: 'yes'
+RFC1918: no
+# Zones files
+bind_zones_dir: /var/lib/bind
+# Zones default configuration
+zones_config_ttl: 38400 #10h45m
+zones_config_refresh: 10800 #3h
+zones_config_retry: 3600 #1h
+zones_config_expire: 604800 #1w
+zones_config_minimum: 38400 #10h45m
+
+# remove unmanaged files to keep the server clean
+remove_unmanaged_files: true
+# initialise list of managed zone files :
+list_zone_files: []
+```
 
 ## Configuring Bind
 ### Introduction to Bind's configuration
@@ -91,7 +122,7 @@ When calling **manage-bind**, you can pass options statements:
 
 **Note:** _First method excludes the second:_ the role will load only the statements in the file if you declare it in your playbook.
 > playbook.yml:
-```
+```yaml
 - hosts: dnsserver
   become: yes
   roles:
@@ -102,7 +133,7 @@ When calling **manage-bind**, you can pass options statements:
         statement2: ...
 ```
 > ./files/options.yml:
-```
+```yaml
 ---
 options:
   statement1: ...
@@ -122,7 +153,7 @@ Each zone is declared as an element of the list named `zones`.
 
 **'zones'** have to be defined in the playbook and is _mandatory_.
 > playbook.yml:
-```
+```yaml
 - hosts: dnsserver
   become: yes
   roles:
@@ -142,9 +173,9 @@ A zone is a mapping where the zone name is its main key  and its statements are 
 - Some zone types have their own mandatory statements
 
 > playbook.yml:
-```
+```yaml
 zones:
-  example.com # The domain's name
+  example.com: # The domain's name
     type: master # Mandatory. The type of the zone : master|slave|forward|stub
     recursion: "no" # statement overriding global option "recursion" for this zone.
     ... # etc
@@ -163,28 +194,28 @@ This mapping **'records'** can be declared:
 **Note:** _the content of the Yaml files is combined with the zone config:_ So, in case of duplicates records, __the file content will have precedence.__
 
 > playbook.yml:
-```
+```yaml
 zones:
-  - name: example.com
+  example.com:
     records:
       SOA: ...
       NS: ...
       ... # etc
     ... # etc
-  - name: test.tld
+  test.tld:
     yamlfile: "./files/test.tld.yml"
     records:
       SOA: ...
       NS: ...
       A:
        localhost: 127.0.0.1
-       test1 # will be overriden by the yamlfile
+       test1: 9.8.7.6 # will be overriden by the yamlfile
     ... # etc
 ```
 
 In the yaml file, **records** must be top level mapping:
 > ./files/test.tld.yml:
-```
+```yaml
 ---
 records:
   SOA: ...
@@ -226,7 +257,7 @@ None.
 - example.tld is dynamically populated by a DHCP server
 
 ### dnserver1's playbook :
-```
+```yaml
 ---
 - hosts: dnserver1
   roles:
@@ -261,7 +292,7 @@ None.
         secret: "{{myvault_dhcp_key}}"
 ```
 ### dnserver2's playbook :
-```
+```yaml
 ---
 - hosts: dnserver2
   roles:
@@ -279,7 +310,7 @@ None.
          ymlfile: example.com.yml
 ```
 ### YAML file for example.com.yml on dnserver2
-```
+```yaml
 ---
 records:
   ttl: 3d
