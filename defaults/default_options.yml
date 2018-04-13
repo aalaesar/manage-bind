@@ -47,7 +47,7 @@ default_options:
   #key_directory:
   #lame_ttl:
   listen_on: any
-  listen_on_v6: any
+  #listen_on_v6: any
   #masterfile_format:
   #match_mapped_addresses:
   #max_cache_size:
