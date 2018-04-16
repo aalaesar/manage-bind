@@ -25,7 +25,6 @@
     include_vars:
       file: "{{ bind_zone.value.ymlfile }}"
       name: my_records
-    when: bind_zone.value.ymlfile is defined
 
   - name: "Building records list..."
     set_fact:
@@ -41,7 +40,7 @@
       validate: "/usr/sbin/named-checkzone {{ bind_zone.key }} %s"
       force: "{{ 'no' if full_zone.type == 'slave' else (full_zone.force_file|default(omit)) }}"
     notify: reload bind
-  when: bind_zone.value.textfile is not defined
+  when: bind_zone.value.textfile is not defined and bind_zone.value.ymlfile is defined
   tags: setup_zones
 
 - set_fact: "list_zone_files={{ list_zone_files + [zone_filename] }}"
